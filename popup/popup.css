@@ -1,0 +1,9 @@
+#subtitle_controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto;
+}
+
+#subtitle_seek {
+    text-align: center;
+}

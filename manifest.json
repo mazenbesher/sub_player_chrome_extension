@@ -1,0 +1,23 @@
+{
+  "name": "SubPlayer",
+  "manifest_version": 2,
+  "version": "0.01",
+//   "icons": { "16": "to_16.png", "48": "to_48.png", "128": "to_128.png" },
+//   "description": "Hover, click or select to translate (with text-to-speech)",
+  "background": { 
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+//   "options_page": "options.html",
+  "content_scripts": [{
+    "matches": [ "<all_urls>" ],
+    "all_frames": true,
+    "js": ["lib/jquery-3.2.1.js", "contentscript.js"]
+  }],
+  "browser_action": {
+//     "default_icon": {"38": "to_38.png", "19": "to_19.png"}
+    "default_popup": "popup/popup.html"
+  },
+  "permissions": ["tabs"]
+//   "content_security_policy": "script-src 'self' 'unsafe-eval' https://ssl.google-analytics.com https://translate.google.com; object-src 'self'"
+}
