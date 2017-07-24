@@ -1,1 +1,1 @@
-![demo bezier](https://github.com/mazenbesher/????/blob/master/demo/????.gif)
+Add subtitle overlay from SRT files to any video element, with options to seek the subtitle.
