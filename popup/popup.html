@@ -8,14 +8,14 @@
     <button id="search_for_video_btn">Search for Videos</button><br>
     <input type="file" id="subtitle_file_input"><br>
 
-     <div id="subtitle_controls">
-        <input type="button" id="seekBackMin" value="<<">
-        <input type="button" id="seekBackSec" value="<">
-        <input type="button" id="seekForwardSec" value=">">
-        <input type="button" id="seekForwardMin" value=">>">
-    </div> 
+    <div id="subtitle_controls">
+        <input type="button" data-seek="-1000" title="seek back one second" value="<<">
+        <input type="button" data-seek="-500" title="seek back half a second" value="<">
+        <input type="button" data-seek="500" title="seek forward half a second" value=">">
+        <input type="button" data-seek="1000" title="seek forward one second" value=">>">
+    </div>
 
-    <p id="subtitle_seek">0</p>
+    <p><span id="subtitle_seek">0</span> ms</p>
 
     <script type="text/javascript" src="popup.js"></script>
 </body>

@@ -1,9 +1,12 @@
 #subtitle_controls {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: auto;
+    display: flex;
 }
 
 #subtitle_seek {
     text-align: center;
+}
+
+p {
+    text-align: center;
+    margin: 0px;
 }

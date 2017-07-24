@@ -4,15 +4,12 @@ var subtitleHolder;
 var videoElm = null;
 
 // Globals
-var lastIndex = -1;
 var subtitleSeekMS = 0;
 
 // Parsing globals
 var subtitles = []
-var times = []
 
 // Listeners
-// chrome.runtime.onConnect.addListener(detectVideos);
 chrome.runtime.onMessage.addListener(receivedMessage);
 
 /* NOTE: How align subtitle to bottom of subtitle container
@@ -25,39 +22,35 @@ chrome.runtime.onMessage.addListener(receivedMessage);
 
 function showSubtitle(event) {
     let currTime = ~~(videoElm.currentTime * 1000) + subtitleSeekMS; // from sec to ms -> * 1000
-
-    if (currTime > times[1]) { // times[0] == undefined
-        let currIndex = times.findIndex(elm => elm > currTime);
-        if (currIndex != -1 && currIndex != lastIndex) {
-            // new subtitle
-            subtitleHolder.innerText = subtitles[currIndex];
-            lastIndex = currIndex;
-        }
+    let currIndex = subtitles.findIndex(elm => currTime >= elm.start && currTime <= elm.end);
+    if (currIndex != -1) {
+        subtitleHolder.innerText = subtitles[currIndex].text;
+    } else {
+        subtitleHolder.innerText = "";
     }
+
+    // if (currTime > times[1]) { // times[0] == undefined
+    //     let currIndex = times.findIndex(elm => elm > currTime);
+    //     if (currIndex != -1 && currIndex != lastIndex) {
+    //         // new subtitle
+    //         subtitleHolder.innerText = subtitles[currIndex];
+    //         lastIndex = currIndex;
+    //     }
+    // }
 }
 
-// function detectVideos(port) {
-//     videoElm = document.querySelector("video");
-//     console.log("videoElm: ");
-//     console.log(videoElm);
-// }
-
 function receivedMessage(request, sender, sendResponse) {
-    // console.log("message received");
-    // console.log(request);
-    // console.log(sender);
-
-    if (request.srtUploaded) {
+    if (request.srtParsed) {
         if (videoElm !== null) { // NOTE: page can include multiple frames but only one should have the video in it
             subtitles = request.subtitles;
-            times = request.times;
 
             displaySRT();
         }
     }
     else if (request.seek) {
         if (videoElm !== null) {
-            seek(request.seek)
+            subtitleSeekMS += request.seek;
+            sendResponse({seekedValue: subtitleSeekMS});
         }
     }
     else if (request.searchForVideos) {
@@ -67,9 +60,9 @@ function receivedMessage(request, sender, sendResponse) {
             sendResponse({ videoDetected: true });
         }
     }
-    else if(request.seekedSubtitle) {
+    else if (request.seekedSubtitle) {
         if (videoElm !== null) {
-            sendResponse({seeked: true, amount: subtitleSeekMS});
+            sendResponse({ seeked: true, amount: subtitleSeekMS });
         }
     }
 }
@@ -92,19 +85,22 @@ function displaySRT() {
     // add subtitle holder
     subtitleHolder = document.createElement("p");
     subtitleHolder.style.textAlign = "center";
-    subtitleHolder.style.fontSize = "20px";
+    subtitleHolder.style.fontSize = ~~(parseInt(videoElm.clientWidth) / 32) + "px";
+    subtitleHolder.style.paddingBottom = ~~(parseInt(videoElm.clientWidth) / 64) + "px";
     subtitleHolder.style.fontWeight = "500";
     subtitleHolder.style.color = "white";
     subtitleHolder.style.textShadow = "-1px 0 black, 0 1px black, 1px 0 black, 0 -1px black ";
-    subtitleHolder.style.paddingBottom = "10px";
     subtitleHolder.style.display = "table-cell";
     subtitleHolder.style.verticalAlign = "bottom";
     subtitleContainer.appendChild(subtitleHolder);
 
-    // add event listener when video time update
+    // add event listener for video
     videoElm.ontimeupdate = showSubtitle;
+    videoElm.onresize = videoResized;
 }
 
-function seek(value) {
-    subtitleSeekMS += value;
+function videoResized(){
+    subtitleContainer.style.height = videoElm.style.height;
+    subtitleHolder.style.fontSize = ~~(parseInt(videoElm.clientWidth) / 32) + "px";
+    subtitleHolder.style.paddingBottom = ~~(parseInt(videoElm.clientWidth) / 64) + "px";
 }
