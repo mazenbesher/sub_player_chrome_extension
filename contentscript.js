@@ -3,6 +3,9 @@ var subtitleContainer;
 var subtitleHolder;
 var videoElm = null;
 
+// Config
+const CHECK_VIDEO_RESIZE_MS = 1000;
+
 // Globals
 var subtitleSeekMS = 0;
 
@@ -50,7 +53,7 @@ function receivedMessage(request, sender, sendResponse) {
     else if (request.seek) {
         if (videoElm !== null) {
             subtitleSeekMS += request.seek;
-            sendResponse({seekedValue: subtitleSeekMS});
+            sendResponse({ seekedValue: subtitleSeekMS });
         }
     }
     else if (request.searchForVideos) {
@@ -96,11 +99,15 @@ function displaySRT() {
 
     // add event listener for video
     videoElm.ontimeupdate = showSubtitle;
-    videoElm.onresize = videoResized;
+    setInterval(function(){
+        if(subtitleContainer.clientHeight != videoElm.clientHeight)
+            videoResized();
+    }, CHECK_VIDEO_RESIZE_MS);
 }
 
-function videoResized(){
-    subtitleContainer.style.height = videoElm.style.height;
+function videoResized() {
+    console.log("video resized!");
+    subtitleContainer.style.height = ~~(parseInt(videoElm.clientHeight)) + "px";;
     subtitleHolder.style.fontSize = ~~(parseInt(videoElm.clientWidth) / 32) + "px";
     subtitleHolder.style.paddingBottom = ~~(parseInt(videoElm.clientWidth) / 64) + "px";
 }

@@ -13,6 +13,7 @@ Add subtitle overlay from SRT files to any video element, with options to seek t
 - [ ] hide sync controls if no subtitle is active (found video + uploaded srt)
 - [ ] options page for some subtitle controls (such as style, subtitle databases, ...)
 - [ ] subtitle controls on video itself (instead in popup)
+- [ ] other languages (unicode) support
 
 ## [ ] extend subtitle controls
 - [ ] reset subtitle sync
