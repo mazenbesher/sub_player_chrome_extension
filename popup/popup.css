@@ -1,3 +1,7 @@
+:root {
+    --defalut-font-size: 12px;
+}
+
 #subtitle_controls {
     display: flex;
 }
@@ -8,4 +12,10 @@
 
 p {;
     margin: 0px;
+    font-size: var(--defalut-font-size);
+}
+
+table, th, td {
+    font-size: var(--defalut-font-size);
+    font-weight: 100;
 }

@@ -1,6 +1,7 @@
 Add subtitle overlay from SRT files to any video element, with options to seek the subtitle.
 
 # Features to add
+- [ ] customize `eslint` options
 - [x] change size and position when video resizes
 - [x] delete old loaded subtitle when choosing new one
 - [x] subtitle size relative to video size
@@ -19,8 +20,10 @@ Add subtitle overlay from SRT files to any video element, with options to seek t
 - [x] save subtitle when open page again, so no need to reload the subtitle (using `chrome.storage`)
     - [ ] save sync value and reapply it
 - [ ] option to manage (show/update/remove) all saved subtitles
+- [x] keyboard to control video playback
+    - [ ] add options for customizable keys such as modifiers
 
-## extend subtitle controls
+## Extend subtitle controls
 - [ ] reset subtitle sync
 - [ ] sync range input
 - [ ] change file
@@ -30,5 +33,5 @@ Add subtitle overlay from SRT files to any video element, with options to seek t
 ## Learn mode
 - [ ] multiple languages at the same time
 
-## Bugs
+# Bugs
 - [ ] can't override video in `webkit-fullscreen` mode -> can't show subtitle container/holder divs

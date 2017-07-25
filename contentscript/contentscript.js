@@ -10,6 +10,7 @@ const CHECK_VIDEO_RESIZE_MS = 1000;
 var subtitleSeekMS = 0;
 var lastSubIndex = -1;
 var videoSrcHash;
+var registeredKeyboardEventsForVideoPlayback = false;
 
 // Parsing globals
 var subtitles = []
@@ -55,36 +56,61 @@ function showSubtitle(event) {
 }
 
 function receivedMessage(request, sender, sendResponse) {
-    if (request.srtParsed) {
-        if (videoElm !== null) { // NOTE: page can include multiple frames but only one should have the video in it
+    if (videoElm === null) return;// NOTE: page can include multiple frames but only one should have the video in it
+    if (!request.action) return;
+
+    switch (request.action) {
+        case "srtParsed":
             subtitles = request.subtitles;
             displaySRT();
-        }
-    }
-    else if (request.seek) {
-        if (videoElm !== null) {
-            subtitleSeekMS += request.seek;
-            sendResponse({ seekedValue: subtitleSeekMS });
-        }
-    }
-    else if (request.searchForVideos) {
-        if (videoElm !== null) {
+            break;
+
+        case "seekSubtitle":
+            subtitleSeekMS += request.amount;
+            sendResponse({seekedValue: subtitleSeekMS});
+            break;
+
+        case "getSubSeek":
+            sendResponse({seeked: true, amount: subtitleSeekMS});
+            break;
+
+        case "searchForVideos":
             sendResponse({
-                videoDetected: true,
+                videoDetected: true, // else we had already returned at the start of this method
                 "videoSrcHash": videoSrcHash
             });
-        }
-    }
-    else if (request.seekedSubtitle) {
-        if (videoElm !== null) {
-            sendResponse({ seeked: true, amount: subtitleSeekMS });
-        }
-    }
-    else if (request.unloadCurrSubtitle) {
-        if (videoElm != null) {
+            break;
+
+        case "unloadCurrSubtitle":
             unloadCurrSubtitle();
-        }
+            break;
+
+        case "regKeyboardEventForVideoPlayback":
+            regKeyEvents();
+            break;
+
+        case "getRegKeyEventsState":
+            sendResponse({registered: registeredKeyboardEventsForVideoPlayback});
+            break;
     }
+}
+
+function regKeyEvents(){
+    if(registeredKeyboardEventsForVideoPlayback) return;
+    registeredKeyboardEventsForVideoPlayback = true;
+
+    document.addEventListener('keyup', (e) => {
+        // e must be KeyboardEvent
+        switch (e.key){
+            case "ArrowRight":
+                videoElm.currentTime += 1; // in seconds
+                break;
+
+            case "ArrowLeft":
+                videoElm.currentTime -= 1;
+                break;
+        }
+    }, false);
 }
 
 function unloadCurrSubtitle() {
@@ -116,7 +142,7 @@ function displaySRT() {
 }
 
 function videoResized() {
-    subtitleContainer.style.height = ~~(parseInt(videoElm.clientHeight)) + "px";;
+    subtitleContainer.style.height = ~~(parseInt(videoElm.clientHeight)) + "px";
     subtitleHolder.style.fontSize = ~~(parseInt(videoElm.clientWidth) / 32) + "px";
     subtitleHolder.style.paddingBottom = ~~(parseInt(videoElm.clientWidth) / 64) + "px";
 }

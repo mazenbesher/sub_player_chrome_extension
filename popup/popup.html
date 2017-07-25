@@ -5,30 +5,53 @@
 </head>
 
 <body>
-    <p>
-        In theory you shouldn't need this button, since when any video element is loaded it will automatically report itself and
-        therefore this button should be disabled if a video is found.
-        <br> Anyway, you can do a manual search, if you believe that the current tab has an undetected video element.
-    </p>
-    <button id="search_for_video_btn">Search for Videos</button><br>
-    <p>
-        Note: If page includes multiple videos, only first one would be captured
-    </p>
-
-    <hr>
-    <input type="file" id="subtitle_file_input"><br>
-    <p>Loaded subtitle file: <span id="current_subtitle_file_name">none</span></p><br>
-    <button id="unload_curr_subtitle">Unload</button><br>
-
-    <hr>
-    <div id="subtitle_controls">
-        <p>Sync Controls:</p>
-        <input type="button" data-seek="-1000" title="seek back one second" value="<<">
-        <input type="button" data-seek="-500" title="seek back half a second" value="<">
-        <input type="button" data-seek="500" title="seek forward half a second" value=">">
-        <input type="button" data-seek="1000" title="seek forward one second" value=">>">
+    <div>
+        <p>
+            In theory you shouldn't need this button, since when any video element is loaded it will automatically report itself and
+            therefore this button should be disabled if a video is found.
+            <br> Anyway, you can do a manual search, if you believe that the current tab has an undetected video element.
+        </p>
+        <button id="search_for_video_btn">Search for Videos</button><br>
+        <p>
+            Note: If page includes multiple videos, only first one would be captured
+        </p>
     </div>
-    <p><span id="subtitle_seek">0</span> ms</p>
+
+    <hr>
+    <div>
+        <input type="file" id="subtitle_file_input"><br>
+        <p>Loaded subtitle file: <span id="current_subtitle_file_name">none</span></p><br>
+        <button id="unload_curr_subtitle">Unload</button><br>
+    </div>
+
+    <hr>
+    <div>
+        <p>Sync Controls:</p>
+        <div id="subtitle_controls">
+            <input type="button" data-seek="-1000" title="seek back one second" value="<<">
+            <input type="button" data-seek="-500" title="seek back half a second" value="<">
+            <input type="button" data-seek="500" title="seek forward half a second" value=">">
+            <input type="button" data-seek="1000" title="seek forward one second" value=">>">
+        </div>
+        <p><span id="subtitle_seek">0</span> ms</p>
+    </div>
+
+    <hr>
+    <div>
+        <p> Register keyboard events to control video</p><br>
+        <button id="reg_keyboard_event">Register</button>
+        <span>State: <span id="reg_keyboard_event_state">not registered</span></span><br>
+        <table>
+            <tr>
+                <th>Right Arrow</th>
+                <th>Seek +1 Sec</th>
+            </tr>
+            <tr>
+                <td>Left Arrow</td>
+                <td>Seek -1 Sec</td>
+            </tr>
+        </table>
+    </div>
 
     <!-- TODO
         <div id="subtitle_style_controls">
