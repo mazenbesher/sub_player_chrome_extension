@@ -5,9 +5,22 @@
 </head>
 
 <body>
+    <p>
+        In theory you shouldn't need this button, since when any video element is loaded it will automatically report itself and
+        therefore this button should be disabled if a video is found.
+        <br> Anyway, you can do a manual search, if you believe that the current tab has an undetected video element.
+    </p>
     <button id="search_for_video_btn">Search for Videos</button><br>
-    <input type="file" id="subtitle_file_input"><br>
+    <p>
+        Note: If page includes multiple videos, only first one would be captured
+    </p>
 
+    <hr>
+    <input type="file" id="subtitle_file_input"><br>
+    <p>Loaded subtitle file: <span id="current_subtitle_file_name">none</span></p><br>
+    <button id="unload_curr_subtitle">Unload</button><br>
+
+    <hr>
     <div id="subtitle_controls">
         <p>Sync Controls:</p>
         <input type="button" data-seek="-1000" title="seek back one second" value="<<">
@@ -17,9 +30,10 @@
     </div>
     <p><span id="subtitle_seek">0</span> ms</p>
 
-    <!-- <div id="subtitle_style_controls">
-        
-    </div> -->
+    <!-- TODO
+        <div id="subtitle_style_controls">
+        </div>
+     -->
 
     <script type="text/javascript" src="popup.js"></script>
 </body>

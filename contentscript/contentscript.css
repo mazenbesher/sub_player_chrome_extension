@@ -1,0 +1,17 @@
+div#subtitle_container {
+    position: absolute;
+    z-index: 300000;
+    display: table;
+    pointer-events: none;
+    width: 100%;
+}
+
+div#subtitle_container p#subtitle_holder {
+    font-family: "YouTube Noto",Roboto,Arial,Helvetica,sans-serif;
+    color: white;
+    display: table-cell;
+    text-align: center;
+    font-weight: 500;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    vertical-align: bottom;
+}

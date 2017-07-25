@@ -1,5 +1,10 @@
 // DOM
+const currSubNameSpan = document.getElementById("current_subtitle_file_name");
 const subtitleControls = document.getElementById("subtitle_controls");
+
+const unloadSubBtn = document.getElementById("unload_curr_subtitle");
+unloadSubBtn.disabled = true;
+unloadSubBtn.onclick = unloadCurrSubtitle;
 
 const subtitleSeek = document.getElementById("subtitle_seek");
 chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
@@ -25,24 +30,46 @@ document.querySelectorAll("#subtitle_controls input[data-seek]").forEach((elm, i
 // Globals
 var reader = new FileReader();
 var activeTabId;
+var videoSrcHash;
+var subtitleFileName;
 
-// set active tab id
+// set active tab id and search for video when the popup is opened
 chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     activeTabId = tabs[0].id;
+    searchForVideos();
 });
 
 // TODO check if video already found -> disable search
-
 function searchForVideos() {
     chrome.tabs.sendMessage(activeTabId, { searchForVideos: true }, function (response) {
         if (response != undefined && response.videoDetected) {
             fileInput.disabled = false;
+            searchBtn.disabled = true;
+            videoSrcHash = response["videoSrcHash"];
+            checkIfVideoHasSubtitleInStorage();
         }
     });
 }
 
+function checkIfVideoHasSubtitleInStorage() {
+    chrome.storage.local.get(videoSrcHash, function (result) {
+        if (result[videoSrcHash]) {
+            setCurrSubFileName(JSON.parse(result[videoSrcHash])["fileName"]);
+        }
+    })
+}
+
+function setCurrSubFileName(newName){
+    subtitleFileName = newName;
+    currSubNameSpan.innerText = newName;
+    unloadSubBtn.disabled = false;
+}
+
 function readFile() {
+    unloadCurrSubtitle();
+
     if (fileInput.files && fileInput.files[0]) {
+        setCurrSubFileName(fileInput.files[0].name);
         reader.onload = function (e) {
             parseSRT(e.target.result);
         };
@@ -70,8 +97,6 @@ function timeToMs(hour, min, sec, ms) {
 }
 
 function parseSRT(srt) {
-    subtitles = []; // [{start:...ms, end:...ms, subtitle: ...}, ...]
-
     /* 
      * TODO: doesn't work! every time popup clicked it will load newly (Solution: sessionStorage)
      * Search Google: chrome extension save popup state
@@ -85,10 +110,12 @@ function parseSRT(srt) {
     //                 1      2      3      4            5      6      7      8
     srt = srt.split("\n");
 
+    let subtitles = []; // [{start:...ms, end:...ms, subtitle: ...}, ...]
     let text = "";
     let curr = -1;
     let last_start;
     let last_end;
+    let line;
 
     for (let i = 0; i < srt.length; i++) {
         line = srt[i].trim();
@@ -116,7 +143,7 @@ function parseSRT(srt) {
         } else {
             // adding subtitle text
             if (line.length > 0)
-                text += line + "\n";
+                text += line + "<br>";
         }
     }
 
@@ -127,15 +154,38 @@ function parseSRT(srt) {
         text: text
     };
 
-    // send them to content script
-    chrome.tabs.sendMessage(activeTabId, { srtParsed: true, subtitles: subtitles });
+    // save subtitle for this video in storage
+    let toSave = {};
+    toSave[videoSrcHash] = JSON.stringify({
+        "fileName": subtitleFileName,
+        "subtitles": subtitles
+    });
+    chrome.storage.local.set(toSave, function () {
+        // when done saving
+        // send them to content script
+        chrome.tabs.sendMessage(activeTabId, { srtParsed: true, subtitles: subtitles });
 
-    // show subtitle controls
-    // subtitleControls.style.visibility = "visible";
+        // show subtitle controls
+        // subtitleControls.style.visibility = "visible";
+    });
 }
 
 function seek(value) {
-    chrome.tabs.sendMessage(activeTabId, { seek: value }, function(response){
+    chrome.tabs.sendMessage(activeTabId, { seek: value }, function (response) {
         subtitleSeek.innerText = response.seekedValue
     });
+}
+
+function unloadCurrSubtitle(){
+    unloadSubBtn.disabled = true;
+    setCurrSubFileName("");
+
+    // delete from storage
+    if(videoSrcHash === null || videoSrcHash === undefined) // double check
+        return;
+
+    chrome.storage.local.remove(videoSrcHash);
+
+    // Send message to active tab to hide subtitle
+    chrome.tabs.sendMessage(activeTabId, { unloadCurrSubtitle: true });
 }
