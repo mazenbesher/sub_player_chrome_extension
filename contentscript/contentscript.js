@@ -1,3 +1,5 @@
+"use strict";
+
 // Created DOM Elements
 var subtitleContainer;
 var subtitleHolder;
@@ -19,7 +21,7 @@ var subtitles = []
 chrome.runtime.onMessage.addListener(receivedMessage);
 
 // Main
-videoElm = document.querySelector("video"); // <-- set here 
+var videoElm = document.querySelector("video"); // <-- set here
 if (videoElm != null) {
     videoSrcHash = md5(videoElm.currentSrc);
     checkIfVideoHasSubtitleInStorage();
@@ -95,27 +97,45 @@ function receivedMessage(request, sender, sendResponse) {
     }
 }
 
-function regKeyEvents(){
-    if(registeredKeyboardEventsForVideoPlayback) return;
+function regKeyEvents() {
+    if (registeredKeyboardEventsForVideoPlayback) return;
     registeredKeyboardEventsForVideoPlayback = true;
 
     document.addEventListener('keyup', (e) => {
         // e must be KeyboardEvent
-        switch (e.key){
+        switch (e.key) {
             case "ArrowRight":
-                videoElm.currentTime += 1; // in seconds
+                if (e.ctrlKey) {
+                    // 1 minute
+                    subtitleHolder.innerText += ">>> 1 min ";
+                    videoElm.currentTime += 60;
+                } else {
+                    // 1 second
+                    subtitleHolder.innerText += ">>> 5 sec ";
+                    videoElm.currentTime += 5;
+                }
                 break;
 
             case "ArrowLeft":
-                videoElm.currentTime -= 1;
+                if (e.ctrlKey) {
+                    // 1 minute
+                    subtitleHolder.innerText += "<<< 1 min ";
+                    videoElm.currentTime -= 60;
+                } else {
+                    // 1 second
+                    subtitleHolder.innerText += "<<< 5 sec ";
+                    videoElm.currentTime -= 5;
+                }
                 break;
         }
     }, false);
 }
 
 function unloadCurrSubtitle() {
-    subtitleHolder.remove();
-    subtitleContainer.remove();
+    if (subtitleHolder && subtitleContainer) {
+        subtitleHolder.remove();
+        subtitleContainer.remove();
+    }
 }
 
 function displaySRT() {

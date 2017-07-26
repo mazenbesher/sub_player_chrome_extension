@@ -15,7 +15,16 @@ p {;
     font-size: var(--defalut-font-size);
 }
 
+.bold {
+    font-weight: bold;
+}
+
 table, th, td {
     font-size: var(--defalut-font-size);
     font-weight: 100;
+    text-align: left;
+}
+
+.hidden {
+    visibility: hidden;
 }
