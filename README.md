@@ -1,7 +1,7 @@
 Add subtitle overlay from SRT files to any video element, with options to sync the subtitle.
 
 # Features to add
-- [ ] resize subtitle if width > video width
+- [x] resize subtitle if width > video width (fixed by setting `subtitleContainer` width to match `video`)
 - [ ] save playing position before close (use `chrome.tabs.onRemoved.addListener`)
 - [ ] customize `eslint` options
 - [x] change size and position when video resizes

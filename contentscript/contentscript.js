@@ -50,7 +50,8 @@ function showSubtitle(event) {
         subtitleHolder.innerHTML = subtitles[currIndex].text; // NOTE: should be html, since srt includes html tag such as <i> and new lines are added as <br> tags
 
         // is video resized
-        if (subtitleContainer.clientHeight != videoElm.clientHeight)
+        if (subtitleContainer.clientHeight != videoElm.clientHeight ||
+            subtitleContainer.clientWidth != videoElm.clientWidth)
             videoResized();
     } else if (currIndex == -1) {
         subtitleHolder.innerText = "";
@@ -163,6 +164,8 @@ function displaySRT() {
 
 function videoResized() {
     subtitleContainer.style.height = ~~(parseInt(videoElm.clientHeight)) + "px";
+    subtitleContainer.style.width = videoElm.clientWidth;
+
     subtitleHolder.style.fontSize = ~~(parseInt(videoElm.clientWidth) / 32) + "px";
     subtitleHolder.style.paddingBottom = ~~(parseInt(videoElm.clientWidth) / 64) + "px";
 }
