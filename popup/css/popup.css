@@ -2,6 +2,10 @@
     --defalut-font-size: 12px;
 }
 
+body {
+    margin: 1%;
+}
+
 #subtitle_controls {
     display: flex;
 }
@@ -10,7 +14,7 @@
     text-align: center;
 }
 
-p {;
+p {
     margin: 0px;
     font-size: var(--defalut-font-size);
 }

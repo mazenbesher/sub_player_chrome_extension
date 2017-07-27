@@ -15,7 +15,7 @@ chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
 });
 
 // hide encoding detection info
-document.getElementById("detected_encoding").style.visibility = "hidden";
+document.querySelectorAll(".detected_encoding").forEach(elm => elm.style.visibility = "hidden");
 
 // state and register keyboard events for video playback
 const regKeyEventsState = document.getElementById("reg_keyboard_event_state");
@@ -42,9 +42,10 @@ chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
 });
 
 // File input
-const fileInput = document.getElementById("subtitle_file_input");
-fileInput.disabled = true;
-fileInput.onchange = readFile;
+document.querySelectorAll(".subtitle_file_input").forEach(elm => {
+    elm.disabled = true;
+    elm.onchange = readFile;
+});
 
 // Search btn
 const searchBtn = document.getElementById("search_for_video_btn");
@@ -63,9 +64,15 @@ manEncodingCheckbox.onchange = function () {
     }
 };
 
+// Body width based on current window width
+// TODO: consider dynamic css instead (media queries [@min-width ...)
+chrome.windows.getCurrent(w => { // w = current window
+    document.querySelector("body").style.width = w.width / 2; // half the size of the window
+});
+
 // Sync listeners
 document.querySelectorAll("#subtitle_controls input[data-sync-amount]").forEach((elm, index) => {
-    elm.onclick = () => seek(parseInt(elm.getAttribute("data-sync-amount")));
+    elm.onclick = () => seek(parseInt(elm.dataset.syncAmount));
     elm.disabled = true;
 });
 
@@ -79,10 +86,18 @@ function searchForVideos() {
 }
 
 function videoFound() {
-    fileInput.disabled = false;
+    // enable file input buttons
+    document.querySelectorAll(".subtitle_file_input").forEach(elm => {
+        elm.disabled = false;
+    });
+
+    // enable search button
     searchBtn.disabled = true;
+
+    // check storage to show file name
     checkIfVideoHasSubtitleInStorage();
 
+    // playback key registration
     regKeyEventsBtn.disabled = false;
     checkIfKeyEventsAreRegistered();
 }
@@ -93,7 +108,7 @@ function checkIfKeyEventsAreRegistered() {
             regKeyEventsState.innerText = "registered!";
             regKeyEventsBtn.disabled = true;
         } else {
-            regKeyEventsState.innerText = "Not  registered";
+            regKeyEventsState.innerText = "Not registered";
         }
     });
 }
@@ -108,7 +123,7 @@ function checkIfVideoHasSubtitleInStorage() {
 }
 
 function enableSyncControls() {
-    document.querySelectorAll("#subtitle_controls input[data-seek]").forEach((elm, index) => {
+    document.querySelectorAll("#subtitle_controls input[data-sync-amount]").forEach((elm, index) => {
         elm.disabled = false;
     });
 }
@@ -120,10 +135,11 @@ function setCurrSubFileName(newName) {
 }
 
 function readFile() {
-    if (fileInput.files && fileInput.files[0]) {
+    // this === input element
+    if (this.files && this.files[0]) {
         unloadCurrSubtitle();
-        setCurrSubFileName(fileInput.files[0].name);
-        detectEncoding().then(encoding => {
+        setCurrSubFileName(this.files[0].name);
+        detectEncoding(this).then(encoding => {
             console.log("selected encoding: " + encoding);
             var reader = new FileReader();
 
@@ -133,7 +149,7 @@ function readFile() {
                 parseSRT(e.target.result);
             };
 
-            reader.readAsText(fileInput.files[0], encoding);
+            reader.readAsText(this.files[0], encoding);
         });
     } else {
         // TODO: show error message
@@ -142,8 +158,17 @@ function readFile() {
     return true;
 }
 
-function detectEncoding() {
-    if (!fileInput.files || !fileInput.files[0]) return;
+function detectEncoding(inputElm) {
+    if (!inputElm.files || !inputElm.files[0]) return;
+
+    function setDetectedEncoding(detectRes) {
+        const containerId = `detected_encoding_${inputElm.dataset.subtitleIndex}`;
+        document.getElementById(containerId).style.visibility = "visible";
+
+        document.querySelector(`#${containerId} .detected_encoding_charset`).innerText = detectRes["charsetName"];
+        document.querySelector(`#${containerId} .detected_encoding_lang`).innerText = detectRes["lang"];
+        document.querySelector(`#${containerId} .detected_encoding_confidence`).innerText = Math.round(detectRes["confidence"]) + "%";
+    }
 
     return new Promise(resolve => {
         if (manEncodingCheckbox.checked) {
@@ -174,16 +199,13 @@ function detectEncoding() {
                  */
 
                 // set DOM elements related to detected encoding
-                document.getElementById("detected_encoding").style.visibility = "visible";
-                document.querySelector("#detected_encoding_charset").innerText = detectRes[0]["charsetName"];
-                document.querySelector("#detected_encoding_lang").innerText = detectRes[0]["lang"];
-                document.querySelector("#detected_encoding_confidence").innerText = Math.round(detectRes[0]["confidence"]) + "%";
+                setDetectedEncoding(detectRes[0]);
 
                 resolve(detectRes[0]["charsetName"]);
             };
         }
 
-        reader.readAsArrayBuffer(fileInput.files[0]);
+        reader.readAsArrayBuffer(inputElm.files[0]);
     });
 }
 
