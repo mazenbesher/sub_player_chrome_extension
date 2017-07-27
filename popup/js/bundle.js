@@ -9,17 +9,6 @@ var subtitleFileNames = {1: "", 2: "", 3: ""};
 // for detecting encoding
 var detect = require('charset-detector')
 
-// render subtitle panes
-let template = document.getElementById("subtitle_pane_template").innerHTML;
-let rendered = Mustache.render(template, {
-    "subtitle_ids": [
-        1,
-        2,
-        3
-    ]
-});
-document.getElementById("subtitle_pane_template_target").innerHTML = rendered;
-
 // set active tab id and search for video when the popup is opened
 chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
     activeTabId = tabs[0].id;
