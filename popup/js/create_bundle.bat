@@ -1,1 +1,0 @@
-browserify popup.js -o bundle.js

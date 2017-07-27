@@ -6,9 +6,8 @@ div#subtitle_container {
     width: 100%;
 }
 
-div#subtitle_container p#subtitle_holder {
+div#subtitle_container p.subtitle_holder {
     font-family: "YouTube Noto",Roboto,Arial,Helvetica,sans-serif;
-    color: white;
     display: table-cell;
     text-align: center;
     font-weight: 500;
@@ -18,5 +17,16 @@ div#subtitle_container p#subtitle_holder {
     /* You want to make these properties dynamic in the future*/
     padding-left: 5px;
     padding-right: 5px;
+}
 
+#subtitle_holder_1 {
+    color: white;
+}
+
+#subtitle_holder_2 {
+    color: red;
+}
+
+#subtitle_holder_3 {
+    color: blue;
 }

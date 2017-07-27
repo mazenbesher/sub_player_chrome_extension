@@ -2,20 +2,20 @@
 
 // Created DOM Elements
 var subtitleContainer;
-var subtitleHolder;
+var subtitleHolders = {1: undefined, 2: undefined, 3: undefined};
 var videoElm = null;
 
 // Config
 const CHECK_VIDEO_RESIZE_MS = 1000;
 
 // Globals
-var subtitleSeekMS = 0;
-var lastSubIndex = -1;
+var subtitleSeeks = {1: 0, 2: 0, 3: 0};
+var lastSubIndexes = {1: -1, 2: -1, 3: -1};
 var videoSrcHash;
 var registeredKeyboardEventsForVideoPlayback = false;
 
 // Parsing globals
-var subtitles = []
+var subtitles = {1: [], 2: [], 3: []}; // 1,2,3
 
 // Listeners
 chrome.runtime.onMessage.addListener(receivedMessage);
@@ -25,6 +25,7 @@ var videoElm = document.querySelector("video"); // <-- set here
 if (videoElm != null) {
     videoSrcHash = md5(videoElm.currentSrc);
     checkIfVideoHasSubtitleInStorage();
+    displaySubtitleElements();
 }
 
 // Inject css
@@ -43,38 +44,46 @@ if (videoElm != null) {
  */
 
 function showSubtitle(event) {
-    let currTime = ~~(videoElm.currentTime * 1000) + subtitleSeekMS; // from sec to ms -> * 1000
-    let currIndex = subtitles.findIndex(elm => currTime >= elm.start && currTime <= elm.end);
-    if (currIndex != -1 && currIndex != lastSubIndex) {
-        lastSubIndex = currIndex;
-        subtitleHolder.innerHTML = subtitles[currIndex].text; // NOTE: should be html, since srt includes html tag such as <i> and new lines are added as <br> tags
+    let newSubtitle = false;
 
+    for (let i = 1; i <= 3; i++) {
+        let currTime = ~~(videoElm.currentTime * 1000) + subtitleSeeks[i]; // from sec to ms -> * 1000
+        let currIndex = subtitles[i].findIndex(elm => currTime >= elm.start && currTime <= elm.end);
+        if (currIndex != -1 && currIndex != lastSubIndexes[i]) {
+            lastSubIndexes[i] = currIndex;
+            subtitleHolders[i].innerHTML = subtitles[i][currIndex].text; // NOTE: should be html, since srt includes html tag such as <i> and new lines are added as <br> tags
+            newSubtitle = true;
+        } else if (currIndex == -1) {
+            subtitleHolders[i].innerText = "";
+        }
+    }
+
+    if (newSubtitle) {
         // is video resized
         if (subtitleContainer.clientHeight != videoElm.clientHeight ||
             subtitleContainer.clientWidth != videoElm.clientWidth)
             videoResized();
-    } else if (currIndex == -1) {
-        subtitleHolder.innerText = "";
     }
 }
 
 function receivedMessage(request, sender, sendResponse) {
     if (videoElm === null) return;// NOTE: page can include multiple frames but only one should have the video in it
-    if (!request.action) return;
+    if (!request.action || !request.hasOwnProperty("action")) return;
 
     switch (request.action) {
         case "srtParsed":
-            subtitles = request.subtitles;
-            displaySRT();
+            subtitles[request.index] = request.subtitles;
+            subtitleHolders[request.index].style.visibility = "visible";
+            adjustSubtitlesWidths();
             break;
 
         case "seekSubtitle":
-            subtitleSeekMS += request.amount;
-            sendResponse({seekedValue: subtitleSeekMS});
+            subtitleSeeks[request.index] += request.amount;
+            sendResponse({seekedValue: subtitleSeeks[request.index]});
             break;
 
         case "getSubSeek":
-            sendResponse({seeked: true, amount: subtitleSeekMS});
+            sendResponse({seeked: true, amount: subtitleSeeks[request.index]});
             break;
 
         case "searchForVideos":
@@ -84,8 +93,10 @@ function receivedMessage(request, sender, sendResponse) {
             });
             break;
 
-        case "unloadCurrSubtitle":
-            unloadCurrSubtitle();
+        case "unloadSubtitle":
+            subtitleHolders[request.index].style.visibility = "hidden";
+            subtitles[request.index] = undefined;
+            adjustSubtitlesWidths();
             break;
 
         case "regKeyboardEventForVideoPlayback":
@@ -108,11 +119,9 @@ function regKeyEvents() {
             case "ArrowRight":
                 if (e.ctrlKey) {
                     // 1 minute
-                    subtitleHolder.innerText += ">>> 1 min ";
                     videoElm.currentTime += 60;
                 } else {
                     // 1 second
-                    subtitleHolder.innerText += ">>> 5 sec ";
                     videoElm.currentTime += 5;
                 }
                 break;
@@ -120,11 +129,9 @@ function regKeyEvents() {
             case "ArrowLeft":
                 if (e.ctrlKey) {
                     // 1 minute
-                    subtitleHolder.innerText += "<<< 1 min ";
                     videoElm.currentTime -= 60;
                 } else {
                     // 1 second
-                    subtitleHolder.innerText += "<<< 5 sec ";
                     videoElm.currentTime -= 5;
                 }
                 break;
@@ -132,14 +139,7 @@ function regKeyEvents() {
     }, false);
 }
 
-function unloadCurrSubtitle() {
-    if (subtitleHolder && subtitleContainer) {
-        subtitleHolder.remove();
-        subtitleContainer.remove();
-    }
-}
-
-function displaySRT() {
+function displaySubtitleElements() {
     // subtitle container
     subtitleContainer = document.createElement("div");
     subtitleContainer.id = "subtitle_container";
@@ -150,12 +150,15 @@ function displaySRT() {
     // add subtitle container (before video)
     videoElm.parentElement.insertBefore(subtitleContainer, videoElm);
 
-    // add subtitle holder
-    subtitleHolder = document.createElement("p");
-    subtitleHolder.id = "subtitle_holder";
-    subtitleHolder.style.fontSize = ~~(parseInt(videoElm.clientWidth) / 32) + "px";
-    subtitleHolder.style.paddingBottom = ~~(parseInt(videoElm.clientWidth) / 64) + "px";
-    subtitleContainer.appendChild(subtitleHolder);
+    // add subtitle holders
+    for (let i = 1; i <= 3; i++) {
+        subtitleHolders[i] = document.createElement("p");
+        subtitleHolders[i].id = `subtitle_holder_${i}`;
+        subtitleHolders[i].className += "subtitle_holder";
+        subtitleHolders[i].style.fontSize = ~~(parseInt(videoElm.clientWidth) / 32) + "px";
+        subtitleHolders[i].style.paddingBottom = ~~(parseInt(videoElm.clientWidth) / 64) * i + "px";
+        subtitleContainer.appendChild(subtitleHolders[i]);
+    }
 
     // add event listener for video
     videoElm.ontimeupdate = showSubtitle;
@@ -166,18 +169,42 @@ function videoResized() {
     subtitleContainer.style.height = ~~(parseInt(videoElm.clientHeight)) + "px";
     subtitleContainer.style.width = videoElm.clientWidth;
 
-    subtitleHolder.style.fontSize = ~~(parseInt(videoElm.clientWidth) / 32) + "px";
-    subtitleHolder.style.paddingBottom = ~~(parseInt(videoElm.clientWidth) / 64) + "px";
+    for (let i = 1; i <= 3; i++) {
+        subtitleHolders[i].style.fontSize = ~~(parseInt(videoElm.clientWidth) / 32) + "px";
+        subtitleHolders[i].style.paddingBottom = ~~(parseInt(videoElm.clientWidth) / 64) + "px";
+    }
+
+    adjustSubtitlesWidths();
 }
 
 function checkIfVideoHasSubtitleInStorage() {
     if (videoElm === null) return; // double check
 
-    chrome.storage.local.get(videoSrcHash, function (result) {
-        if (result[videoSrcHash]) {
-            subtitles = JSON.parse(result[videoSrcHash])["subtitles"];
-            displaySRT();
-        }
-    })
+    // check all possible subtitles
+    for (let i = 1; i <= 3; i++) {
+        const key = `${videoSrcHash}_${i}`;
+        chrome.storage.local.get(key, function (result) {
+            if (result[key]) {
+                subtitles[i] = JSON.parse(result[key])["subtitles"];
+            }
+        })
+    }
+    adjustSubtitlesWidths();
 }
 
+function adjustSubtitlesWidths() {
+    if (!videoElm) return;
+
+    let numberOfEnabledSubtitles = 0;
+    for (let index = 1; index <= 3; index++) {
+        if(subtitleHolders[index] !== undefined && subtitleHolders[index].style.visibility != "hidden")
+            numberOfEnabledSubtitles++;
+    }
+    if(numberOfEnabledSubtitles <= 0) return;
+
+    let videoWidth = videoElm.clientWidth;
+    for (let index = 1; index <= 3; index++) {
+        if(subtitleHolders[index] !== undefined)
+            subtitleHolders[index].style.width = videoWidth / numberOfEnabledSubtitles;
+    }
+}

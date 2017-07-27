@@ -44,7 +44,7 @@
             <div id="load_subtitle_section">
                 Click to load subtitle:
                 <div class="btn btn-default">
-                    <label for="subtitle_file_input_1" id="current_subtitle_file_name">Select file</label>
+                    <label for="subtitle_file_input_1" id="current_subtitle_file_name_1">Select file</label>
                     <input type="file" class="subtitle_file_input hidden" id="subtitle_file_input_1"
                            data-subtitle-index="1">
                 </div>
@@ -56,14 +56,15 @@
                     Detected language: <span class="detected_encoding_lang"></span><br>
                     Detection confidence: <span class="detected_encoding_confidence"></span>
                 </div>
-                <button class="btn btn-default" id="unload_curr_subtitle">Unload</button>
+                <button class="btn btn-default unload_curr_subtitle" data-subtitle-index="1">Unload</button>
             </div>
 
-            <div>
-                <input type="checkbox" id="manual_encoding_detection">I want to set file encoding manually<br>
+            <div id="manual_file_encoding_setting_1">
+                <input type="checkbox" class="manual_encoding_detection" id="manual_encoding_detection_1">I want to set
+                file encoding manually<br>
 
-                <div id="manual_encoding_selection">
-                    <select id="encoding_select">
+                <div class="manual_encoding_selection" id="manual_encoding_selection_1">
+                    <select id="encoding_select_1">
                         <option value="UTF-8">UTF-8 (default)</option>
                         <option value="CP1251">CP1251</option>
                         <option value="ANSI">ANSI</option>
@@ -71,12 +72,33 @@
                         <option value="windows-1252">Windows 1252 (Western Latin)</option>
                         <option value="windows-1256">Windows 1256 (Arabic)</option>
                     </select><br>
-                    <input id="manual_encoding_input" type="text" placeholder="or enter it here (ex. windows-1252)">
+                    <input id="manual_encoding_input_1" type="text" placeholder="or enter it here (ex. windows-1252)">
                 </div>
             </div>
+
+            <!-- TODO
+                <div id="subtitle_style_controls_1">
+                </div>
+             -->
+
+            <hr>
+            <section>
+                <h4>Sync Controls:</h4>
+                <div id="subtitle_controls_1">
+                    <input class="btn btn-default" type="button" data-sync-amount="-1000"
+                           title="seek back one second" value="<<">
+                    <input class="btn btn-default" type="button" data-sync-amount="-500"
+                           title="seek back half a second" value="<">
+                    <input class="btn btn-default" type="button" data-sync-amount="500"
+                           title="seek forward half a second" value=">">
+                    <input class="btn btn-default" type="button" data-sync-amount="1000"
+                           title="seek forward one second" value=">>">
+                </div>
+                <p><span id="subtitle_seek_1">0</span> ms</p>
+            </section>
         </div>
 
-        <div id="subtitle_2" role="tabpanel" class="tab-pane active">
+        <div id="subtitle_2" role="tabpanel" class="tab-pane">
             <h3>Subtitle 2</h3>
             <div id="load_subtitle_section_2">
                 Click to load subtitle:
@@ -93,13 +115,14 @@
                     Detected language: <span class="detected_encoding_lang"></span><br>
                     Detection confidence: <span class="detected_encoding_confidence"></span>
                 </div>
-                <button class="btn btn-default" id="unload_curr_subtitle_2">Unload</button>
+                <button class="btn btn-default unload_curr_subtitle" data-subtitle-index="2">Unload</button>
             </div>
 
-            <div>
-                <input type="checkbox" id="manual_encoding_detection_2">I want to set file encoding manually<br>
+            <div id="manual_file_encoding_setting_2">
+                <input type="checkbox" class="manual_encoding_detection" id="manual_encoding_detection_2">I want to set
+                file encoding manually<br>
 
-                <div id="manual_encoding_selection_2">
+                <div class="manual_encoding_selection" id="manual_encoding_selection_2">
                     <select id="encoding_select_2">
                         <option value="UTF-8">UTF-8 (default)</option>
                         <option value="CP1251">CP1251</option>
@@ -111,9 +134,31 @@
                     <input id="manual_encoding_input_2" type="text" placeholder="or enter it here (ex. windows-1252)">
                 </div>
             </div>
+
+            <!-- TODO
+                <div id="subtitle_style_controls_2">
+                </div>
+             -->
+
+            <hr>
+            <section>
+                <h4>Sync Controls:</h4>
+                <div id="subtitle_controls_2">
+                    <input class="btn btn-default" type="button" data-sync-amount="-1000" title="seek back one second"
+                           value="<<">
+                    <input class="btn btn-default" type="button" data-sync-amount="-500" title="seek back half a second"
+                           value="<">
+                    <input class="btn btn-default" type="button" data-sync-amount="500"
+                           title="seek forward half a second"
+                           value=">">
+                    <input class="btn btn-default" type="button" data-sync-amount="1000" title="seek forward one second"
+                           value=">>">
+                </div>
+                <p><span id="subtitle_seek_2">0</span> ms</p>
+            </section>
         </div>
 
-        <div id="subtitle_3" role="tabpanel" class="tab-pane active">
+        <div id="subtitle_3" role="tabpanel" class="tab-pane">
             <h3>Subtitle 3</h3>
             <div id="load_subtitle_section_3">
                 Click to load subtitle:
@@ -130,13 +175,14 @@
                     Detected language: <span class="detected_encoding_lang"></span><br>
                     Detection confidence: <span class="detected_encoding_confidence"></span>
                 </div>
-                <button class="btn btn-default" id="unload_curr_subtitle_3">Unload</button>
+                <button class="btn btn-default unload_curr_subtitle" data-subtitle-index="3">Unload</button>
             </div>
 
-            <div>
-                <input type="checkbox" id="manual_encoding_detection_3">I want to set file encoding manually<br>
+            <div id="manual_file_encoding_setting_3">
+                <input type="checkbox" class="manual_encoding_detection" id="manual_encoding_detection_3">I want to set
+                file encoding manually<br>
 
-                <div id="manual_encoding_selection_3">
+                <div class="manual_encoding_selection" id="manual_encoding_selection_3">
                     <select id="encoding_select_3">
                         <option value="UTF-8">UTF-8 (default)</option>
                         <option value="CP1251">CP1251</option>
@@ -148,22 +194,32 @@
                     <input id="manual_encoding_input_3" type="text" placeholder="or enter it here (ex. windows-1252)">
                 </div>
             </div>
+
+            <!-- TODO
+                <div id="subtitle_style_controls_3">
+                </div>
+             -->
+
+            <hr>
+            <section>
+                <h4>Sync Controls:</h4>
+                <div id="subtitle_controls_3">
+                    <input class="btn btn-default" type="button" data-sync-amount="-1000" title="seek back one second"
+                           value="<<">
+                    <input class="btn btn-default" type="button" data-sync-amount="-500" title="seek back half a second"
+                           value="<">
+                    <input class="btn btn-default" type="button" data-sync-amount="500"
+                           title="seek forward half a second"
+                           value=">">
+                    <input class="btn btn-default" type="button" data-sync-amount="1000" title="seek forward one second"
+                           value=">>">
+                </div>
+                <p><span id="subtitle_seek_3">0</span> ms</p>
+            </section>
         </div>
     </div>
 </section>
 
-<hr>
-<section>
-    <h3>Sync Controls:</h3>
-    <div id="subtitle_controls">
-        <input class="btn btn-default" type="button" data-sync-amount="-1000" title="seek back one second" value="<<">
-        <input class="btn btn-default" type="button" data-sync-amount="-500" title="seek back half a second" value="<">
-        <input class="btn btn-default" type="button" data-sync-amount="500" title="seek forward half a second"
-               value=">">
-        <input class="btn btn-default" type="button" data-sync-amount="1000" title="seek forward one second" value=">>">
-    </div>
-    <p><span id="subtitle_seek">0</span> ms</p>
-</section>
 
 <hr>
 <section>
@@ -191,11 +247,6 @@
         </tr>
     </table>
 </section>
-
-<!-- TODO
-    <div id="subtitle_style_controls">
-    </div>
- -->
 
 <script src="../lib/jquery-3.2.1.js"></script>
 <script src="../lib/bootstrap.min.js"></script>

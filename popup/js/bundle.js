@@ -4,16 +4,35 @@
 // Globals
 var activeTabId;
 var videoSrcHash;
-var subtitleFileName;
+var subtitleFileNames = {1: "", 2: "", 3: ""};
 
 // for detecting encoding
 var detect = require('charset-detector')
+
+// render subtitle panes
+let template = document.getElementById("subtitle_pane_template").innerHTML;
+let rendered = Mustache.render(template, {
+    "subtitle_ids": [
+        1,
+        2,
+        3
+    ]
+});
+document.getElementById("subtitle_pane_template_target").innerHTML = rendered;
 
 // set active tab id and search for video when the popup is opened
 chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
     activeTabId = tabs[0].id;
     searchForVideos();
+    setUpSeeks();
 });
+
+// seeks
+var subtitleSeeks = {
+    1: document.getElementById("subtitle_seek_1"),
+    2: document.getElementById("subtitle_seek_2"),
+    3: document.getElementById("subtitle_seek_3")
+};
 
 // hide encoding detection info
 document.querySelectorAll(".detected_encoding").forEach(elm => elm.style.visibility = "hidden");
@@ -29,17 +48,9 @@ regKeyEventsBtn.onclick = () => {
 };
 
 // Unload subtitle
-const unloadSubBtn = document.getElementById("unload_curr_subtitle");
-unloadSubBtn.disabled = true;
-unloadSubBtn.onclick = unloadCurrSubtitle;
-
-const subtitleSeek = document.getElementById("subtitle_seek");
-chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, {action: "getSubSeek"}, function (response) {
-        if (response != undefined && response.seeked) {
-            subtitleSeek.innerText = response.amount;
-        }
-    });
+document.querySelectorAll(".unload_curr_subtitle").forEach(elm => {
+    elm.disabled = true;
+    elm.onclick = () => unloadSubtitle(elm.dataset.subtitleIndex);
 });
 
 // File input
@@ -53,28 +64,53 @@ const searchBtn = document.getElementById("search_for_video_btn");
 searchBtn.onclick = searchForVideos;
 
 // Enable/Disable manual encoding selection
-const manEncodingSection = document.getElementById("manual_encoding_selection");
-manEncodingSection.style.visibility = "hidden";
-
-const manEncodingCheckbox = document.getElementById("manual_encoding_detection");
-manEncodingCheckbox.onchange = function () {
-    if (this.checked) {
-        manEncodingSection.style.visibility = "visible";
-    } else {
-        manEncodingSection.style.visibility = "hidden";
-    }
+var manEncodingCheckboxes = {
+    1: document.getElementById("manual_encoding_detection_1"),
+    2: document.getElementById("manual_encoding_detection_2"),
+    3: document.getElementById("manual_encoding_detection_3")
+};
+var manEncodingSections = {
+    1: document.getElementById("manual_encoding_selection_1"),
+    2: document.getElementById("manual_encoding_selection_2"),
+    3: document.getElementById("manual_encoding_selection_3")
 };
 
+for (let index = 1; index <= 3; index++) {
+    manEncodingSections[index].style.visibility = "hidden";
+
+    manEncodingCheckboxes[index].onchange = () => {
+        if (manEncodingCheckboxes[index].checked) {
+            manEncodingSections[index].style.visibility = "visible";
+        } else {
+            manEncodingSections[index].style.visibility = "hidden";
+        }
+    };
+}
+
 // Body width based on current window width
+// TODO: consider dynamic css instead (media queries [@min-width ...)
 chrome.windows.getCurrent(w => { // w = current window
     document.querySelector("body").style.width = w.width / 2; // half the size of the window
-})
+});
 
 // Sync listeners
-document.querySelectorAll("#subtitle_controls input[data-sync-amount]").forEach((elm, index) => {
-    elm.onclick = () => seek(parseInt(elm.dataset.syncAmount));
-    elm.disabled = true;
-});
+for (let index = 1; index <= 3; index++) {
+    const selector = `#subtitle_controls_${index} input[data-sync-amount]`;
+    document.querySelectorAll(selector).forEach(elm => {
+        elm.onclick = () => seek(parseInt(elm.dataset.syncAmount), index);
+        elm.disabled = true;
+    });
+}
+
+function setUpSeeks() {
+    for (let index = 1; index <= 3; index++) {
+        chrome.tabs.sendMessage(activeTabId, {action: "getSubSeek", index: index}, function (response) {
+            if (response != undefined && response.seeked) {
+                subtitleSeeks[index].innerText = response.amount;
+            }
+        });
+    }
+}
 
 function searchForVideos() {
     chrome.tabs.sendMessage(activeTabId, {action: "searchForVideos"}, function (response) {
@@ -86,13 +122,13 @@ function searchForVideos() {
 }
 
 function videoFound() {
-    // enable file input buttons
-    document.querySelectorAll(".subtitle_file_input").forEach(elm => {
-        elm.disabled = false;
-    });
-
     // enable search button
     searchBtn.disabled = true;
+
+    // enable file inputs
+    document.querySelectorAll(".subtitle_file_input").forEach(
+        elm => elm.disabled = false
+    );
 
     // check storage to show file name
     checkIfVideoHasSubtitleInStorage();
@@ -114,39 +150,52 @@ function checkIfKeyEventsAreRegistered() {
 }
 
 function checkIfVideoHasSubtitleInStorage() {
-    chrome.storage.local.get(videoSrcHash, function (result) {
-        if (result[videoSrcHash]) {
-            setCurrSubFileName(JSON.parse(result[videoSrcHash])["fileName"]);
-            enableSyncControls();
-        }
-    })
+    for (let index = 1; index <= 3; index++) {
+        const key = `${videoSrcHash}_${index}`;
+        chrome.storage.local.get(key, function (result) {
+            if (result[key]) {
+                setCurrSubFileName(JSON.parse(result[key])["fileName"], index);
+                enableSyncControls(index);
+
+                // enable file input buttons
+                document.getElementById("subtitle_file_input_" + index).disabled = false;
+            }
+        })
+    }
 }
 
-function enableSyncControls() {
-    document.querySelectorAll("#subtitle_controls input[data-sync-amount]").forEach((elm, index) => {
+function enableSyncControls(index) {
+    const selector = `#subtitle_controls_${index} input[data-sync-amount]`;
+    document.querySelectorAll(selector).forEach((elm, index) => {
         elm.disabled = false;
     });
 }
 
-function setCurrSubFileName(newName) {
-    subtitleFileName = newName;
-    document.getElementById("current_subtitle_file_name").innerText = newName;
-    unloadSubBtn.disabled = false;
+function setCurrSubFileName(newName, index) {
+    subtitleFileNames[index] = newName;
+
+    const id = `current_subtitle_file_name_${index}`;
+    document.getElementById(id).innerText = newName;
+
+    // enable unload sub button
+    const selector = `.unload_curr_subtitle[data-subtitle-index="${index}"`;
+    document.querySelector(selector).disabled = false;
 }
 
 function readFile() {
     // this === input element
     if (this.files && this.files[0]) {
-        unloadCurrSubtitle();
-        setCurrSubFileName(this.files[0].name);
-        detectEncoding(this).then(encoding => {
+        const index = this.dataset.subtitleIndex;
+        unloadSubtitle(index);
+        setCurrSubFileName(this.files[0].name, index);
+        detectEncoding(this, index).then(encoding => {
             console.log("selected encoding: " + encoding);
             var reader = new FileReader();
 
-            reader.onload = function (e) {
+            reader.onload = e => {
                 // e = ProgressEvent
                 // e.target = FileReader
-                parseSRT(e.target.result);
+                parseSRT(e.target.result, index);
             };
 
             reader.readAsText(this.files[0], encoding);
@@ -158,7 +207,7 @@ function readFile() {
     return true;
 }
 
-function detectEncoding(inputElm) {
+function detectEncoding(inputElm, index) {
     if (!inputElm.files || !inputElm.files[0]) return;
 
     function setDetectedEncoding(detectRes) {
@@ -171,13 +220,13 @@ function detectEncoding(inputElm) {
     }
 
     return new Promise(resolve => {
-        if (manEncodingCheckbox.checked) {
+        if (manEncodingCheckboxes[index].checked) {
             // is selected manually?
-            var selectedEncoding = document.getElementById("manual_encoding_input").value.trim();
+            var selectedEncoding = document.getElementById("manual_encoding_input_" + index).value.trim();
             if (selectedEncoding.length > 0)
                 resolve(selectedEncoding);
             else
-                resolve(document.getElementById("encoding_select").value);
+                resolve(document.getElementById("encoding_select_" + index).value);
 
         } else {
             // else detect
@@ -226,7 +275,7 @@ function timeToMs(hour, min, sec, ms) {
         hour * 3600000;
 }
 
-function parseSRT(srt) {
+function parseSRT(srt, index) {
     // parse srt
     const timeRegex = /(\d+):(\d+):(\d+),(\d+) --> (\d+):(\d+):(\d+),(\d+)/g;
     //                 1      2      3      4            5      6      7      8
@@ -276,38 +325,49 @@ function parseSRT(srt) {
         text: text
     };
 
-    // save subtitle for this video in storage
+    // save subtitle for this video in storage and notify content script to load it
+    saveAndNotify(subtitles, index);
+}
+
+function saveAndNotify(subtitles, index) {
     let toSave = {};
-    toSave[videoSrcHash] = JSON.stringify({
-        "fileName": subtitleFileName,
+    let key = `${videoSrcHash}_${index}`; // hash_index
+    toSave[key] = JSON.stringify({
+        "fileName": subtitleFileNames[index],
         "subtitles": subtitles
     });
     chrome.storage.local.set(toSave, function () {
         // when done saving
         // send them to content script
-        chrome.tabs.sendMessage(activeTabId, {action: "srtParsed", subtitles: subtitles});
-        enableSyncControls();
+        chrome.tabs.sendMessage(activeTabId, {action: "srtParsed", subtitles: subtitles, index: index});
+        enableSyncControls(index);
     });
 }
 
-function seek(value) {
+function seek(value, index) {
+    console.log(`request seeking index: ${index}, value: ${value}`);
     // value in ms
-    chrome.tabs.sendMessage(activeTabId, {action: "seekSubtitle", amount: value}, function (response) {
-        subtitleSeek.innerText = response.seekedValue
+    chrome.tabs.sendMessage(activeTabId, {action: "seekSubtitle", index: index, amount: value}, function (response) {
+        subtitleSeeks[index].innerText = response.seekedValue
     });
 }
 
-function unloadCurrSubtitle() {
-    unloadSubBtn.disabled = true;
-    setCurrSubFileName("None");
+function unloadSubtitle(index) {
+    // disable unload sub button
+    const selector = `.unload_curr_subtitle[data-subtitle-index="${index}"`;
+    document.querySelector(selector).disabled = false;
+
+    // set file name
+    setCurrSubFileName("None", index);
 
     // delete from storage
     if (videoSrcHash === null || videoSrcHash === undefined) // double check
         return;
-    chrome.storage.local.remove(videoSrcHash);
+    let key = `${videoSrcHash}_${index}`;
+    chrome.storage.local.remove(key);
 
     // Send message to active tab to hide subtitle
-    chrome.tabs.sendMessage(activeTabId, {action: "unloadCurrSubtitle"});
+    chrome.tabs.sendMessage(activeTabId, {action: "unloadSubtitle", index: index});
 }
 
 },{"charset-detector":9}],2:[function(require,module,exports){
