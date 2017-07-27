@@ -1,7 +1,9 @@
 Add subtitle overlay from SRT files to any video element, with options to sync the subtitle.
 
 # Features to add
-- [ ] use template for subtitle panes in html (b/s they are almost the same but some `id`s and `data-subtitle-index` are different) maybe using `webpack` and `pug` or `mustache`
+- [ ] save detected file encodings info and show them on start
+- [x] use template for subtitle panes in html (b/s they are almost the same but some `id`s and `data-subtitle-index` are different), solved using `mustache`
+- [ ] consider using `webpack`
 - [ ] show if subtitle is loaded on the video (specially if from cache and maybe give the option to unload it)
 - [x] resize subtitle if width > video width (fixed by setting `subtitleContainer` width to match `video`)
 - [ ] save playing position before close (use `chrome.tabs.onRemoved.addListener`)
@@ -48,4 +50,6 @@ Add subtitle overlay from SRT files to any video element, with options to sync t
 - [ ] can't override video in `webkit-fullscreen` mode -> can't show subtitle container/holder divs
 
 # Requirements for build:
+See `bundle.bat`
 1. `npm install -g browserify`
+1. `npm install -g mustache`

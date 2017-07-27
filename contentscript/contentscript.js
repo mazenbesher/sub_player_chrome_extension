@@ -15,7 +15,7 @@ var videoSrcHash;
 var registeredKeyboardEventsForVideoPlayback = false;
 
 // Parsing globals
-var subtitles = {1: [], 2: [], 3: []}; // 1,2,3
+var subtitles = {1: undefined, 2: undefined, 3: undefined};
 
 // Listeners
 chrome.runtime.onMessage.addListener(receivedMessage);
@@ -46,15 +46,16 @@ if (videoElm != null) {
 function showSubtitle(event) {
     let newSubtitle = false;
 
-    for (let i = 1; i <= 3; i++) {
-        let currTime = ~~(videoElm.currentTime * 1000) + subtitleSeeks[i]; // from sec to ms -> * 1000
-        let currIndex = subtitles[i].findIndex(elm => currTime >= elm.start && currTime <= elm.end);
-        if (currIndex != -1 && currIndex != lastSubIndexes[i]) {
-            lastSubIndexes[i] = currIndex;
-            subtitleHolders[i].innerHTML = subtitles[i][currIndex].text; // NOTE: should be html, since srt includes html tag such as <i> and new lines are added as <br> tags
+    for (let index = 1; index <= 3; index++) {
+        if (!isSubtitleActive(index)) continue;
+        let currTime = ~~(videoElm.currentTime * 1000) + subtitleSeeks[index]; // from sec to ms -> * 1000
+        let currIndex = subtitles[index].findIndex(elm => currTime >= elm.start && currTime <= elm.end);
+        if (currIndex != -1 && currIndex != lastSubIndexes[index]) {
+            lastSubIndexes[index] = currIndex;
+            subtitleHolders[index].innerHTML = subtitles[index][currIndex].text; // NOTE: should be html, since srt includes html tag such as <i> and new lines are added as <br> tags
             newSubtitle = true;
         } else if (currIndex == -1) {
-            subtitleHolders[i].innerText = "";
+            subtitleHolders[index].innerText = "";
         }
     }
 
@@ -181,15 +182,18 @@ function checkIfVideoHasSubtitleInStorage() {
     if (videoElm === null) return; // double check
 
     // check all possible subtitles
-    for (let i = 1; i <= 3; i++) {
-        const key = `${videoSrcHash}_${i}`;
-        chrome.storage.local.get(key, function (result) {
-            if (result[key]) {
-                subtitles[i] = JSON.parse(result[key])["subtitles"];
-            }
-        })
-    }
-    adjustSubtitlesWidths();
+    new Promise(() => {
+        for (let index = 1; index <= 3; index++) {
+            const key = `${videoSrcHash}_${index}`;
+            chrome.storage.local.get(key, function (result) {
+                if (result[key]) {
+                    subtitles[index] = JSON.parse(result[key])["subtitles"];
+                }
+            })
+        }
+    }).then(() => {
+        adjustSubtitlesWidths();
+    })
 }
 
 function adjustSubtitlesWidths() {
@@ -197,14 +201,24 @@ function adjustSubtitlesWidths() {
 
     let numberOfEnabledSubtitles = 0;
     for (let index = 1; index <= 3; index++) {
-        if(subtitleHolders[index] !== undefined && subtitleHolders[index].style.visibility != "hidden")
+        if (isSubtitleActive(index))
             numberOfEnabledSubtitles++;
     }
-    if(numberOfEnabledSubtitles <= 0) return;
+    if (numberOfEnabledSubtitles <= 0) return;
+
+    console.info("adjusting subtitles widths");
+    console.info("numberOfEnabledSubtitles: " + numberOfEnabledSubtitles);
 
     let videoWidth = videoElm.clientWidth;
     for (let index = 1; index <= 3; index++) {
-        if(subtitleHolders[index] !== undefined)
+        if (isSubtitleActive(index))
             subtitleHolders[index].style.width = videoWidth / numberOfEnabledSubtitles;
+        else
+            subtitleHolders[index].style.width = "0px";
     }
+}
+
+function isSubtitleActive(index) {
+    return subtitles[index] !== undefined &&
+        subtitles[index].length > 0;
 }

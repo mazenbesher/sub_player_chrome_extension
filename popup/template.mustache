@@ -1,0 +1,139 @@
+<html>
+<head>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/popup.css">
+</head>
+
+<body>
+<section>
+    <h3>Video Search:</h3>
+    <p>
+        In theory you shouldn't need this button, since when any video element is loaded it will automatically report
+        itself and
+        therefore this button should be disabled if a video is found.
+        <br> Anyway, you can do a manual search, if you believe that the current tab has an undetected video element.
+    </p>
+    <button class="btn btn-default" id="search_for_video_btn">Search for Videos</button>
+    <br>
+    <p>
+        Note: If page includes multiple videos, only first one would be captured
+    </p>
+</section>
+
+<hr>
+<section>
+    <!-- http://getbootstrap.com/javascript/#tabs -->
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active" role="presentation">
+            <a href="#subtitle_1" aria-controls="subtitle_1" role="tab" data-toggle="tab">Subtitle 1</a>
+        </li>
+        <li role="presentation">
+            <a href="#subtitle_2" aria-controls="subtitle_2" role="tab" data-toggle="tab">Subtitle 2</a>
+        </li>
+        <li role="presentation">
+            <a href="#subtitle_3" aria-controls="subtitle_3" role="tab" data-toggle="tab">Subtitle 3</a>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        {{#subtitles_numbers}}
+            <div id="subtitle_{{number}}" role="tabpanel" class="tab-pane{{#active}} active{{/active}}">
+                <div id="load_subtitle_section_{{number}}">
+                    Click to load subtitle:
+                    <div class="btn btn-default">
+                        <label for="subtitle_file_input_{{number}}" id="current_subtitle_file_name_{{number}}">Select
+                            file</label>
+                        <input type="file" class="subtitle_file_input hidden" id="subtitle_file_input_{{number}}"
+                               data-subtitle-index="{{number}}">
+                    </div>
+                </div>
+
+                <div id="loaded_subtitle_section_{{number}}">
+                    <div class="detected_encoding" id="detected_encoding_{{number}}">
+                        <!-- id used to detect inner elements -->
+                        Detected charset: <span class="detected_encoding_charset"></span><br>
+                        Detected language: <span class="detected_encoding_lang"></span><br>
+                        Detection confidence: <span class="detected_encoding_confidence"></span>
+                    </div>
+                    <button class="btn btn-default unload_curr_subtitle" data-subtitle-index="{{number}}">Unload</button>
+                </div>
+
+                <div id="manual_file_encoding_setting_{{number}}">
+                    <input type="checkbox" class="manual_encoding_detection" id="manual_encoding_detection_{{number}}">
+                    I want to set file encoding manually<br>
+
+                    <div class="manual_encoding_selection" id="manual_encoding_selection_{{number}}">
+                        <select id="encoding_select_{{number}}">
+                            <option value="UTF-8">UTF-8 (default)</option>
+                            <option value="CP1251">CP1251</option>
+                            <option value="ANSI">ANSI</option>
+                            <option value="ISO-8859-1">ISO-8859-1</option>
+                            <option value="windows-1252">Windows 1252 (Western Latin)</option>
+                            <option value="windows-1256">Windows 1256 (Arabic)</option>
+                        </select><br>
+                        <input id="manual_encoding_input_{{number}}" type="text"
+                               placeholder="or enter it here (ex. windows-1252)">
+                    </div>
+                </div>
+
+                <!-- TODO
+                    <div id="subtitle_style_controls_{{number}}">
+                    </div>
+                -->
+
+                <hr>
+                <section>
+                    <h4>Sync Controls:</h4>
+                    <div id="subtitle_controls_{{number}}">
+                        <input class="btn btn-default" type="button" data-sync-amount="-1000"
+                               title="seek back one second" value="<<">
+                        <input class="btn btn-default" type="button" data-sync-amount="-500"
+                               title="seek back half a second" value="<">
+                        <input class="btn btn-default" type="button" data-sync-amount="500"
+                               title="seek forward half a second" value=">">
+                        <input class="btn btn-default" type="button" data-sync-amount="1000"
+                               title="seek forward one second" value=">>">
+                    </div>
+                    <p><span id="subtitle_seek_{{number}}">0</span> ms</p>
+                </section>
+            </div>
+        {{/subtitles_numbers}}
+    </div>
+</section>
+
+<hr>
+<section>
+    <h3>Key Playback:</h3>
+    <p>Register keyboard events to control video</p>
+    <button class="btn btn-default" id="reg_keyboard_event">Register</button>
+    <span>State: <span id="reg_keyboard_event_state">not registered</span></span>
+    <br>
+    <table>
+        <tr>
+            <th>Right Arrow</th>
+            <th>Seek +5 Sec</th>
+        </tr>
+        <tr>
+            <td>Left Arrow</td>
+            <td>Seek -5 Sec</td>
+        </tr>
+        <tr>
+            <td>Ctrl + Right Arrow</td>
+            <td>Seek +1 Min</td>
+        </tr>
+        <tr>
+            <td>Ctrl + Left Arrow</td>
+            <td>Seek -1 Min</td>
+        </tr>
+    </table>
+</section>
+
+<script src="../lib/jquery-3.2.1.js"></script>
+<script src="../lib/bootstrap.min.js"></script>
+<script src="../lib/md5.min.js"></script>
+<script type="text/javascript" src="js/bundle.js"></script> <!-- generated from js/popup.js through browserify -->
+</body>
+
+</html>

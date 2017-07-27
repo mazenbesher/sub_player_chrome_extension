@@ -7,7 +7,7 @@ var videoSrcHash;
 var subtitleFileNames = {1: "", 2: "", 3: ""};
 
 // for detecting encoding
-var detect = require('charset-detector')
+var detect = require('charset-detector');
 
 // set active tab id and search for video when the popup is opened
 chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
@@ -161,6 +161,7 @@ function enableSyncControls(index) {
 }
 
 function setCurrSubFileName(newName, index) {
+    console.info(`setting subtitle ${index} to: ${newName}`);
     subtitleFileNames[index] = newName;
 
     const id = `current_subtitle_file_name_${index}`;
@@ -169,6 +170,12 @@ function setCurrSubFileName(newName, index) {
     // enable unload sub button
     const selector = `.unload_curr_subtitle[data-subtitle-index="${index}"`;
     document.querySelector(selector).disabled = false;
+
+    // show detection info from storage if exists
+    chrome.storage.local.get(newName, result => {
+        if(result !== undefined && result[newName])
+            setDetectedEncoding(JSON.parse(result[newName]), index);
+    })
 }
 
 function readFile() {
@@ -196,17 +203,27 @@ function readFile() {
     return true;
 }
 
+function setDetectedEncoding(detectRes, index) {
+    console.info(`setting subtitle ${index} file encoding info`);
+
+    const containerId = `detected_encoding_${index}`;
+    document.getElementById(containerId).style.visibility = "visible";
+
+    document.querySelector(`#${containerId} .detected_encoding_charset`).innerText = detectRes["charsetName"];
+    document.querySelector(`#${containerId} .detected_encoding_lang`).innerText = detectRes["lang"];
+    document.querySelector(`#${containerId} .detected_encoding_confidence`).innerText = Math.round(detectRes["confidence"]) + "%";
+}
+
+function saveDetectedEncodingInfoForFile(fileName, encodingInfo) {
+    let toSave = {};
+    toSave[fileName] = JSON.stringify(encodingInfo);
+    chrome.storage.local.set(toSave, () => {
+        console.info(`saved detected file encodings info for: ${fileName}`);
+    });
+}
+
 function detectEncoding(inputElm, index) {
     if (!inputElm.files || !inputElm.files[0]) return;
-
-    function setDetectedEncoding(detectRes) {
-        const containerId = `detected_encoding_${inputElm.dataset.subtitleIndex}`;
-        document.getElementById(containerId).style.visibility = "visible";
-
-        document.querySelector(`#${containerId} .detected_encoding_charset`).innerText = detectRes["charsetName"];
-        document.querySelector(`#${containerId} .detected_encoding_lang`).innerText = detectRes["lang"];
-        document.querySelector(`#${containerId} .detected_encoding_confidence`).innerText = Math.round(detectRes["confidence"]) + "%";
-    }
 
     return new Promise(resolve => {
         if (manEncodingCheckboxes[index].checked) {
@@ -237,7 +254,8 @@ function detectEncoding(inputElm, index) {
                  */
 
                 // set DOM elements related to detected encoding
-                setDetectedEncoding(detectRes[0]);
+                setDetectedEncoding(detectRes[0], index);
+                saveDetectedEncodingInfoForFile(inputElm.files[0].name, detectRes[0]);
 
                 resolve(detectRes[0]["charsetName"]);
             };
@@ -344,7 +362,7 @@ function seek(value, index) {
 function unloadSubtitle(index) {
     // disable unload sub button
     const selector = `.unload_curr_subtitle[data-subtitle-index="${index}"`;
-    document.querySelector(selector).disabled = false;
+    document.querySelector(selector).disabled = true;
 
     // set file name
     setCurrSubFileName("None", index);
