@@ -56,6 +56,8 @@ getActiveTabId().then(activeTabId => {
 
 // style: font color pickers
 getActiveTabId().then(activeTabId => {
+    // https://farbelous.github.io/bootstrap-colorpicker/
+
     // functions
     let getSubColor = (index) => {
         return new Promise(resolve => {
@@ -87,7 +89,6 @@ getActiveTabId().then(activeTabId => {
 
         // on change color
         cp.on('changeColor', () => { // jQuery addEventListener
-            console.log(`changed color to ${cp.data('colorpicker').color.toHex()}`)
             setSubColor(cp.data('colorpicker').color.toHex(), index)
         });
     }
