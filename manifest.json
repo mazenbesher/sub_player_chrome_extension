@@ -11,13 +11,14 @@
   //   "options_page": "options.html",
   "content_scripts": [
     {
+      "run_at": "document_end",
       "matches": [
         "<all_urls>"
       ],
       "all_frames": true,
       "js": [
         // "lib/jquery-3.2.1.js", 
-        "lib/md5.min.js", 
+        "lib/md5.min.js",
         "contentscript/contentscript.js"
       ],
       "css": [
@@ -36,5 +37,5 @@
   // "web_accessible_resources": [
   //   "contentscript/contentscript.css"
   // ]
-//     "content_security_policy": "script-src 'self' 'unsafe-eval' https://ssl.google-analytics.com https://translate.google.com; object-src 'self'"
+  //     "content_security_policy": "script-src 'self' 'unsafe-eval' https://ssl.google-analytics.com https://translate.google.com; object-src 'self'"
 }

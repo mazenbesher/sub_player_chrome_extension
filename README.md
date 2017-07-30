@@ -1,7 +1,8 @@
 Add subtitle overlay from SRT files to any video element, with options to sync the subtitle.
 
 # Features to add
-- [ ] save detected file encodings info and show them on start
+- [ ] random number of subtitles (right now fixed to three)
+- [ ] add option to unload all subtitles
 - [x] use template for subtitle panes in html (b/s they are almost the same but some `id`s and `data-subtitle-index` are different), solved using `mustache`
 - [ ] consider using `webpack`
 - [ ] show if subtitle is loaded on the video (specially if from cache and maybe give the option to unload it)
@@ -25,11 +26,12 @@ Add subtitle overlay from SRT files to any video element, with options to sync t
 - [ ] raise subtitle if video controls are visible
 - [x] save subtitle when open page again, so no need to reload the subtitle (using `chrome.storage`)
     - [ ] save sync value and reapply it
+    - [x] save detected file encodings info and show them on start
 - [ ] option to manage (show/update/remove) all saved subtitles
 - [x] keyboard to control video playback
     - [ ] add options for customizable keys such as modifiers
     - [ ] option to always register on this page (save in `chrome.storage.local`)
-    - [ ] better way to show seek amount (right now in subtitle!)
+    - [ ] better way to show seeked amount after pressing a key (right now in subtitle!, see youtube style with arrows)
 - [x] auto detect file encoding (using [charset-detector](https://www.npmjs.com/package/charset-detector) and `browserify`)
 
 ## Performance:
@@ -41,12 +43,15 @@ Add subtitle overlay from SRT files to any video element, with options to sync t
 - [ ] change file
 - [ ] disable
 - [ ] style control (maybe in `css`)
+    - [x] font size
+    - [x] font color
 
 ## Learn mode
 - [x] multiple languages at the same time
 - [ ] adjust subtitle width according to the number of enabled subtitles
 
 # Bugs
+- [ ] if subtitle file input is disabled then label must also be disabled
 - [ ] can't override video in `webkit-fullscreen` mode -> can't show subtitle container/holder divs
 
 # Requirements for build:

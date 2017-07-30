@@ -1,6 +1,7 @@
 <html>
 <head>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="../lib/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../lib/css/bootstrap-colorpicker.min.css">
     <link rel="stylesheet" href="css/popup.css">
 </head>
 
@@ -37,7 +38,7 @@
     </ul>
 
     <!-- Tab panes -->
-    <div class="tab-content">
+    <div id="subtitle_panes_container" class="tab-content">
             <div id="subtitle_1" role="tabpanel" class="tab-pane active">
                 <div id="load_subtitle_section_1">
                     Click to load subtitle:
@@ -56,7 +57,8 @@
                         Detected language: <span class="detected_encoding_lang"></span><br>
                         Detection confidence: <span class="detected_encoding_confidence"></span>
                     </div>
-                    <button class="btn btn-default unload_curr_subtitle" data-subtitle-index="1">Unload</button>
+                    <button class="btn btn-default unload_curr_subtitle" data-subtitle-index="1">Unload
+                    </button>
                 </div>
 
                 <div id="manual_file_encoding_setting_1">
@@ -77,10 +79,26 @@
                     </div>
                 </div>
 
-                <!-- TODO
-                    <div id="subtitle_style_controls_1">
+                <div id="subtitle_style_controls_1" class="subtitle-style-controls">
+                    <div id="font_size_1" class="font-size-control">
+                        <div class="first-col first-row">
+                            Size ratio: <span id="font_size_value_1">15</span>
+                        </div>
+                        <div class="second-col first-row">
+                            <input class="font-size-slider" type="range" id="font_size_slider_1"
+                                   value="15" min="1" max="30" step="1" data-subtitle-index="1">
+                        </div>
                     </div>
-                -->
+
+                    <div id="font_color_1" class="color-control">
+                        <div class="first-col second-row">
+                            Color:
+                        </div>
+                        <div class="second-col second-row">
+                            <div id="font_color_picker_1" class="color-picker"></div>
+                        </div>
+                    </div>
+                </div>
 
                 <hr>
                 <section>
@@ -116,7 +134,8 @@
                         Detected language: <span class="detected_encoding_lang"></span><br>
                         Detection confidence: <span class="detected_encoding_confidence"></span>
                     </div>
-                    <button class="btn btn-default unload_curr_subtitle" data-subtitle-index="2">Unload</button>
+                    <button class="btn btn-default unload_curr_subtitle" data-subtitle-index="2">Unload
+                    </button>
                 </div>
 
                 <div id="manual_file_encoding_setting_2">
@@ -137,10 +156,26 @@
                     </div>
                 </div>
 
-                <!-- TODO
-                    <div id="subtitle_style_controls_2">
+                <div id="subtitle_style_controls_2" class="subtitle-style-controls">
+                    <div id="font_size_2" class="font-size-control">
+                        <div class="first-col first-row">
+                            Size ratio: <span id="font_size_value_2">15</span>
+                        </div>
+                        <div class="second-col first-row">
+                            <input class="font-size-slider" type="range" id="font_size_slider_2"
+                                   value="15" min="1" max="30" step="1" data-subtitle-index="2">
+                        </div>
                     </div>
-                -->
+
+                    <div id="font_color_2" class="color-control">
+                        <div class="first-col second-row">
+                            Color:
+                        </div>
+                        <div class="second-col second-row">
+                            <div id="font_color_picker_2" class="color-picker"></div>
+                        </div>
+                    </div>
+                </div>
 
                 <hr>
                 <section>
@@ -176,7 +211,8 @@
                         Detected language: <span class="detected_encoding_lang"></span><br>
                         Detection confidence: <span class="detected_encoding_confidence"></span>
                     </div>
-                    <button class="btn btn-default unload_curr_subtitle" data-subtitle-index="3">Unload</button>
+                    <button class="btn btn-default unload_curr_subtitle" data-subtitle-index="3">Unload
+                    </button>
                 </div>
 
                 <div id="manual_file_encoding_setting_3">
@@ -197,10 +233,26 @@
                     </div>
                 </div>
 
-                <!-- TODO
-                    <div id="subtitle_style_controls_3">
+                <div id="subtitle_style_controls_3" class="subtitle-style-controls">
+                    <div id="font_size_3" class="font-size-control">
+                        <div class="first-col first-row">
+                            Size ratio: <span id="font_size_value_3">15</span>
+                        </div>
+                        <div class="second-col first-row">
+                            <input class="font-size-slider" type="range" id="font_size_slider_3"
+                                   value="15" min="1" max="30" step="1" data-subtitle-index="3">
+                        </div>
                     </div>
-                -->
+
+                    <div id="font_color_3" class="color-control">
+                        <div class="first-col second-row">
+                            Color:
+                        </div>
+                        <div class="second-col second-row">
+                            <div id="font_color_picker_3" class="color-picker"></div>
+                        </div>
+                    </div>
+                </div>
 
                 <hr>
                 <section>
@@ -250,6 +302,7 @@
 
 <script src="../lib/jquery-3.2.1.js"></script>
 <script src="../lib/bootstrap.min.js"></script>
+<script src="../lib/bootstrap-colorpicker.min.js"></script>
 <script src="../lib/md5.min.js"></script>
 <script type="text/javascript" src="js/bundle.js"></script> <!-- generated from js/popup.js through browserify -->
 </body>

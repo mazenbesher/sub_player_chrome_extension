@@ -1,3 +1,7 @@
+.display-none {
+    display: none !important;
+}
+
 div#subtitle_container {
     position: absolute;
     z-index: 300000;
@@ -7,7 +11,7 @@ div#subtitle_container {
 }
 
 div#subtitle_container p.subtitle_holder {
-    font-family: "YouTube Noto",Roboto,Arial,Helvetica,sans-serif;
+    font-family: "YouTube Noto", Roboto, Arial, Helvetica, sans-serif;
     display: table-cell;
     text-align: center;
     font-weight: 500;
@@ -17,16 +21,4 @@ div#subtitle_container p.subtitle_holder {
     /* You want to make these properties dynamic in the future*/
     padding-left: 5px;
     padding-right: 5px;
-}
-
-#subtitle_holder_1 {
-    color: white;
-}
-
-#subtitle_holder_2 {
-    color: lightcoral;
-}
-
-#subtitle_holder_3 {
-    color: lightblue;
 }

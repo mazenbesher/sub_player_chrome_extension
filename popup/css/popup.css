@@ -4,6 +4,7 @@
 
 body {
     margin: 1%;
+    width: 256px;
 }
 
 #subtitle_controls {
@@ -31,4 +32,18 @@ table, th, td {
 
 .hidden {
     visibility: hidden;
+}
+
+div#subtitle_panes_container {
+    background-color: lightgray;
+}
+
+.color-picker {
+    display: inline-block;
+}
+
+.subtitle-style-controls {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: repeat(2, 1fr);
 }

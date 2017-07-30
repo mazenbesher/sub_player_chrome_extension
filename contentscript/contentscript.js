@@ -1,32 +1,33 @@
 "use strict";
 
+// config
+const VIDEO_SEARCH_INTERVAL_TIME = 1000; // each VIDEO_SEARCH_INTERVAL_TIME ms the method find video will be fired
+const VIDEO_SEARCH_LIMIT = 10; // after VIDEO_SEARCH_LIMIT the video search interval will be removed
+const initalSubtitlesColors = {
+    1: "white",
+    2: "lightcoral",
+    3: "lightblue"
+};
+
+// style variables
+var subFontSizeHeightRatios = [15, 15, 15]; // font-size = video.clientHeight / subFontSizeHeightRatio
+const SUB_PADD_TO_HEIGHT_RATIO = 36; // padding-down = video.clientHeight / SUB_PADD_TO_HEIGHT_RATIO
+
 // Created DOM Elements
 var subtitleContainer;
 var subtitleHolders = {1: undefined, 2: undefined, 3: undefined};
-var videoElm = null;
 
-// Config
-const CHECK_VIDEO_RESIZE_MS = 1000;
+// video pointer
+var videoElm = null;
+var videoSearchIntervall;
+var searchCounter = 0;
 
 // Globals
 var subtitleSeeks = {1: 0, 2: 0, 3: 0};
 var lastSubIndexes = {1: -1, 2: -1, 3: -1};
 var videoSrcHash;
 var registeredKeyboardEventsForVideoPlayback = false;
-
-// Parsing globals
 var subtitles = {1: undefined, 2: undefined, 3: undefined};
-
-// Listeners
-chrome.runtime.onMessage.addListener(receivedMessage);
-
-// Main
-var videoElm = document.querySelector("video"); // <-- set here
-if (videoElm != null) {
-    videoSrcHash = md5(videoElm.currentSrc);
-    checkIfVideoHasSubtitleInStorage();
-    displaySubtitleElements();
-}
 
 // Inject css
 // var style = document.createElement('link');
@@ -60,6 +61,7 @@ function showSubtitle(event) {
     }
 
     if (newSubtitle) {
+        console.info("new subtitle")
         // is video resized
         if (subtitleContainer.clientHeight != videoElm.clientHeight ||
             subtitleContainer.clientWidth != videoElm.clientWidth)
@@ -68,6 +70,7 @@ function showSubtitle(event) {
 }
 
 function receivedMessage(request, sender, sendResponse) {
+    console.info("message sent to content script is received, request: ", request);
     if (videoElm === null) return;// NOTE: page can include multiple frames but only one should have the video in it
     if (!request.action || !request.hasOwnProperty("action")) return;
 
@@ -106,6 +109,25 @@ function receivedMessage(request, sender, sendResponse) {
 
         case "getRegKeyEventsState":
             sendResponse({registered: registeredKeyboardEventsForVideoPlayback});
+            break;
+
+        // sub font size
+        case "changeSubFontSizeRatio":
+            subFontSizeHeightRatios[request.index] = request.newRatio;
+            adjustSubtitlesFontAndPadding();
+            break;
+
+        case "getSubFontSize":
+            sendResponse({newRatio: subFontSizeHeightRatios[request.index]});
+            break;
+
+        // sub color
+        case "getSubColor":
+            sendResponse({color: subtitleHolders[request.index].style.color});
+            break;
+
+        case "setSubColor":
+            subtitleHolders[request.index].style.color = request.color;
             break;
     }
 }
@@ -152,29 +174,33 @@ function displaySubtitleElements() {
     videoElm.parentElement.insertBefore(subtitleContainer, videoElm);
 
     // add subtitle holders
-    for (let i = 1; i <= 3; i++) {
-        subtitleHolders[i] = document.createElement("p");
-        subtitleHolders[i].id = `subtitle_holder_${i}`;
-        subtitleHolders[i].className += "subtitle_holder";
-        subtitleHolders[i].style.fontSize = ~~(parseInt(videoElm.clientWidth) / 32) + "px";
-        subtitleHolders[i].style.paddingBottom = ~~(parseInt(videoElm.clientWidth) / 64) * i + "px";
-        subtitleContainer.appendChild(subtitleHolders[i]);
+    for (let index = 1; index <= 3; index++) {
+        subtitleHolders[index] = document.createElement("p");
+        subtitleHolders[index].id = `subtitle_holder_${index}`;
+        subtitleHolders[index].className += "subtitle_holder";
+        subtitleHolders[index].style.color = initalSubtitlesColors[index];
+        subtitleContainer.appendChild(subtitleHolders[index]);
     }
+    adjustSubtitlesFontAndPadding();
 
     // add event listener for video
     videoElm.ontimeupdate = showSubtitle;
     // videoElm.onwebkitfullscreenchange = videoResized;
 }
 
-function videoResized() {
-    subtitleContainer.style.height = ~~(parseInt(videoElm.clientHeight)) + "px";
-    subtitleContainer.style.width = videoElm.clientWidth;
-
-    for (let i = 1; i <= 3; i++) {
-        subtitleHolders[i].style.fontSize = ~~(parseInt(videoElm.clientWidth) / 32) + "px";
-        subtitleHolders[i].style.paddingBottom = ~~(parseInt(videoElm.clientWidth) / 64) + "px";
+function adjustSubtitlesFontAndPadding(){
+    for (let index = 1; index <= 3; index++) {
+        subtitleHolders[index].style.fontSize = videoElm.clientHeight / subFontSizeHeightRatios[index] + "px";
+        subtitleHolders[index].style.paddingBottom = videoElm.clientHeight / SUB_PADD_TO_HEIGHT_RATIO + "px";
     }
+}
 
+function videoResized() {
+    console.info("video resized");
+
+    subtitleContainer.style.height = videoElm.clientHeight + "px";
+    subtitleContainer.style.width = videoElm.clientWidth + "px";
+    adjustSubtitlesFontAndPadding();
     adjustSubtitlesWidths();
 }
 
@@ -212,7 +238,7 @@ function adjustSubtitlesWidths() {
     let videoWidth = videoElm.clientWidth;
     for (let index = 1; index <= 3; index++) {
         if (isSubtitleActive(index))
-            subtitleHolders[index].style.width = videoWidth / numberOfEnabledSubtitles;
+            subtitleHolders[index].style.width = videoWidth / numberOfEnabledSubtitles + "px";
         else
             subtitleHolders[index].style.width = "0px";
     }
@@ -222,3 +248,31 @@ function isSubtitleActive(index) {
     return subtitles[index] !== undefined &&
         subtitles[index].length > 0;
 }
+
+function findVideo() {
+    console.info("searching for a video...");
+    videoElm = document.querySelector("video"); // <-- set here
+    if (videoElm != null) {
+        console.info("found a video! ", videoElm);
+        clearInterval(videoSearchIntervall);
+        videoSrcHash = md5(videoElm.currentSrc);
+        checkIfVideoHasSubtitleInStorage();
+        displaySubtitleElements();
+        return;
+    }
+
+    searchCounter++;
+    if(searchCounter > VIDEO_SEARCH_LIMIT)
+        clearInterval(videoSearchIntervall);
+}
+
+function main() {
+    if(videoSearchIntervall == null)
+        videoSearchIntervall = setInterval(findVideo, VIDEO_SEARCH_INTERVAL_TIME);
+}
+
+// Listeners
+chrome.runtime.onMessage.addListener(receivedMessage);
+
+// when done loading
+window.addEventListener("load", main, false);

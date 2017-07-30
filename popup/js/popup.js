@@ -5,6 +5,103 @@ var activeTabId;
 var videoSrcHash;
 var subtitleFileNames = {1: "", 2: "", 3: ""};
 
+let getActiveTabId = () => new Promise(resolve => {
+    chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
+        activeTabId = tabs[0].id;
+        resolve(activeTabId);
+    });
+});
+
+/**
+ * Subtitle Custom events
+ * sub-activated, sub-deactivated
+ * dispatched when a subtitle is (de)activated
+ * the (de)activated subtitle index can be found as the event detail
+ */
+
+// style: font-size slider
+getActiveTabId().then(activeTabId => {
+
+
+    // event listeners
+    document.querySelectorAll(".font-size-slider").forEach(slider => {
+        slider.oninput = setSubFontSize;
+        slider.onchange = setSubFontSize;
+        slider.disabled = true; // disabled at start
+    });
+
+    // event listeners when activate subtitles
+    document.addEventListener('sub-activated', e => {
+        let slider = document.querySelector(`.font-size-slider[data-subtitle-index="${e.detail}"]`);
+        slider.disabled = false;
+
+        // update span and slider
+        chrome.tabs.sendMessage(activeTabId, {
+            action: "getSubFontSize",
+            index: e.detail
+        }, response => {
+            if (response !== null && response.newRatio) {
+                document.querySelector(`#font_size_value_${e.detail}`).innerText = response.newRatio;
+                slider.value = response.newRatio;
+            }
+        });
+    });
+
+    // event listeners when deactivate subtitles
+    document.addEventListener('sub-deactivated', e => {
+        document.querySelector(`.font-size-slider[data-subtitle-index="${e.detail}"]`).disabled = true;
+    });
+});
+
+// style: font color pickers
+getActiveTabId().then(activeTabId => {
+    // https://farbelous.github.io/bootstrap-colorpicker/
+
+    // functions
+    let getSubColor = (index) => {
+        return new Promise(resolve => {
+            chrome.tabs.sendMessage(activeTabId, {action: "getSubColor", index: index}, response => {
+                if (response && response.color)
+                    resolve(response.color);
+            });
+        });
+    };
+
+    let setSubColor = (color, index) => {
+        chrome.tabs.sendMessage(activeTabId, {
+            action: "setSubColor",
+            color: color,
+            index: index
+        })
+    };
+
+    for (let index = 1; index <= 3; index++) {
+        const cp = $(`#font_color_picker_${index}`);
+        // set initial colors
+        getSubColor(index).then(color => {
+            cp.colorpicker({
+                color: color,
+                container: true,
+                inline: true
+            });
+        });
+
+        // on change color
+        cp.on('changeColor', () => { // jQuery addEventListener
+            setSubColor(cp.data('colorpicker').color.toHex(), index)
+        });
+    }
+
+    // event listeners
+    document.addEventListener('sub-activated', e => {
+        const index = e.detail;
+        getSubColor(index).then(color => {
+            $(`#font_color_picker_${index}`).data('colorpicker').color.setColor(color);
+        });
+    });
+});
+
+
 // for detecting encoding
 var detect = require('charset-detector');
 
@@ -12,7 +109,6 @@ var detect = require('charset-detector');
 chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
     activeTabId = tabs[0].id;
     searchForVideos();
-    setUpSeeks();
 });
 
 // seeks
@@ -38,7 +134,7 @@ regKeyEventsBtn.onclick = () => {
 // Unload subtitle
 document.querySelectorAll(".unload_curr_subtitle").forEach(elm => {
     elm.disabled = true;
-    elm.onclick = () => unloadSubtitle(elm.dataset.subtitleIndex);
+    elm.onclick = event => unloadSubtitle(elm.dataset.subtitleIndex);
 });
 
 // File input
@@ -65,7 +161,6 @@ var manEncodingSections = {
 
 for (let index = 1; index <= 3; index++) {
     manEncodingSections[index].style.visibility = "hidden";
-
     manEncodingCheckboxes[index].onchange = () => {
         if (manEncodingCheckboxes[index].checked) {
             manEncodingSections[index].style.visibility = "visible";
@@ -75,11 +170,10 @@ for (let index = 1; index <= 3; index++) {
     };
 }
 
-// Body width based on current window width
-// TODO: consider dynamic css instead (media queries [@min-width ...)
-chrome.windows.getCurrent(w => { // w = current window
-    document.querySelector("body").style.width = w.width / 2; // half the size of the window
-});
+// Body width based on current window width TODO: consider dynamic css instead (media queries [@min-width ...)
+// chrome.windows.getCurrent(w => { // w = current window
+//     document.querySelector("body").style.width = w.width / 2; // half the size of the window
+// });
 
 // Sync listeners
 for (let index = 1; index <= 3; index++) {
@@ -90,14 +184,12 @@ for (let index = 1; index <= 3; index++) {
     });
 }
 
-function setUpSeeks() {
-    for (let index = 1; index <= 3; index++) {
-        chrome.tabs.sendMessage(activeTabId, {action: "getSubSeek", index: index}, function (response) {
-            if (response != undefined && response.seeked) {
-                subtitleSeeks[index].innerText = response.amount;
-            }
-        });
-    }
+function setUpSyncInfo(index) {
+    chrome.tabs.sendMessage(activeTabId, {action: "getSubSeek", index: index}, function (response) {
+        if (response != undefined && response.seeked) {
+            subtitleSeeks[index].innerText = response.amount;
+        }
+    });
 }
 
 function searchForVideos() {
@@ -144,6 +236,9 @@ function checkIfVideoHasSubtitleInStorage() {
             if (result[key]) {
                 setCurrSubFileName(JSON.parse(result[key])["fileName"], index);
                 enableSyncControls(index);
+                enableUnloadSubBtn(index);
+                setUpSyncInfo(index);
+                document.dispatchEvent(new CustomEvent('sub-activated', {detail: index}));
 
                 // enable file input buttons
                 document.getElementById("subtitle_file_input_" + index).disabled = false;
@@ -159,6 +254,11 @@ function enableSyncControls(index) {
     });
 }
 
+function enableUnloadSubBtn(index) {
+    const selector = `.unload_curr_subtitle[data-subtitle-index="${index}"`;
+    document.querySelector(selector).disabled = false;
+}
+
 function setCurrSubFileName(newName, index) {
     console.info(`setting subtitle ${index} to: ${newName}`);
     subtitleFileNames[index] = newName;
@@ -166,13 +266,9 @@ function setCurrSubFileName(newName, index) {
     const id = `current_subtitle_file_name_${index}`;
     document.getElementById(id).innerText = newName;
 
-    // enable unload sub button
-    const selector = `.unload_curr_subtitle[data-subtitle-index="${index}"`;
-    document.querySelector(selector).disabled = false;
-
     // show detection info from storage if exists
     chrome.storage.local.get(newName, result => {
-        if(result !== undefined && result[newName])
+        if (result !== undefined && result[newName])
             setDetectedEncoding(JSON.parse(result[newName]), index);
     })
 }
@@ -183,8 +279,9 @@ function readFile() {
         const index = this.dataset.subtitleIndex;
         unloadSubtitle(index);
         setCurrSubFileName(this.files[0].name, index);
+        enableUnloadSubBtn(index);
         detectEncoding(this, index).then(encoding => {
-            console.log("selected encoding: " + encoding);
+            console.info("selected encoding: " + encoding);
             var reader = new FileReader();
 
             reader.onload = e => {
@@ -203,9 +300,14 @@ function readFile() {
 }
 
 function setDetectedEncoding(detectRes, index) {
+    const containerId = `detected_encoding_${index}`;
+    if (detectRes === "hide") {
+        // hide detection info
+        document.getElementById(containerId).style.visibility = "hidden";
+        return;
+    }
     console.info(`setting subtitle ${index} file encoding info`);
 
-    const containerId = `detected_encoding_${index}`;
     document.getElementById(containerId).style.visibility = "visible";
 
     document.querySelector(`#${containerId} .detected_encoding_charset`).innerText = detectRes["charsetName"];
@@ -347,11 +449,13 @@ function saveAndNotify(subtitles, index) {
         // send them to content script
         chrome.tabs.sendMessage(activeTabId, {action: "srtParsed", subtitles: subtitles, index: index});
         enableSyncControls(index);
+        document.dispatchEvent(new CustomEvent('sub-activated', {detail: index}));
     });
 }
 
 function seek(value, index) {
-    console.log(`request seeking index: ${index}, value: ${value}`);
+    // console.log(`request seeking index: ${index}, value: ${value}`);
+
     // value in ms
     chrome.tabs.sendMessage(activeTabId, {action: "seekSubtitle", index: index, amount: value}, function (response) {
         subtitleSeeks[index].innerText = response.seekedValue
@@ -359,12 +463,15 @@ function seek(value, index) {
 }
 
 function unloadSubtitle(index) {
+    document.dispatchEvent(new CustomEvent('sub-deactivated', {detail: index}));
+
     // disable unload sub button
-    const selector = `.unload_curr_subtitle[data-subtitle-index="${index}"`;
+    const selector = `button.unload_curr_subtitle[data-subtitle-index="${index}"`;
     document.querySelector(selector).disabled = true;
 
     // set file name
     setCurrSubFileName("None", index);
+    console.info(`unloading subtitle with index ${index}`);
 
     // delete from storage
     if (videoSrcHash === null || videoSrcHash === undefined) // double check
@@ -372,6 +479,23 @@ function unloadSubtitle(index) {
     let key = `${videoSrcHash}_${index}`;
     chrome.storage.local.remove(key);
 
+    // hide encoding detection info (TODO: should be also deleted from storage?)
+    setDetectedEncoding("hide", index);
+
     // Send message to active tab to hide subtitle
     chrome.tabs.sendMessage(activeTabId, {action: "unloadSubtitle", index: index});
+}
+
+function setSubFontSize() {
+    let index = this.dataset.subtitleIndex;
+    let newRatio = this.value;
+
+    // update span
+    document.querySelector(`#font_size_value_${index}`).innerText = newRatio;
+
+    chrome.tabs.sendMessage(activeTabId, {
+        action: "changeSubFontSizeRatio",
+        newRatio: newRatio,
+        index: index
+    });
 }
