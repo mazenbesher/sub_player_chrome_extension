@@ -7,22 +7,6 @@
 
 <body>
 <section>
-    <h3>Video Search:</h3>
-    <p>
-        In theory you shouldn't need this button, since when any video element is loaded it will automatically report
-        itself and
-        therefore this button should be disabled if a video is found.
-        <br> Anyway, you can do a manual search, if you believe that the current tab has an undetected video element.
-    </p>
-    <button class="btn btn-default" id="search_for_video_btn">Search for Videos</button>
-    <br>
-    <p>
-        Note: If page includes multiple videos, only first one would be captured
-    </p>
-</section>
-
-<hr>
-<section>
     <!-- http://getbootstrap.com/javascript/#tabs -->
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
@@ -81,20 +65,30 @@
 
                 <div id="subtitle_style_controls_1" class="subtitle-style-controls">
                     <div id="font_size_1" class="font-size-control">
-                        <div class="first-col first-row">
+                        <div>
                             Size ratio: <span id="font_size_value_1">15</span>
                         </div>
-                        <div class="second-col first-row">
+                        <div>
                             <input class="font-size-slider" type="range" id="font_size_slider_1"
                                    value="15" min="1" max="30" step="1" data-subtitle-index="1">
                         </div>
                     </div>
 
+                    <div id="down_padding_1" class="down-padding-control">
+                        <div>
+                            Down padding: <span id="down_padding_value_1">36</span>
+                        </div>
+                        <div>
+                            <input class="padding-down-slider" type="range" id="padding_down_slider_1"
+                                   value="36" min="1" max="100" step="0.1" data-subtitle-index="1">
+                        </div>
+                    </div>
+
                     <div id="font_color_1" class="color-control">
-                        <div class="first-col second-row">
+                        <div>
                             Color:
                         </div>
-                        <div class="second-col second-row">
+                        <div>
                             <div id="font_color_picker_1" class="color-picker"></div>
                         </div>
                     </div>
@@ -158,20 +152,30 @@
 
                 <div id="subtitle_style_controls_2" class="subtitle-style-controls">
                     <div id="font_size_2" class="font-size-control">
-                        <div class="first-col first-row">
+                        <div>
                             Size ratio: <span id="font_size_value_2">15</span>
                         </div>
-                        <div class="second-col first-row">
+                        <div>
                             <input class="font-size-slider" type="range" id="font_size_slider_2"
                                    value="15" min="1" max="30" step="1" data-subtitle-index="2">
                         </div>
                     </div>
 
+                    <div id="down_padding_2" class="down-padding-control">
+                        <div>
+                            Down padding: <span id="down_padding_value_2">36</span>
+                        </div>
+                        <div>
+                            <input class="padding-down-slider" type="range" id="padding_down_slider_2"
+                                   value="36" min="1" max="100" step="0.1" data-subtitle-index="2">
+                        </div>
+                    </div>
+
                     <div id="font_color_2" class="color-control">
-                        <div class="first-col second-row">
+                        <div>
                             Color:
                         </div>
-                        <div class="second-col second-row">
+                        <div>
                             <div id="font_color_picker_2" class="color-picker"></div>
                         </div>
                     </div>
@@ -235,20 +239,30 @@
 
                 <div id="subtitle_style_controls_3" class="subtitle-style-controls">
                     <div id="font_size_3" class="font-size-control">
-                        <div class="first-col first-row">
+                        <div>
                             Size ratio: <span id="font_size_value_3">15</span>
                         </div>
-                        <div class="second-col first-row">
+                        <div>
                             <input class="font-size-slider" type="range" id="font_size_slider_3"
                                    value="15" min="1" max="30" step="1" data-subtitle-index="3">
                         </div>
                     </div>
 
+                    <div id="down_padding_3" class="down-padding-control">
+                        <div>
+                            Down padding: <span id="down_padding_value_3">36</span>
+                        </div>
+                        <div>
+                            <input class="padding-down-slider" type="range" id="padding_down_slider_3"
+                                   value="36" min="1" max="100" step="0.1" data-subtitle-index="3">
+                        </div>
+                    </div>
+
                     <div id="font_color_3" class="color-control">
-                        <div class="first-col second-row">
+                        <div>
                             Color:
                         </div>
-                        <div class="second-col second-row">
+                        <div>
                             <div id="font_color_picker_3" class="color-picker"></div>
                         </div>
                     </div>
@@ -271,6 +285,22 @@
                 </section>
             </div>
     </div>
+</section>
+
+<hr>
+<section>
+    <h3>Video Search:</h3>
+    <p>
+        In theory you shouldn't need this button, since when any video element is loaded it will automatically report
+        itself and
+        therefore this button should be disabled if a video is found.
+        <br> Anyway, you can do a manual search, if you believe that the current tab has an undetected video element.
+    </p>
+    <button class="btn btn-default" id="search_for_video_btn">Search for Videos</button>
+    <br>
+    <p>
+        Note: If page includes multiple videos, only first one would be captured
+    </p>
 </section>
 
 <hr>

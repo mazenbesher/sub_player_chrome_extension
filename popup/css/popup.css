@@ -43,7 +43,4 @@ div#subtitle_panes_container {
 }
 
 .subtitle-style-controls {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    grid-template-rows: repeat(2, 1fr);
 }

@@ -22,8 +22,6 @@ let getActiveTabId = () => new Promise(resolve => {
 
 // style: font-size slider
 getActiveTabId().then(activeTabId => {
-
-
     // event listeners
     document.querySelectorAll(".font-size-slider").forEach(slider => {
         slider.oninput = setSubFontSize;
@@ -51,6 +49,38 @@ getActiveTabId().then(activeTabId => {
     // event listeners when deactivate subtitles
     document.addEventListener('sub-deactivated', e => {
         document.querySelector(`.font-size-slider[data-subtitle-index="${e.detail}"]`).disabled = true;
+    });
+});
+
+// style: bottom padding
+getActiveTabId().then(activeTabId => {
+    // event listeners
+    document.querySelectorAll(".padding-down-slider").forEach(slider => {
+        slider.oninput = setSubPadding;
+        slider.onchange = setSubPadding;
+        slider.disabled = true; // disabled at start
+    });
+
+    // event listeners when activate subtitles
+    document.addEventListener('sub-activated', e => {
+        let slider = document.querySelector(`.padding-down-slider[data-subtitle-index="${e.detail}"]`);
+        slider.disabled = false;
+
+        // update span and slider
+        chrome.tabs.sendMessage(activeTabId, {
+            action: "getSubPadding",
+            index: e.detail
+        }, response => {
+            if (response !== null && response.newRatio) {
+                document.querySelector(`#down_padding_value_${e.detail}`).innerText = response.newRatio;
+                slider.value = response.newRatio;
+            }
+        });
+    });
+
+    // event listeners when deactivate subtitles
+    document.addEventListener('sub-deactivated', e => {
+        document.querySelector(`.padding-down-slider[data-subtitle-index="${e.detail}"]`).disabled = true;
     });
 });
 
@@ -91,14 +121,24 @@ getActiveTabId().then(activeTabId => {
         cp.on('changeColor', () => { // jQuery addEventListener
             setSubColor(cp.data('colorpicker').color.toHex(), index)
         });
+
+        // disable until a sub is activated
+        cp.css('visibility', 'hidden');
     }
 
     // event listeners
     document.addEventListener('sub-activated', e => {
+        console.log(`sub ${e.detail} is activated`);
         const index = e.detail;
         getSubColor(index).then(color => {
-            $(`#font_color_picker_${index}`).data('colorpicker').color.setColor(color);
+            const cp = $(`#font_color_picker_${index}`);
+            cp.data('colorpicker').color.setColor(color);
+            cp.css('visibility', 'visible');
         });
+    });
+
+    document.addEventListener('sub-deactivated', e => {
+        $(`#font_color_picker_${e.detail}`).css('visibility', 'hidden');
     });
 });
 
@@ -496,6 +536,20 @@ function setSubFontSize() {
 
     chrome.tabs.sendMessage(activeTabId, {
         action: "changeSubFontSizeRatio",
+        newRatio: newRatio,
+        index: index
+    });
+}
+
+function setSubPadding() {
+    let index = this.dataset.subtitleIndex;
+    let newRatio = this.value;
+
+    // update span
+    document.querySelector(`#down_padding_value_${index}`).innerText = newRatio;
+
+    chrome.tabs.sendMessage(activeTabId, {
+        action: "setSubPadding",
         newRatio: newRatio,
         index: index
     });

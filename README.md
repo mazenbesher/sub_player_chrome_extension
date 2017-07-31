@@ -1,6 +1,12 @@
 Add subtitle overlay from SRT files to any video element, with options to sync the subtitle.
 
+# Requirements for build:
+See `bundle.bat`
+1. `npm install -g browserify`
+1. `npm install -g mustache`
+
 # Features to add
+- [ ] disable color picker if no subtitle is activated (add as an event listener for `sub-deactivated`)
 - [ ] random number of subtitles (right now fixed to three)
 - [ ] add option to unload all subtitles
 - [x] use template for subtitle panes in html (b/s they are almost the same but some `id`s and `data-subtitle-index` are different), solved using `mustache`
@@ -53,8 +59,3 @@ Add subtitle overlay from SRT files to any video element, with options to sync t
 # Bugs
 - [ ] if subtitle file input is disabled then label must also be disabled
 - [ ] can't override video in `webkit-fullscreen` mode -> can't show subtitle container/holder divs
-
-# Requirements for build:
-See `bundle.bat`
-1. `npm install -g browserify`
-1. `npm install -g mustache`

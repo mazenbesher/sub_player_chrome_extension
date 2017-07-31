@@ -11,7 +11,7 @@ const initalSubtitlesColors = {
 
 // style variables
 var subFontSizeHeightRatios = [15, 15, 15]; // font-size = video.clientHeight / subFontSizeHeightRatio
-const SUB_PADD_TO_HEIGHT_RATIO = 36; // padding-down = video.clientHeight / SUB_PADD_TO_HEIGHT_RATIO
+const subPadHeightRatios = [36, 36, 36]; // padding-down = video.clientHeight / subPadHeightRatios
 
 // Created DOM Elements
 var subtitleContainer;
@@ -61,7 +61,7 @@ function showSubtitle(event) {
     }
 
     if (newSubtitle) {
-        console.info("new subtitle")
+        console.info("new subtitle");
         // is video resized
         if (subtitleContainer.clientHeight != videoElm.clientHeight ||
             subtitleContainer.clientWidth != videoElm.clientWidth)
@@ -129,6 +129,16 @@ function receivedMessage(request, sender, sendResponse) {
         case "setSubColor":
             subtitleHolders[request.index].style.color = request.color;
             break;
+
+        // sub padding
+        case "setSubPadding":
+            subPadHeightRatios[request.index] = request.newRatio;
+            adjustSubtitlesFontAndPadding();
+            break;
+
+        case "getSubPadding":
+            sendResponse({newRatio: subPadHeightRatios[request.index]});
+            break;
     }
 }
 
@@ -191,7 +201,7 @@ function displaySubtitleElements() {
 function adjustSubtitlesFontAndPadding(){
     for (let index = 1; index <= 3; index++) {
         subtitleHolders[index].style.fontSize = videoElm.clientHeight / subFontSizeHeightRatios[index] + "px";
-        subtitleHolders[index].style.paddingBottom = videoElm.clientHeight / SUB_PADD_TO_HEIGHT_RATIO + "px";
+        subtitleHolders[index].style.paddingBottom = videoElm.clientHeight / subPadHeightRatios[index] + "px";
     }
 }
 
@@ -237,10 +247,13 @@ function adjustSubtitlesWidths() {
 
     let videoWidth = videoElm.clientWidth;
     for (let index = 1; index <= 3; index++) {
-        if (isSubtitleActive(index))
+        if (isSubtitleActive(index)){
             subtitleHolders[index].style.width = videoWidth / numberOfEnabledSubtitles + "px";
-        else
+        }
+        else {
             subtitleHolders[index].style.width = "0px";
+            subtitleHolders[index].innerText = "";
+        }
     }
 }
 
