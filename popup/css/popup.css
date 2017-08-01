@@ -45,3 +45,7 @@ div#subtitle_panes_container {
 .active-subtitle {
     font-weight: bold;
 }
+
+input[type=file][disabled] + label {
+    color: #ccc;
+}
