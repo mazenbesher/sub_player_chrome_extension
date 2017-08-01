@@ -29,20 +29,29 @@ var videoSrcHash;
 var registeredKeyboardEventsForVideoPlayback = false;
 var subtitles = {1: undefined, 2: undefined, 3: undefined};
 
-// Inject css
-// var style = document.createElement('link');
-// style.rel = 'stylesheet';
-// style.type = 'text/css';
-// style.href = chrome.extension.getURL('contentscript/contentscript.css');
-// (document.head||document.documentElement).appendChild(style);
+/**
+ * Note: Inject css
+ * var style = document.createElement('link');
+ * style.rel = 'stylesheet';
+ * style.type = 'text/css';
+ * style.href = chrome.extension.getURL('contentscript/contentscript.css');
+ * (document.head||document.documentElement).appendChild(style);
+ */
 
-/* NOTE: How align subtitle to bottom of subtitle container
+/**
+ * Note: How align subtitle to bottom of subtitle container
  * set height of subtitleContainer to match video height
  * set display of subtitleContainer to table
  * set display of subtitleHolder to table-cell and vertical-align to bottom
  * add some bottom padding to the subtitleHolder
  * see: https://stackoverflow.com/a/13586293
  */
+
+
+function main() {
+    if (videoSearchIntervall == null)
+        videoSearchIntervall = setInterval(findVideo, VIDEO_SEARCH_INTERVAL_TIME);
+}
 
 function showSubtitle(event) {
     let newSubtitle = false;
@@ -196,9 +205,14 @@ function displaySubtitleElements() {
     // add event listener for video
     videoElm.ontimeupdate = showSubtitle;
     // videoElm.onwebkitfullscreenchange = videoResized;
+
+    // observe video style changes
+    //  docs: https://developer.mozilla.org/en/docs/Web/API/MutationObserver#MutationObserverInit
+    let videoStyleAttrObserver = new MutationObserver(videoStyleChanged);
+    videoStyleAttrObserver.observe(videoElm, {attributes: true, attributeFilter: ['style']});
 }
 
-function adjustSubtitlesFontAndPadding(){
+function adjustSubtitlesFontAndPadding() {
     for (let index = 1; index <= 3; index++) {
         subtitleHolders[index].style.fontSize = videoElm.clientHeight / subFontSizeHeightRatios[index] + "px";
         subtitleHolders[index].style.paddingBottom = videoElm.clientHeight / subPadHeightRatios[index] + "px";
@@ -247,7 +261,7 @@ function adjustSubtitlesWidths() {
 
     let videoWidth = videoElm.clientWidth;
     for (let index = 1; index <= 3; index++) {
-        if (isSubtitleActive(index)){
+        if (isSubtitleActive(index)) {
             subtitleHolders[index].style.width = videoWidth / numberOfEnabledSubtitles + "px";
         }
         else {
@@ -268,6 +282,7 @@ function findVideo() {
     if (videoElm != null) {
         console.info("found a video! ", videoElm);
         clearInterval(videoSearchIntervall);
+
         videoSrcHash = md5(videoElm.currentSrc);
         checkIfVideoHasSubtitleInStorage();
         displaySubtitleElements();
@@ -275,13 +290,22 @@ function findVideo() {
     }
 
     searchCounter++;
-    if(searchCounter > VIDEO_SEARCH_LIMIT)
+    if (searchCounter > VIDEO_SEARCH_LIMIT)
         clearInterval(videoSearchIntervall);
 }
 
-function main() {
-    if(videoSearchIntervall == null)
-        videoSearchIntervall = setInterval(findVideo, VIDEO_SEARCH_INTERVAL_TIME);
+function videoStyleChanged(mutations) {
+    console.info("video style changed!")
+    mutations.forEach(mutationRecord => {
+        // type of mutationRecord = MutationRecord
+        // docs: https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord
+
+        // assign new video style attributes to the subtitle container
+        // type of videoElm.style = CSSStyleDeclaration
+        subtitleContainer.style.cssText = videoElm.style.cssText;
+        adjustSubtitlesFontAndPadding();
+        adjustSubtitlesWidths();
+    })
 }
 
 // Listeners

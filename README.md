@@ -6,6 +6,7 @@ See `bundle.bat`
 1. `npm install -g mustache`
 
 # Features to add
+- [x] style subtitle container to match video style (using [`MutationObserver`](https://developer.mozilla.org/en/docs/Web/API/MutationObserver#MutationObserverInit))
 - [ ] disable color picker if no subtitle is activated (add as an event listener for `sub-deactivated`)
 - [ ] random number of subtitles (right now fixed to three)
 - [ ] add option to unload all subtitles
