@@ -42,5 +42,6 @@ div#subtitle_panes_container {
     display: inline-block;
 }
 
-.subtitle-style-controls {
+.active-subtitle {
+    font-weight: bold;
 }

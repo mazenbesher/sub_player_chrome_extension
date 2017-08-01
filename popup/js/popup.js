@@ -127,7 +127,6 @@ getActiveTabId().then(activeTabId => {
 
     // event listeners
     document.addEventListener('sub-activated', e => {
-        console.log(`sub ${e.detail} is activated`);
         const index = e.detail;
         getSubColor(index).then(color => {
             const cp = $(`#font_color_picker_${index}`);
@@ -141,6 +140,18 @@ getActiveTabId().then(activeTabId => {
     });
 });
 
+// make subtitle tab head bold if a subtitle is active
+{
+    document.addEventListener('sub-activated', e => {
+        const a = document.querySelector(`#subtitles_nav_tabs a[href="#subtitle_${e.detail}"]`);
+        $(a).addClass("active-subtitle");
+    });
+
+    document.addEventListener('sub-deactivated', e => {
+        const a = document.querySelector(`#subtitles_nav_tabs a[href="#subtitle_${e.detail}"]`);
+        $(a).removeClass("active-subtitle");
+    });
+}
 
 // for detecting encoding
 var detect = require('charset-detector');
