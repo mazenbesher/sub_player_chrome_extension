@@ -11,7 +11,7 @@ const initalSubtitlesColors = {
 
 // style variables
 var subFontSizeHeightRatios = [15, 15, 15]; // font-size = video.clientHeight / subFontSizeHeightRatio
-const subPadHeightRatios = [36, 36, 36]; // padding-down = video.clientHeight / subPadHeightRatios
+var subPadHeightRatios = [36, 36, 36]; // padding-down = video.clientHeight / subPadHeightRatios
 
 // Created DOM Elements
 var subtitleContainer;

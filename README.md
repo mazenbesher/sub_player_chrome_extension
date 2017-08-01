@@ -6,6 +6,10 @@ See `bundle.bat`
 1. `npm install -g mustache`
 
 # Features to add
+- [ ] push subtitle up if video controls are visible (site specific)
+    - [ ] youtube
+    - [ ] netflix
+    - [ ] general (deafult controls)
 - [x] style subtitle container to match video style (using [`MutationObserver`](https://developer.mozilla.org/en/docs/Web/API/MutationObserver#MutationObserverInit))
 - [ ] disable color picker if no subtitle is activated (add as an event listener for `sub-deactivated`)
 - [ ] random number of subtitles (right now fixed to three)
@@ -26,7 +30,7 @@ See `bundle.bat`
     - Note: this requires knowing how many frames (i.e. content scripts) there are in the current active tab and the fact that all of them couldn't detect any video in their corresponding document element
 - [ ] auto search for subtitles
 - [ ] disable search for video if one found
-- [ ] hide sync controls if no subtitle is active (found video + uploaded srt)
+- [x] hide sync controls if no subtitle is active (found video + uploaded srt) Solution: disabled if no subtitle is active
 - [ ] options page for some subtitle controls (such as style, subtitle databases, ...)
 - [ ] subtitle controls on video itself (instead in popup)
 - [ ] other languages (unicode) support
@@ -52,6 +56,7 @@ See `bundle.bat`
 - [ ] style control (maybe in `css`)
     - [x] font size
     - [x] font color
+    - [ ] global style controls
 
 ## Learn mode
 - [x] multiple languages at the same time

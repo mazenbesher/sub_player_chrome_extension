@@ -17,12 +17,22 @@
       ],
       "all_frames": true,
       "js": [
-        // "lib/jquery-3.2.1.js", 
         "lib/md5.min.js",
+        "lib/jquery-3.2.1.min.js",
         "contentscript/contentscript.js"
       ],
       "css": [
         "contentscript/contentscript.css"
+      ]
+    },{
+      "run_at": "document_end",
+      "matches": [
+        "*://*.netflix.com/*"
+      ],
+      "all_frames": true,
+      "js": [
+        "lib/jquery-3.2.1.min.js",
+        "contentscript/netflix.js"
       ]
     }
   ],
