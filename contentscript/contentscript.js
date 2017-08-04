@@ -29,6 +29,7 @@
  */
 
 // config
+const CS_ID = md5(new Date().getTime());
 const VIDEO_SEARCH_INTERVAL_TIME = 1000; // each VIDEO_SEARCH_INTERVAL_TIME ms the method find video will be fired
 const VIDEO_SEARCH_LIMIT = 10; // after VIDEO_SEARCH_LIMIT the video search interval will be removed
 const initalSubtitlesColors = {
@@ -51,6 +52,7 @@ let videoSearchIntervall;
 let searchCounter = 0;
 
 // Globals
+let currentTabId = null;
 let subtitleSeeks = {1: 0, 2: 0, 3: 0};
 let lastSubIndexes = {1: -1, 2: -1, 3: -1};
 let videoSrcHash;
@@ -72,7 +74,7 @@ function main() {
 
 function controlsShown(e) {
     const controlsHeight = e.detail;
-    console.info(`Controls are show with height ${controlsHeight}`);
+    // log(`Controls are show with height ${controlsHeight}`);
 
     for (let index = 1; index <= 3; index++) {
         if (isSubtitleActive(index)) {
@@ -87,7 +89,7 @@ function controlsShown(e) {
 }
 
 function controlsHide(e) {
-    console.info("controls are hidden");
+    // log("controls are hidden");
 
     for (let index = 1; index <= 3; index++) {
         if (isSubtitleActive(index)) {
@@ -114,7 +116,7 @@ function showSubtitle(event) {
     }
 
     if (newSubtitle) {
-        console.info("new subtitle");
+        log("new subtitle");
         // is video resized
         if (subtitleContainer.clientHeight != videoElm.clientHeight ||
             subtitleContainer.clientWidth != videoElm.clientWidth)
@@ -123,10 +125,17 @@ function showSubtitle(event) {
 }
 
 function receivedMessage(request, sender, sendResponse) {
-    // console.info("message sent to content script is received, request: ", request);
+    // log("message sent to content script is received, request: ", request);
+    if (!request.action || !request.hasOwnProperty("action")) return;
+
+    // if other script has found the video stop searching
+    if (request.action == "stopSearching") {
+        log("other cs has found the video! stopping searching");
+        stopSearching();
+        return;
+    }
 
     if (videoElm === null) return;// NOTE: page can include multiple frames but only one should have the video in it
-    if (!request.action || !request.hasOwnProperty("action")) return;
 
     switch (request.action) {
         case "srtParsed":
@@ -265,7 +274,7 @@ function adjustSubtitlesFontAndPadding() {
 }
 
 function videoResized() {
-    console.info("video resized");
+    log("video resized");
 
     subtitleContainer.style.height = videoElm.clientHeight + "px";
     subtitleContainer.style.width = videoElm.clientWidth + "px";
@@ -301,8 +310,8 @@ function adjustSubtitlesWidths() {
     }
     if (numberOfEnabledSubtitles <= 0) return;
 
-    console.info("adjusting subtitles widths");
-    console.info("numberOfEnabledSubtitles: " + numberOfEnabledSubtitles);
+    log("adjusting subtitles widths");
+    log("numberOfEnabledSubtitles: " + numberOfEnabledSubtitles);
 
     let videoWidth = videoElm.clientWidth;
     for (let index = 1; index <= 3; index++) {
@@ -322,20 +331,21 @@ function isSubtitleActive(index) {
 }
 
 function findVideo() {
-    console.info("searching for a video...");
+    log(`searching for a video... ${searchCounter}`);
     videoElm = document.querySelector("video"); // <-- set here
     if (videoElm != null) {
+        log("found a video! stopping searching");
         videoFound();
         return;
     }
 
     searchCounter++;
     if (searchCounter > VIDEO_SEARCH_LIMIT)
-        clearInterval(videoSearchIntervall);
+        stopSearching();
 }
 
 function videoStyleChanged(mutations) {
-    console.info("video style changed!")
+    log("video style changed!")
     mutations.forEach(mutationRecord => {
         // type of mutationRecord = MutationRecord
         // docs: https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord
@@ -365,9 +375,10 @@ function addMultipleListeners(element, events, handler, useCapture, args) {
 
 function videoFound() {
     // i.e. videoElm != null
-    console.info("found a video! ", videoElm);
+    stopSearching();
 
-    clearInterval(videoSearchIntervall);
+    // notify other content scripts on this tab to stop searching
+    chrome.runtime.sendMessage({action: "stopSearching"});
 
     videoSrcHash = md5(videoElm.currentSrc);
     checkIfVideoHasSubtitleInStorage();
@@ -375,6 +386,7 @@ function videoFound() {
 
     if (videoElm.controls) {// -> html5 video, we must not detect controls manually
         const controlsHeight = videoElm.videoHeight / 10; // magic number
+
         // if video paused or mouse over it -> controls are shown
         addMultipleListeners(videoElm, ['pause', 'mouseover'], () => {
             document.dispatchEvent(new CustomEvent('controls-show', {detail: controlsHeight}));
@@ -386,4 +398,12 @@ function videoFound() {
                 document.dispatchEvent(new CustomEvent('controls-hide'))
         }, false);
     }
+}
+
+function stopSearching() {
+    clearInterval(videoSearchIntervall);
+}
+
+function log(msg) {
+    console.log(`${CS_ID}: ${msg}`)
 }
