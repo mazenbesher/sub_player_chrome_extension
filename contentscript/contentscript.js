@@ -55,7 +55,6 @@ let searchCounter = 0;
 let currentTabId = null;
 let subtitleSeeks = {1: 0, 2: 0, 3: 0};
 let lastSubIndexes = {1: -1, 2: -1, 3: -1};
-let videoSrcHash;
 let registeredKeyboardEventsForVideoPlayback = false;
 let subtitles = {1: undefined, 2: undefined, 3: undefined};
 
@@ -156,7 +155,7 @@ function receivedMessage(request, sender, sendResponse) {
         case "searchForVideos":
             sendResponse({
                 videoDetected: true, // else we had already returned at the start of this method
-                "videoSrcHash": videoSrcHash
+                "videoKey":  getVideoKey()// TODO
             });
             break;
 
@@ -288,7 +287,7 @@ function checkIfVideoHasSubtitleInStorage() {
     // check all possible subtitles
     new Promise(() => {
         for (let index = 1; index <= 3; index++) {
-            const key = `${videoSrcHash}_${index}`;
+            const key = getVideoKey(index);
             chrome.storage.local.get(key, function (result) {
                 if (result[key]) {
                     subtitles[index] = JSON.parse(result[key])["subtitles"];
@@ -380,12 +379,11 @@ function videoFound() {
     // notify other content scripts on this tab to stop searching
     chrome.runtime.sendMessage({action: "stopSearching"});
 
-    videoSrcHash = md5(videoElm.currentSrc);
     checkIfVideoHasSubtitleInStorage();
     displaySubtitleElements();
 
     if (videoElm.controls) {// -> html5 video, we must not detect controls manually
-        const controlsHeight = videoElm.videoHeight / 10; // magic number
+        const controlsHeight = 25; // magic number
 
         // if video paused or mouse over it -> controls are shown
         addMultipleListeners(videoElm, ['pause', 'mouseover'], () => {
@@ -402,6 +400,17 @@ function videoFound() {
 
 function stopSearching() {
     clearInterval(videoSearchIntervall);
+}
+
+function getVideoKey(index){
+    const url = location.href;
+    const videoSrc = videoElm.currentSrc;
+    const videoKey = md5(`${url}_${videoSrc}`);
+
+    if(index)
+        return `${videoKey}_${index}`;
+    else
+        return `${videoKey}`;
 }
 
 function log(msg) {

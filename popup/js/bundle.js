@@ -1,10 +1,18 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
+// Notes
+/**
+ * Subtitle Custom events
+ * sub-activated, sub-deactivated
+ * dispatched when a subtitle is (de)activated
+ * the (de)activated subtitle index can be found as the event detail
+ */
+
 // Globals
-var activeTabId;
-var videoSrcHash;
-var subtitleFileNames = {1: "", 2: "", 3: ""};
+let activeTabId;
+let videoKey;
+let subtitleFileNames = {1: "", 2: "", 3: ""};
 
 let getActiveTabId = () => new Promise(resolve => {
     chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
@@ -12,13 +20,6 @@ let getActiveTabId = () => new Promise(resolve => {
         resolve(activeTabId);
     });
 });
-
-/**
- * Subtitle Custom events
- * sub-activated, sub-deactivated
- * dispatched when a subtitle is (de)activated
- * the (de)activated subtitle index can be found as the event detail
- */
 
 // style: font-size slider
 getActiveTabId().then(activeTabId => {
@@ -155,7 +156,7 @@ getActiveTabId().then(activeTabId => {
 }
 
 // for detecting encoding
-var detect = require('charset-detector');
+let detect = require('charset-detector');
 
 // set active tab id and search for video when the popup is opened
 chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
@@ -164,7 +165,7 @@ chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
 });
 
 // seeks
-var subtitleSeeks = {
+let subtitleSeeks = {
     1: document.getElementById("subtitle_seek_1"),
     2: document.getElementById("subtitle_seek_2"),
     3: document.getElementById("subtitle_seek_3")
@@ -200,12 +201,12 @@ const searchBtn = document.getElementById("search_for_video_btn");
 searchBtn.onclick = searchForVideos;
 
 // Enable/Disable manual encoding selection
-var manEncodingCheckboxes = {
+let manEncodingCheckboxes = {
     1: document.getElementById("manual_encoding_detection_1"),
     2: document.getElementById("manual_encoding_detection_2"),
     3: document.getElementById("manual_encoding_detection_3")
 };
-var manEncodingSections = {
+let manEncodingSections = {
     1: document.getElementById("manual_encoding_selection_1"),
     2: document.getElementById("manual_encoding_selection_2"),
     3: document.getElementById("manual_encoding_selection_3")
@@ -247,7 +248,7 @@ function setUpSyncInfo(index) {
 function searchForVideos() {
     chrome.tabs.sendMessage(activeTabId, {action: "searchForVideos"}, function (response) {
         if (response != undefined && response.videoDetected) { // NOTE: response can be undefined if none of the content scripts (possibly in multiple frames) detected a video -> no response is sent back
-            videoSrcHash = response["videoSrcHash"];
+            videoKey = response["videoKey"];
             videoFound();
         }
     });
@@ -283,7 +284,7 @@ function checkIfKeyEventsAreRegistered() {
 
 function checkIfVideoHasSubtitleInStorage() {
     for (let index = 1; index <= 3; index++) {
-        const key = `${videoSrcHash}_${index}`;
+        const key = getVideoKey(index);
         chrome.storage.local.get(key, function (result) {
             if (result[key]) {
                 setCurrSubFileName(JSON.parse(result[key])["fileName"], index);
@@ -491,7 +492,7 @@ function parseSRT(srt, index) {
 
 function saveAndNotify(subtitles, index) {
     let toSave = {};
-    let key = `${videoSrcHash}_${index}`; // hash_index
+    let key = getVideoKey(index);
     toSave[key] = JSON.stringify({
         "fileName": subtitleFileNames[index],
         "subtitles": subtitles
@@ -526,9 +527,9 @@ function unloadSubtitle(index) {
     console.info(`unloading subtitle with index ${index}`);
 
     // delete from storage
-    if (videoSrcHash === null || videoSrcHash === undefined) // double check
+    if (videoKey === null || videoKey === undefined) // double check
         return;
-    let key = `${videoSrcHash}_${index}`;
+    let key = getVideoKey(index);
     chrome.storage.local.remove(key);
 
     // hide encoding detection info (TODO: should be also deleted from storage?)
@@ -564,6 +565,16 @@ function setSubPadding() {
         newRatio: newRatio,
         index: index
     });
+}
+
+function getVideoKey(index){
+    if(videoKey !=  null)
+        if(index)
+            return `${videoKey}_${index}`;
+        else
+            return `${videoKey}`;
+    else
+        throw new Error("called getVideoKey although no videoKey is set!");
 }
 },{"charset-detector":9}],2:[function(require,module,exports){
 module.exports = function(text, textLen, escapeSequences) {

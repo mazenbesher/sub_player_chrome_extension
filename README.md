@@ -6,6 +6,7 @@ See `bundle.bat`
 1. `npm install -g mustache`
 
 # TODOs:
+- [x] use other key for subtitles saving since all youtube videos have the same video source! (fixed: now using `location.href` + `video.currentSrc`) 
 - [x] stop searching if other script on the same page has already found a video (done using communication with bg) 
 - [ ] show some indicator when changing size even if no current subtitle is visible  
 - [ ] unintuitive size controls
