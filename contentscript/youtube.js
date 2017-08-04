@@ -23,12 +23,23 @@ let detectControlsState = new MutationObserver(mutations => {
     })
 });
 
+let domChangeObserver = new MutationObserver(mutations => {
+    youtubeControlsStateDetector = document.querySelector('#movie_player');
+    if (youtubeControlsStateDetector != null) {
+        domChangeObserver.disconnect(); // stop observing DOM for changes
+        detectControlsState.observe(youtubeControlsStateDetector, classChangeMutationConfig);
+    }
+});
+
 function youtubeMain() {
     youtubeControlsStateDetector = document.querySelector('#movie_player');
 
     if (youtubeControlsStateDetector != null) {
         detectControlsState.observe(youtubeControlsStateDetector, classChangeMutationConfig);
     } else {
-        console.log("NULL.... shit!")
+        domChangeObserver.observe(document, {
+            childList: true,
+            subtree: true
+        });
     }
 }
