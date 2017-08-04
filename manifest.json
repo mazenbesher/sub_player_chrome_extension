@@ -34,6 +34,16 @@
         "lib/jquery-3.2.1.min.js",
         "contentscript/netflix.js"
       ]
+    },{
+      "run_at": "document_end",
+      "matches": [
+        "*://*.youtube.com/*"
+      ],
+      "all_frames": true,
+      "js": [
+        "lib/jquery-3.2.1.min.js",
+        "contentscript/youtube.js"
+      ]
     }
   ],
   "browser_action": {

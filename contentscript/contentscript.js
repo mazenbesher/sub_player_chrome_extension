@@ -1,5 +1,33 @@
 "use strict";
 
+// Notes
+/**
+ * Note: Inject css
+ * var style = document.createElement('link');
+ * style.rel = 'stylesheet';
+ * style.type = 'text/css';
+ * style.href = chrome.extension.getURL('contentscript/contentscript.css');
+ * (document.head||document.documentElement).appendChild(style);
+ */
+/**
+ * Note: How align subtitle to bottom of subtitle container
+ * set height of subtitleContainer to match video height
+ * set display of subtitleContainer to table
+ * set display of subtitleHolder to table-cell and vertical-align to bottom
+ * add some bottom padding to the subtitleHolder
+ * see: https://stackoverflow.com/a/13586293
+ */
+/**
+ * Note: Custom events for video controls
+ *
+ * 1. controls-show: if controls are shown
+ * e.detail = height
+ * handler: controlsShown
+ *
+ * 2. controls-hide: if controls are hidden
+ * handler: controlsHide
+ */
+
 // config
 const VIDEO_SEARCH_INTERVAL_TIME = 1000; // each VIDEO_SEARCH_INTERVAL_TIME ms the method find video will be fired
 const VIDEO_SEARCH_LIMIT = 10; // after VIDEO_SEARCH_LIMIT the video search interval will be removed
@@ -10,47 +38,63 @@ const initalSubtitlesColors = {
 };
 
 // style variables
-var subFontSizeHeightRatios = [15, 15, 15]; // font-size = video.clientHeight / subFontSizeHeightRatio
-var subPadHeightRatios = [36, 36, 36]; // padding-down = video.clientHeight / subPadHeightRatios
+let subFontSizeHeightRatios = [15, 15, 15]; // font-size = video.clientHeight / subFontSizeHeightRatio
+let subPadHeightRatios = [36, 36, 36]; // padding-down = video.clientHeight / subPadHeightRatios
 
 // Created DOM Elements
-var subtitleContainer;
-var subtitleHolders = {1: undefined, 2: undefined, 3: undefined};
+let subtitleContainer;
+let subtitleHolders = {1: undefined, 2: undefined, 3: undefined};
 
 // video pointer
-var videoElm = null;
-var videoSearchIntervall;
-var searchCounter = 0;
+let videoElm = null;
+let videoSearchIntervall;
+let searchCounter = 0;
 
 // Globals
-var subtitleSeeks = {1: 0, 2: 0, 3: 0};
-var lastSubIndexes = {1: -1, 2: -1, 3: -1};
-var videoSrcHash;
-var registeredKeyboardEventsForVideoPlayback = false;
-var subtitles = {1: undefined, 2: undefined, 3: undefined};
+let subtitleSeeks = {1: 0, 2: 0, 3: 0};
+let lastSubIndexes = {1: -1, 2: -1, 3: -1};
+let videoSrcHash;
+let registeredKeyboardEventsForVideoPlayback = false;
+let subtitles = {1: undefined, 2: undefined, 3: undefined};
 
-/**
- * Note: Inject css
- * var style = document.createElement('link');
- * style.rel = 'stylesheet';
- * style.type = 'text/css';
- * style.href = chrome.extension.getURL('contentscript/contentscript.css');
- * (document.head||document.documentElement).appendChild(style);
- */
+// Listeners
+chrome.runtime.onMessage.addListener(receivedMessage);
+document.addEventListener('controls-show', controlsShown);
+document.addEventListener('controls-hide', controlsHide);
 
-/**
- * Note: How align subtitle to bottom of subtitle container
- * set height of subtitleContainer to match video height
- * set display of subtitleContainer to table
- * set display of subtitleHolder to table-cell and vertical-align to bottom
- * add some bottom padding to the subtitleHolder
- * see: https://stackoverflow.com/a/13586293
- */
-
+// when done loading
+window.addEventListener("load", main, false);
 
 function main() {
     if (videoSearchIntervall == null)
         videoSearchIntervall = setInterval(findVideo, VIDEO_SEARCH_INTERVAL_TIME);
+}
+
+function controlsShown(e) {
+    const controlsHeight = e.detail;
+    console.info(`Controls are show with height ${controlsHeight}`);
+
+    for (let index = 1; index <= 3; index++) {
+        if (isSubtitleActive(index)) {
+            const originalPadding = videoElm.clientHeight / subPadHeightRatios[index];
+
+            if (controlsHeight > originalPadding) {
+                const newPadding = originalPadding + controlsHeight;
+                $(subtitleHolders[index]).css('padding-bottom', `${newPadding}px`);
+            }
+        }
+    }
+}
+
+function controlsHide(e) {
+    console.info("controls are hidden");
+
+    for (let index = 1; index <= 3; index++) {
+        if (isSubtitleActive(index)) {
+            const originalPadding = videoElm.clientHeight / subPadHeightRatios[index];
+            $(subtitleHolders[index]).css('padding-bottom', `${originalPadding}px`);
+        }
+    }
 }
 
 function showSubtitle(event) {
@@ -79,7 +123,8 @@ function showSubtitle(event) {
 }
 
 function receivedMessage(request, sender, sendResponse) {
-    console.info("message sent to content script is received, request: ", request);
+    // console.info("message sent to content script is received, request: ", request);
+
     if (videoElm === null) return;// NOTE: page can include multiple frames but only one should have the video in it
     if (!request.action || !request.hasOwnProperty("action")) return;
 
@@ -280,12 +325,7 @@ function findVideo() {
     console.info("searching for a video...");
     videoElm = document.querySelector("video"); // <-- set here
     if (videoElm != null) {
-        console.info("found a video! ", videoElm);
-        clearInterval(videoSearchIntervall);
-
-        videoSrcHash = md5(videoElm.currentSrc);
-        checkIfVideoHasSubtitleInStorage();
-        displaySubtitleElements();
+        videoFound();
         return;
     }
 
@@ -308,8 +348,17 @@ function videoStyleChanged(mutations) {
     })
 }
 
-// Listeners
-chrome.runtime.onMessage.addListener(receivedMessage);
+function videoFound() {
+    // i.e. videoElm != null
+    console.info("found a video! ", videoElm);
 
-// when done loading
-window.addEventListener("load", main, false);
+    clearInterval(videoSearchIntervall);
+
+    videoSrcHash = md5(videoElm.currentSrc);
+    checkIfVideoHasSubtitleInStorage();
+    displaySubtitleElements();
+
+    if (videoElm.controls) {// -> html5 video, we must not detect controls manually
+        // TODO
+    }
+}

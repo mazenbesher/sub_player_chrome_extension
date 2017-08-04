@@ -1,54 +1,41 @@
-var netflixControls;
+"use strict";
+
+let netflixControls;
+
+// when done loading
+window.addEventListener("load", netflixMain, false);
 
 let netflixControlsObserver = new MutationObserver(function (mutations) {
-    mutations.forEach(function (mutation) {
-        const controlsHeight = $(netflixControls).height();
-        // console.info(`detect change in class list of netflix subtitle controls`);
-        // console.info(`subtitle controls height = ${controlsHeight}`);
-        if (controlsHeight > 0) {
-            for (let index = 1; index <= 3; index++) {
-                if (isSubtitleActive(index)) {
-                    const originalPadding = videoElm.clientHeight / subPadHeightRatios[index];
-                    const extraPadding = controlsHeight / 5;
-                    const newPadding = originalPadding + extraPadding + controlsHeight;
-                    $(subtitleHolders[index]).css('padding-bottom', `${newPadding}px`);
-                }
-            }
-        } else {
-            // controls height == 0 i.e. are hidden
-            for (let index = 1; index <= 3; index++) {
-                if (isSubtitleActive(index)) {
-                    const originalPadding = videoElm.clientHeight / subPadHeightRatios[index];
-                    $(subtitleHolders[index]).css('padding-bottom', `${originalPadding}px`);
-                }
-            }
-        }
-    })
+    const controlsHeight = $(netflixControls).height();
+    // console.info(`detect change in class list of netflix subtitle controls`);
+    // console.info(`subtitle controls height = ${controlsHeight}`);
+
+    if (controlsHeight > 0) {
+        const extraPadding = controlsHeight / 5;
+        const newControlsHeight = controlsHeight + extraPadding;
+        document.dispatchEvent(new CustomEvent('controls-show', {detail: newControlsHeight}));
+    } else {
+        // controls height == 0 i.e. are hidden
+        document.dispatchEvent(new CustomEvent('controls-hide'));
+    }
 });
 
 let domChangeObserver = new MutationObserver(mutations => {
     console.log("DOM changed...");
-    mutations.forEach(mutation => {
-        netflixControls = document.querySelector('.player-controls-wrapper');
-        if (netflixControls != null) {
-            domChangeObserver.disconnect(); // stop observing DOM for changes
-            pushSubtitleObserver();
-        }
-    })
+
+    netflixControls = document.querySelector('.player-controls-wrapper');
+    if (netflixControls != null) {
+        domChangeObserver.disconnect(); // stop observing DOM for changes
+
+        netflixControlsObserver.observe(netflixControls, {
+            attributes: true, attributeFilter: ['class']
+        });
+    }
 });
 
-function main() {
+function netflixMain() {
     domChangeObserver.observe(document, {
         childList: true,
         subtree: true
     });
 }
-
-function pushSubtitleObserver() {
-    netflixControlsObserver.observe(netflixControls, {
-        attributes: true, attributeFilter: ['class']
-    });
-}
-
-// when done loading
-window.addEventListener("load", main, false);

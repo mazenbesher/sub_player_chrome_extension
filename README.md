@@ -5,11 +5,17 @@ See `bundle.bat`
 1. `npm install -g browserify`
 1. `npm install -g mustache`
 
-# Features to add
+# TODOs:
+- [ ] show some indicator when changing size even if no current subtitle is visible  
+- [ ] unintuitive size controls
+- [ ] use `MutationObserver` to detect video instead of an interval (not working)
+    - [ ] check if it can detect changes in `iframes` and in that case give `all_frames` manifest option
+    - [ ] no need for site specific scripts but specific selectors
 - [ ] push subtitle up if video controls are visible (site specific)
-    - [ ] youtube
-    - [ ] netflix
-    - [ ] general (deafult controls)
+    - [x] youtube
+    - [x] netflix
+    - [ ] general (default controls)
+    - [ ] smooth controls movement when pushed
 - [x] style subtitle container to match video style (using [`MutationObserver`](https://developer.mozilla.org/en/docs/Web/API/MutationObserver#MutationObserverInit))
 - [ ] disable color picker if no subtitle is activated (add as an event listener for `sub-deactivated`)
 - [ ] random number of subtitles (right now fixed to three)
