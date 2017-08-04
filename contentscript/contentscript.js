@@ -348,6 +348,21 @@ function videoStyleChanged(mutations) {
     })
 }
 
+function addMultipleListeners(element, events, handler, useCapture, args) {
+    if (!(events instanceof Array)) {
+        throw 'addMultipleListeners: ' +
+        'please supply an array of eventstrings ' +
+        '(like ["click","mouseover"])';
+    }
+    //create a wrapper to be able to use additional arguments
+    var handlerFn = function (e) {
+        handler.apply(this, args && args instanceof Array ? args : []);
+    }
+    for (var i = 0; i < events.length; i += 1) {
+        element.addEventListener(events[i], handlerFn, useCapture);
+    }
+}
+
 function videoFound() {
     // i.e. videoElm != null
     console.info("found a video! ", videoElm);
@@ -359,6 +374,16 @@ function videoFound() {
     displaySubtitleElements();
 
     if (videoElm.controls) {// -> html5 video, we must not detect controls manually
-        // TODO
+        const controlsHeight = videoElm.videoHeight / 10; // magic number
+        // if video paused or mouse over it -> controls are shown
+        addMultipleListeners(videoElm, ['pause', 'mouseover'], () => {
+            document.dispatchEvent(new CustomEvent('controls-show', {detail: controlsHeight}));
+        }, false);
+
+        // if mouse out and playing OR playing alone -> controls are hidden
+        addMultipleListeners(videoElm, ['playing', 'play', 'mouseout'], () => {
+            if (!videoElm.paused)
+                document.dispatchEvent(new CustomEvent('controls-hide'))
+        }, false);
     }
 }

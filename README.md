@@ -14,7 +14,7 @@ See `bundle.bat`
 - [ ] push subtitle up if video controls are visible (site specific)
     - [x] youtube
     - [x] netflix
-    - [ ] general (default controls)
+    - [x] general (default controls)
     - [ ] smooth controls movement when pushed
 - [x] style subtitle container to match video style (using [`MutationObserver`](https://developer.mozilla.org/en/docs/Web/API/MutationObserver#MutationObserverInit))
 - [ ] disable color picker if no subtitle is activated (add as an event listener for `sub-deactivated`)
