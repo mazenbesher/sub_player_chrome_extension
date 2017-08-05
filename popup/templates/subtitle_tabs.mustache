@@ -1,11 +1,3 @@
-<html>
-<head>
-    <link rel="stylesheet" href="../lib/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../lib/css/bootstrap-colorpicker.min.css">
-    <link rel="stylesheet" href="css/popup.css">
-</head>
-
-<body>
 <section>
     <!-- http://getbootstrap.com/javascript/#tabs -->
     <!-- Nav tabs -->
@@ -47,8 +39,7 @@
                 </div>
 
                 <div id="manual_file_encoding_setting_{{number}}">
-                    <input type="checkbox" class="manual_encoding_detection" id="manual_encoding_detection_{{number}}">
-                    I want to set file encoding manually<br>
+                    a
 
                     <div class="manual_encoding_selection" id="manual_encoding_selection_{{number}}">
                         <select id="encoding_select_{{number}}">
@@ -95,8 +86,7 @@
                     </div>
                 </div>
 
-                <hr>
-                <section>
+                <div id="subtitle_sync_controls_{{number}}">
                     <h4>Sync Controls:</h4>
                     <div id="subtitle_controls_{{number}}">
                         <input class="btn btn-default" type="button" data-sync-amount="-1000"
@@ -109,60 +99,8 @@
                                title="seek forward one second" value=">>">
                     </div>
                     <p><span id="subtitle_seek_{{number}}">0</span> ms</p>
-                </section>
+                </div>
             </div>
         {{/subtitles_numbers}}
     </div>
 </section>
-
-<hr>
-<section>
-    <h3>Video Search:</h3>
-    <p>
-        In theory you shouldn't need this button, since when any video element is loaded it will automatically report
-        itself and
-        therefore this button should be disabled if a video is found.
-        <br> Anyway, you can do a manual search, if you believe that the current tab has an undetected video element.
-    </p>
-    <button class="btn btn-default" id="search_for_video_btn">Search for Videos</button>
-    <br>
-    <p>
-        Note: If page includes multiple videos, only first one would be captured
-    </p>
-</section>
-
-<hr>
-<section>
-    <h3>Key Playback:</h3>
-    <p>Register keyboard events to control video</p>
-    <button class="btn btn-default" id="reg_keyboard_event">Register</button>
-    <span>State: <span id="reg_keyboard_event_state">not registered</span></span>
-    <br>
-    <table>
-        <tr>
-            <th>Right Arrow</th>
-            <th>Seek +5 Sec</th>
-        </tr>
-        <tr>
-            <td>Left Arrow</td>
-            <td>Seek -5 Sec</td>
-        </tr>
-        <tr>
-            <td>Ctrl + Right Arrow</td>
-            <td>Seek +1 Min</td>
-        </tr>
-        <tr>
-            <td>Ctrl + Left Arrow</td>
-            <td>Seek -1 Min</td>
-        </tr>
-    </table>
-</section>
-
-<script src="../lib/jquery-3.2.1.min.js"></script>
-<script src="../lib/bootstrap.min.js"></script>
-<script src="../lib/bootstrap-colorpicker.min.js"></script>
-<!--<script src="../lib/md5.min.js"></script>-->
-<script type="text/javascript" src="js/bundle.js"></script> <!-- generated from js/popup.js through browserify -->
-</body>
-
-</html>

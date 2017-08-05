@@ -100,6 +100,7 @@ getActiveTabId().then(activeTabId => {
     };
 
     let setSubColor = (color, index) => {
+        $("#subtitles_nav_tabs > li.active > a").css("background-color", color);
         chrome.tabs.sendMessage(activeTabId, {
             action: "setSubColor",
             color: color,
@@ -111,6 +112,7 @@ getActiveTabId().then(activeTabId => {
         const cp = $(`#font_color_picker_${index}`);
         // set initial colors
         getSubColor(index).then(color => {
+            $(`#subtitles_nav_tabs > li > a[aria-controls="subtitle_${index}"]`).css("background-color", color);
             cp.colorpicker({
                 color: color,
                 container: true,
@@ -222,6 +224,23 @@ for (let index = 1; index <= 3; index++) {
         }
     };
 }
+
+// Enable/Disable manual size/position change
+getActiveTabId().then(activeTabId => {
+    chrome.tabs.sendMessage(activeTabId, {
+        action: "manualResizeState"
+    }, response => {
+        const checkbox = document.getElementById("enable_manual_resize");
+        checkbox.checked = response.state;
+        checkbox.onchange = (e) => {
+            if (e.target.checked) {
+                chrome.tabs.sendMessage(activeTabId, {action: "activatedManualResize"});
+            } else {
+                chrome.tabs.sendMessage(activeTabId, {action: "deactivatedManualResize"});
+            }
+        };
+    });
+});
 
 // Body width based on current window width TODO: consider dynamic css instead (media queries [@min-width ...)
 // chrome.windows.getCurrent(w => { // w = current window
@@ -567,9 +586,9 @@ function setSubPadding() {
     });
 }
 
-function getVideoKey(index){
-    if(videoKey !=  null)
-        if(index)
+function getVideoKey(index) {
+    if (videoKey != null)
+        if (index)
             return `${videoKey}_${index}`;
         else
             return `${videoKey}`;

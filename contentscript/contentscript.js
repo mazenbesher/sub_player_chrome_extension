@@ -29,18 +29,13 @@
  */
 
 // config
-const CS_ID = md5(new Date().getTime());
 const VIDEO_SEARCH_INTERVAL_TIME = 1000; // each VIDEO_SEARCH_INTERVAL_TIME ms the method find video will be fired
 const VIDEO_SEARCH_LIMIT = 10; // after VIDEO_SEARCH_LIMIT the video search interval will be removed
-const initalSubtitlesColors = {
-    1: "white",
-    2: "lightcoral",
-    3: "lightblue"
-};
+const initalSubtitlesColors = {1: "white", 2: "lightcoral", 3: "lightblue"};
 
 // style variables
-let subFontSizeHeightRatios = [15, 15, 15]; // font-size = video.clientHeight / subFontSizeHeightRatio
-let subPadHeightRatios = [36, 36, 36]; // padding-down = video.clientHeight / subPadHeightRatios
+let subFontSizeHeightRatios = {1: 15, 2: 15, 3: 15}; // font-size = video.clientHeight / subFontSizeHeightRatio
+let subPadHeightRatios = {1: 36, 2: 36, 3: 36}; // padding-down = video.clientHeight / subPadHeightRatios
 
 // Created DOM Elements
 let subtitleContainer;
@@ -52,11 +47,11 @@ let videoSearchIntervall;
 let searchCounter = 0;
 
 // Globals
-let currentTabId = null;
 let subtitleSeeks = {1: 0, 2: 0, 3: 0};
 let lastSubIndexes = {1: -1, 2: -1, 3: -1};
 let registeredKeyboardEventsForVideoPlayback = false;
 let subtitles = {1: undefined, 2: undefined, 3: undefined};
+let isManualResizeActive = false;
 
 // Listeners
 chrome.runtime.onMessage.addListener(receivedMessage);
@@ -72,6 +67,8 @@ function main() {
 }
 
 function controlsShown(e) {
+    if (isManualResizeActive) return;
+
     const controlsHeight = e.detail;
     // log(`Controls are show with height ${controlsHeight}`);
 
@@ -88,6 +85,7 @@ function controlsShown(e) {
 }
 
 function controlsHide(e) {
+    if (isManualResizeActive) return;
     // log("controls are hidden");
 
     for (let index = 1; index <= 3; index++) {
@@ -107,6 +105,7 @@ function showSubtitle(event) {
         let currIndex = subtitles[index].findIndex(elm => currTime >= elm.start && currTime <= elm.end);
         if (currIndex != -1 && currIndex != lastSubIndexes[index]) {
             lastSubIndexes[index] = currIndex;
+            // TODO innerHTML => security threat
             subtitleHolders[index].innerHTML = subtitles[index][currIndex].text; // NOTE: should be html, since srt includes html tag such as <i> and new lines are added as <br> tags
             newSubtitle = true;
         } else if (currIndex == -1) {
@@ -155,7 +154,7 @@ function receivedMessage(request, sender, sendResponse) {
         case "searchForVideos":
             sendResponse({
                 videoDetected: true, // else we had already returned at the start of this method
-                "videoKey":  getVideoKey()// TODO
+                "videoKey": getVideoKey()// TODO
             });
             break;
 
@@ -175,7 +174,7 @@ function receivedMessage(request, sender, sendResponse) {
 
         // sub font size
         case "changeSubFontSizeRatio":
-            subFontSizeHeightRatios[request.index] = request.newRatio;
+            subFontSizeHeightRatios[request.index] = parseInt(request.newRatio);
             adjustSubtitlesFontAndPadding();
             break;
 
@@ -200,6 +199,52 @@ function receivedMessage(request, sender, sendResponse) {
 
         case "getSubPadding":
             sendResponse({newRatio: subPadHeightRatios[request.index]});
+            break;
+
+        // manual resize
+        case "manualResizeState":
+            sendResponse({state: isManualResizeActive});
+            break;
+
+        case "activatedManualResize":
+            console.log(isManualResizeActive);
+            if (!isManualResizeActive) {
+                // set state
+                isManualResizeActive = true;
+                console.log(isManualResizeActive);
+
+                // set subtitles inside handlers
+                for (let index = 1; index <= 3; index++){
+                    $(`p#subtitle_holder_${index}`).detach().prependTo(`div#holder_container_${index}`);
+                }
+
+
+                // add listeners
+                videoElm.addEventListener("pause", showResizeHandlers);
+                videoElm.addEventListener("play", hideResizeHandlers);
+            }
+            break;
+
+        case "deactivatedManualResize":
+            if(isManualResizeActive){
+                hideResizeHandlers();
+                setResizeHandlersClickable(false);
+
+                // set state
+                isManualResizeActive = false;
+
+                // set subtitles outside handlers
+                for (let index = 1; index <= 3; index++){
+                    $(`p#subtitle_holder_${index}`).detach().prependTo("#subtitle_container");
+
+                    // make width zero else it will keep the last one and push contents
+                    $(`holder_container_${index}`).width(0);
+                }
+
+                // remove listeners
+                videoElm.removeEventListener("pause", showResizeHandlers);
+                videoElm.removeEventListener("play", hideResizeHandlers);
+            }
             break;
     }
 }
@@ -234,7 +279,7 @@ function regKeyEvents() {
     }, false);
 }
 
-function displaySubtitleElements() {
+function displaySubtitleElements(callback) {
     // subtitle container
     subtitleContainer = document.createElement("div");
     subtitleContainer.id = "subtitle_container";
@@ -251,18 +296,41 @@ function displaySubtitleElements() {
         subtitleHolders[index].id = `subtitle_holder_${index}`;
         subtitleHolders[index].className += "subtitle_holder";
         subtitleHolders[index].style.color = initalSubtitlesColors[index];
+
+        let holderContainer = document.createElement("div");
+        holderContainer.id = `holder_container_${index}`;
+        holderContainer.dataset.subtitleIndex = index;
+        $(holderContainer).addClass('resizable');
+        $(holderContainer).addClass('draggable');
+        $(holderContainer).addClass('holder-container');
+        // holderContainer.appendChild(subtitleHolders[index]);
+
+        // add size / drag handlers
+        const classes = ['nw', 'ne', 'sw', 'se', 'n', 's', 'e', 'w'];
+        for (let c of classes) {
+            let div = document.createElement('div');
+            div.dataset.subtitleIndex = index;
+            $(div).addClass('ui-resizable-handle');
+            $(div).addClass(`ui-resizable-${c}`);
+            holderContainer.appendChild(div);
+        }
+
+        subtitleContainer.appendChild(holderContainer);
         subtitleContainer.appendChild(subtitleHolders[index]);
     }
+
     adjustSubtitlesFontAndPadding();
 
-    // add event listener for video
-    videoElm.ontimeupdate = showSubtitle;
-    // videoElm.onwebkitfullscreenchange = videoResized;
+    // apply jquery effects to resize and drag
+    applyResizalbeAndDraggable();
 
-    // observe video style changes
-    //  docs: https://developer.mozilla.org/en/docs/Web/API/MutationObserver#MutationObserverInit
-    let videoStyleAttrObserver = new MutationObserver(videoStyleChanged);
-    videoStyleAttrObserver.observe(videoElm, {attributes: true, attributeFilter: ['style']});
+    // resize handlers
+    // hide them
+    $(`div.ui-resizable-handle`).hide();
+    $(`div.holder-container`).css("border", "none");
+    setResizeHandlersClickable(false);
+
+    callback();
 }
 
 function adjustSubtitlesFontAndPadding() {
@@ -339,8 +407,10 @@ function findVideo() {
     }
 
     searchCounter++;
-    if (searchCounter > VIDEO_SEARCH_LIMIT)
+    if (searchCounter > VIDEO_SEARCH_LIMIT) {
+        log("counter is up...")
         stopSearching();
+    }
 }
 
 function videoStyleChanged(mutations) {
@@ -380,9 +450,21 @@ function videoFound() {
     chrome.runtime.sendMessage({action: "stopSearching"});
 
     checkIfVideoHasSubtitleInStorage();
-    displaySubtitleElements();
+    displaySubtitleElements(doneLoadingSubtitleElements);
+}
 
-    if (videoElm.controls) {// -> html5 video, we must not detect controls manually
+function doneLoadingSubtitleElements() {
+    // add event listener for video
+    videoElm.ontimeupdate = showSubtitle;
+    // videoElm.onwebkitfullscreenchange = videoResized;
+
+    // observe video style changes
+    //  docs: https://developer.mozilla.org/en/docs/Web/API/MutationObserver#MutationObserverInit
+    let videoStyleAttrObserver = new MutationObserver(videoStyleChanged);
+    videoStyleAttrObserver.observe(videoElm, {attributes: true, attributeFilter: ['style']});
+
+    if (videoElm.controls) { // TODO: must be done through observer since it can be changed later
+        // html5 video, we must not detect controls manually
         const controlsHeight = 25; // magic number
 
         // if video paused or mouse over it -> controls are shown
@@ -402,17 +484,70 @@ function stopSearching() {
     clearInterval(videoSearchIntervall);
 }
 
-function getVideoKey(index){
+function getVideoKey(index) {
     const url = location.href;
     const videoSrc = videoElm.currentSrc;
     const videoKey = md5(`${url}_${videoSrc}`);
 
-    if(index)
+    if (index)
         return `${videoKey}_${index}`;
     else
         return `${videoKey}`;
 }
 
 function log(msg) {
-    console.log(`${CS_ID}: ${msg}`)
+    console.log(`${msg}`);
+}
+
+function applyResizalbeAndDraggable(index) {
+    $(`.resizable`).resizable({
+        handles: {
+            'nw': '.ui-resizable-nw',
+            'ne': '.ui-resizable-ne',
+            'sw': '.ui-resizable-sw',
+            'se': '.ui-resizable-se',
+            'n': '.ui-resizable-n',
+            'e': '.ui-resizable-e',
+            's': '.ui-resizable-s',
+            'w': '.ui-resizable-w'
+        }
+    });
+
+    $(`.draggable`).draggable();
+}
+
+function showResizeHandlers(e) {
+    if (!isManualResizeActive) return;
+    setResizeHandlersClickable(true);
+
+    for (let index = 0; index <= 3; index++) {
+        if (isSubtitleActive(index)) {
+            $(`div.ui-resizable-handle[data-subtitle-index="${index}"]`).show();
+            $(`div.holder-container[data-subtitle-index="${index}"]`).css("border", "1px dashed rgba(0, 0, 0, 1)");
+        }
+    }
+}
+
+function hideResizeHandlers(e) {
+    if (!isManualResizeActive) return;
+    setResizeHandlersClickable(false);
+
+    $(`div.ui-resizable-handle`).hide();
+    $(`div.holder-container`).css("border", "1px dashed rgba(0, 0, 0, 0)");
+}
+
+function setResizeHandlersClickable(isClickable) {
+    if (isClickable) {
+        $(".subtitle_holder").addClass("enable-click");
+        $(".subtitle_holder").removeClass("disable-click");
+
+        $(`div.ui-resizable-handle`).addClass("enable-click");
+        $(`div.ui-resizable-handle`).removeClass("disable-click");
+    } else {
+        $(".subtitle_holder").removeClass("enable-click");
+        $(".subtitle_holder").addClass("disable-click");
+
+        $(`div.ui-resizable-handle`).removeClass("enable-click");
+        $(`div.ui-resizable-handle`).addClass("disable-click");
+    }
 }

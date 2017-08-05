@@ -94,8 +94,7 @@
                     </div>
                 </div>
 
-                <hr>
-                <section>
+                <div id="subtitle_sync_controls_1">
                     <h4>Sync Controls:</h4>
                     <div id="subtitle_controls_1">
                         <input class="btn btn-default" type="button" data-sync-amount="-1000"
@@ -108,7 +107,7 @@
                                title="seek forward one second" value=">>">
                     </div>
                     <p><span id="subtitle_seek_1">0</span> ms</p>
-                </section>
+                </div>
             </div>
             <div id="subtitle_2" role="tabpanel" class="tab-pane">
                 <div id="load_subtitle_section_2">
@@ -181,8 +180,7 @@
                     </div>
                 </div>
 
-                <hr>
-                <section>
+                <div id="subtitle_sync_controls_2">
                     <h4>Sync Controls:</h4>
                     <div id="subtitle_controls_2">
                         <input class="btn btn-default" type="button" data-sync-amount="-1000"
@@ -195,7 +193,7 @@
                                title="seek forward one second" value=">>">
                     </div>
                     <p><span id="subtitle_seek_2">0</span> ms</p>
-                </section>
+                </div>
             </div>
             <div id="subtitle_3" role="tabpanel" class="tab-pane">
                 <div id="load_subtitle_section_3">
@@ -268,8 +266,7 @@
                     </div>
                 </div>
 
-                <hr>
-                <section>
+                <div id="subtitle_sync_controls_3">
                     <h4>Sync Controls:</h4>
                     <div id="subtitle_controls_3">
                         <input class="btn btn-default" type="button" data-sync-amount="-1000"
@@ -282,11 +279,18 @@
                                title="seek forward one second" value=">>">
                     </div>
                     <p><span id="subtitle_seek_3">0</span> ms</p>
-                </section>
+                </div>
             </div>
     </div>
 </section>
-
+<hr>
+<section>
+    <h3>General Style Controls:</h3>
+    <input class="btn btn-default" type="checkbox"
+            id="enable_manual_resize"
+            title="Drag a subtitle to change its position or drag a handler to resize it">
+        Enable manual resize and position<br>
+</section>
 <hr>
 <section>
     <h3>Video Search:</h3>
@@ -302,7 +306,6 @@
         Note: If page includes multiple videos, only first one would be captured
     </p>
 </section>
-
 <hr>
 <section>
     <h3>Key Playback:</h3>
@@ -329,7 +332,6 @@
         </tr>
     </table>
 </section>
-
 <script src="../lib/jquery-3.2.1.min.js"></script>
 <script src="../lib/bootstrap.min.js"></script>
 <script src="../lib/bootstrap-colorpicker.min.js"></script>
