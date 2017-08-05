@@ -154,7 +154,7 @@ function receivedMessage(request, sender, sendResponse) {
         case "searchForVideos":
             sendResponse({
                 videoDetected: true, // else we had already returned at the start of this method
-                "videoKey": getVideoKey()// TODO
+                "videoKey": getVideoKey()
             });
             break;
 
@@ -180,6 +180,16 @@ function receivedMessage(request, sender, sendResponse) {
 
         case "getSubFontSize":
             sendResponse({newRatio: subFontSizeHeightRatios[request.index]});
+            break;
+
+        case "isAllSubSameFontSize":
+            // is all equal?
+            const value = subFontSizeHeightRatios[1];
+            if (Object.values(subFontSizeHeightRatios).reduce((a, b) => (a === b) ? a : NaN) === value) {
+                sendResponse({isAllSubSameFontSize: true, fontSize: value});
+            } else {
+                sendResponse({isAllSubSameFontSize: false});
+            }
             break;
 
         // sub color
@@ -214,7 +224,7 @@ function receivedMessage(request, sender, sendResponse) {
                 console.log(isManualResizeActive);
 
                 // set subtitles inside handlers
-                for (let index = 1; index <= 3; index++){
+                for (let index = 1; index <= 3; index++) {
                     $(`p#subtitle_holder_${index}`).detach().prependTo(`div#holder_container_${index}`);
                 }
 
@@ -226,7 +236,7 @@ function receivedMessage(request, sender, sendResponse) {
             break;
 
         case "deactivatedManualResize":
-            if(isManualResizeActive){
+            if (isManualResizeActive) {
                 hideResizeHandlers();
                 setResizeHandlersClickable(false);
 
@@ -234,7 +244,7 @@ function receivedMessage(request, sender, sendResponse) {
                 isManualResizeActive = false;
 
                 // set subtitles outside handlers
-                for (let index = 1; index <= 3; index++){
+                for (let index = 1; index <= 3; index++) {
                     $(`p#subtitle_holder_${index}`).detach().prependTo("#subtitle_container");
 
                     // make width zero else it will keep the last one and push contents

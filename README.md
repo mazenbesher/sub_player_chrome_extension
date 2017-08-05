@@ -6,7 +6,8 @@ See `bundle.bat`
 1. `npm install -g mustache`
 
 # TODOs:
-- [ ] resize and reposition with mouse (until now just reposition)
+- [ ] resize subtitles with mouse
+- [x] reposition subtitles with mouse
 - [x] use other key for subtitles saving since all youtube videos have the same video source! (fixed: now using `location.href` + `video.currentSrc`) 
 - [x] stop searching if other script on the same page has already found a video (done using communication with bg) 
 - [ ] show some indicator when changing size even if no current subtitle is visible  
@@ -60,12 +61,14 @@ See `bundle.bat`
 ## Extend subtitle controls
 - [ ] reset subtitle sync
 - [ ] sync range input
-- [ ] change file
+- [x] change file
 - [ ] disable
 - [ ] style control (maybe in `css`)
     - [x] font size
     - [x] font color
-    - [ ] global style controls
+- [ ] global style controls
+    - [x] font size
+    - [x] allow reposition with mouse 
 
 ## Learn mode
 - [x] multiple languages at the same time

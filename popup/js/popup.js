@@ -24,8 +24,13 @@ let getActiveTabId = () => new Promise(resolve => {
 getActiveTabId().then(activeTabId => {
     // event listeners
     document.querySelectorAll(".font-size-slider").forEach(slider => {
-        slider.oninput = setSubFontSize;
-        slider.onchange = setSubFontSize;
+        let sliderChangeHandler = (e) => {
+            const index = e.target.dataset.subtitleIndex;
+            setSubFontSize(index, document.querySelector(`#font_size_value_${index}`), e.target.value);
+        };
+
+        slider.oninput = sliderChangeHandler;
+        slider.onchange = sliderChangeHandler;
         slider.disabled = true; // disabled at start
     });
 
@@ -143,6 +148,56 @@ getActiveTabId().then(activeTabId => {
     });
 });
 
+// global-style: enable/disable manual size/position change
+getActiveTabId().then(activeTabId => {
+    chrome.tabs.sendMessage(activeTabId, {
+        action: "manualResizeState"
+    }, response => {
+        const checkbox = document.getElementById("enable_manual_resize");
+        checkbox.checked = response.state;
+        checkbox.onchange = (e) => {
+            if (e.target.checked) {
+                chrome.tabs.sendMessage(activeTabId, {action: "activatedManualResize"});
+            } else {
+                chrome.tabs.sendMessage(activeTabId, {action: "deactivatedManualResize"});
+            }
+        };
+    });
+});
+
+// global-style: font-size
+getActiveTabId().then(activeTabId => {
+    const slider = document.getElementById("global_font_size_slider");
+
+    let sliderChangeHandler = (e) => {
+        const newRatio = e.target.value;
+        document.getElementById("global_font_size_value").innerText = newRatio;
+
+        for (let index = 1; index <= 3; index++) {
+            setSubFontSize(index, document.querySelector(`#font_size_value_${index}`), newRatio);
+
+            // update individual sliders
+            document.querySelector(`#font_size_slider_${index}`).value = newRatio;
+            document.querySelector(`#font_size_value_${index}`).innerText = newRatio;
+        }
+
+    };
+
+    slider.onchange = sliderChangeHandler;
+    slider.oninput = sliderChangeHandler;
+    slider.disabled = false;
+
+    // if all subtitles has the same size -> set global slider value
+    chrome.tabs.sendMessage(activeTabId, {
+        action: "isAllSubSameFontSize",
+    }, response => {
+        if (response !== null && response.isAllSubSameFontSize) {
+            slider.value = response.fontSize;
+            $(slider).trigger("change"); // to trigger sliderChangeHandler
+        }
+    });
+});
+
 // make subtitle tab head bold if a subtitle is active
 {
     document.addEventListener('sub-activated', e => {
@@ -223,23 +278,6 @@ for (let index = 1; index <= 3; index++) {
         }
     };
 }
-
-// Enable/Disable manual size/position change
-getActiveTabId().then(activeTabId => {
-    chrome.tabs.sendMessage(activeTabId, {
-        action: "manualResizeState"
-    }, response => {
-        const checkbox = document.getElementById("enable_manual_resize");
-        checkbox.checked = response.state;
-        checkbox.onchange = (e) => {
-            if (e.target.checked) {
-                chrome.tabs.sendMessage(activeTabId, {action: "activatedManualResize"});
-            } else {
-                chrome.tabs.sendMessage(activeTabId, {action: "deactivatedManualResize"});
-            }
-        };
-    });
-});
 
 // Body width based on current window width TODO: consider dynamic css instead (media queries [@min-width ...)
 // chrome.windows.getCurrent(w => { // w = current window
@@ -364,7 +402,7 @@ function readFile() {
             reader.readAsText(this.files[0], encoding);
         });
     } else {
-        // TODO: show error message
+        throw new Error("can't read file"); // TODO handle error in user-friendly way
         return false;
     }
     return true;
@@ -557,12 +595,9 @@ function unloadSubtitle(index) {
     chrome.tabs.sendMessage(activeTabId, {action: "unloadSubtitle", index: index});
 }
 
-function setSubFontSize() {
-    let index = this.dataset.subtitleIndex;
-    let newRatio = this.value;
-
+function setSubFontSize(index, span, newRatio) {
     // update span
-    document.querySelector(`#font_size_value_${index}`).innerText = newRatio;
+    span.innerText = newRatio;
 
     chrome.tabs.sendMessage(activeTabId, {
         action: "changeSubFontSizeRatio",
