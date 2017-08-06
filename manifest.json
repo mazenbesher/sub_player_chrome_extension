@@ -49,11 +49,13 @@
   ],
   "browser_action": {
     //     "default_icon": {"38": "to_38.png", "19": "to_19.png"}
+    "default_title": "SubPlayer",
     "default_popup": "popup/popup.html"
   },
   "permissions": [
     "tabs",
-    "storage"
+    "storage",
+    "downloads"
   ]
   // "web_accessible_resources": [
   //   "contentscript/contentscript.css"

@@ -29,9 +29,10 @@
  */
 
 // config
+const DEBUG = true;
 const VIDEO_SEARCH_INTERVAL_TIME = 1000; // each VIDEO_SEARCH_INTERVAL_TIME ms the method find video will be fired
 const VIDEO_SEARCH_LIMIT = 10; // after VIDEO_SEARCH_LIMIT the video search interval will be removed
-const initalSubtitlesColors = {1: "white", 2: "lightcoral", 3: "lightblue"};
+const INITIAL_SUBTITLES_COLORS = {1: "white", 2: "lightcoral", 3: "lightblue"};
 
 // style variables
 let subFontSizeHeightRatios = {1: 15, 2: 15, 3: 15}; // font-size = video.clientHeight / subFontSizeHeightRatio
@@ -217,11 +218,9 @@ function receivedMessage(request, sender, sendResponse) {
             break;
 
         case "activatedManualResize":
-            console.log(isManualResizeActive);
             if (!isManualResizeActive) {
                 // set state
                 isManualResizeActive = true;
-                console.log(isManualResizeActive);
 
                 // set subtitles inside handlers
                 for (let index = 1; index <= 3; index++) {
@@ -305,7 +304,7 @@ function displaySubtitleElements(callback) {
         subtitleHolders[index] = document.createElement("p");
         subtitleHolders[index].id = `subtitle_holder_${index}`;
         subtitleHolders[index].className += "subtitle_holder";
-        subtitleHolders[index].style.color = initalSubtitlesColors[index];
+        subtitleHolders[index].style.color = INITIAL_SUBTITLES_COLORS[index];
 
         let holderContainer = document.createElement("div");
         holderContainer.id = `holder_container_${index}`;
@@ -439,6 +438,9 @@ function addMultipleListeners(element, events, handler, useCapture, args) {
 }
 
 function videoFound() {
+    // notify bg that a content script has found a video
+    chrome.runtime.sendMessage({action: "scriptHasFoundVideo"});
+
     // i.e. videoElm != null
     stopSearching();
 
@@ -475,7 +477,6 @@ function doneLoadingSubtitleElements() {
     } else {
         // observer for controls attribute in html5 video (to push subtitle if active through events)
         let videoControlsObserver = new MutationObserver(mutations => {
-            console.log(mutations);
             if (videoElm.controls) {
                 addControlsListeners()
             }
@@ -515,7 +516,7 @@ function getVideoKey(index) {
 }
 
 function log(msg) {
-    console.log(`${msg}`);
+    if (DEBUG) console.log(`${msg}`);
 }
 
 function applyResizalbeAndDraggable(index) {

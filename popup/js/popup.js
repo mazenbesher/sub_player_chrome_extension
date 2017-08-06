@@ -153,15 +153,17 @@ getActiveTabId().then(activeTabId => {
     chrome.tabs.sendMessage(activeTabId, {
         action: "manualResizeState"
     }, response => {
-        const checkbox = document.getElementById("enable_manual_resize");
-        checkbox.checked = response.state;
-        checkbox.onchange = (e) => {
-            if (e.target.checked) {
-                chrome.tabs.sendMessage(activeTabId, {action: "activatedManualResize"});
-            } else {
-                chrome.tabs.sendMessage(activeTabId, {action: "deactivatedManualResize"});
-            }
-        };
+        if (response) {
+            const checkbox = document.getElementById("enable_manual_resize");
+            checkbox.checked = response.state;
+            checkbox.onchange = (e) => {
+                if (e.target.checked) {
+                    chrome.tabs.sendMessage(activeTabId, {action: "activatedManualResize"});
+                } else {
+                    chrome.tabs.sendMessage(activeTabId, {action: "deactivatedManualResize"});
+                }
+            };
+        }
     });
 });
 
@@ -191,7 +193,7 @@ getActiveTabId().then(activeTabId => {
     chrome.tabs.sendMessage(activeTabId, {
         action: "isAllSubSameFontSize",
     }, response => {
-        if (response !== null && response.isAllSubSameFontSize) {
+        if (response && response.isAllSubSameFontSize == true) {
             slider.value = response.fontSize;
             $(slider).trigger("change"); // to trigger sliderChangeHandler
         }

@@ -154,15 +154,17 @@ getActiveTabId().then(activeTabId => {
     chrome.tabs.sendMessage(activeTabId, {
         action: "manualResizeState"
     }, response => {
-        const checkbox = document.getElementById("enable_manual_resize");
-        checkbox.checked = response.state;
-        checkbox.onchange = (e) => {
-            if (e.target.checked) {
-                chrome.tabs.sendMessage(activeTabId, {action: "activatedManualResize"});
-            } else {
-                chrome.tabs.sendMessage(activeTabId, {action: "deactivatedManualResize"});
-            }
-        };
+        if (response) {
+            const checkbox = document.getElementById("enable_manual_resize");
+            checkbox.checked = response.state;
+            checkbox.onchange = (e) => {
+                if (e.target.checked) {
+                    chrome.tabs.sendMessage(activeTabId, {action: "activatedManualResize"});
+                } else {
+                    chrome.tabs.sendMessage(activeTabId, {action: "deactivatedManualResize"});
+                }
+            };
+        }
     });
 });
 
@@ -188,11 +190,11 @@ getActiveTabId().then(activeTabId => {
     slider.oninput = sliderChangeHandler;
     slider.disabled = false;
 
-    // TODO if all subtitles has the same size -> set global slider value
+    // if all subtitles has the same size -> set global slider value
     chrome.tabs.sendMessage(activeTabId, {
         action: "isAllSubSameFontSize",
     }, response => {
-        if (response !== null && response.isAllSubSameFontSize) {
+        if (response && response.isAllSubSameFontSize == true) {
             slider.value = response.fontSize;
             $(slider).trigger("change"); // to trigger sliderChangeHandler
         }
@@ -403,7 +405,7 @@ function readFile() {
             reader.readAsText(this.files[0], encoding);
         });
     } else {
-        // TODO: show error message
+        throw new Error("can't read file"); // TODO handle error in user-friendly way
         return false;
     }
     return true;
