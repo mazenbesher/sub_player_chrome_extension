@@ -423,20 +423,6 @@ function findVideo() {
     }
 }
 
-function videoStyleChanged(mutations) {
-    log("video style changed!")
-    mutations.forEach(mutationRecord => {
-        // type of mutationRecord = MutationRecord
-        // docs: https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord
-
-        // assign new video style attributes to the subtitle container
-        // type of videoElm.style = CSSStyleDeclaration
-        subtitleContainer.style.cssText = videoElm.style.cssText;
-        adjustSubtitlesFontAndPadding();
-        adjustSubtitlesWidths();
-    })
-}
-
 function addMultipleListeners(element, events, handler, useCapture, args) {
     if (!(events instanceof Array)) {
         throw 'addMultipleListeners: ' +
@@ -469,25 +455,48 @@ function doneLoadingSubtitleElements() {
     // videoElm.onwebkitfullscreenchange = videoResized;
 
     // observe video style changes
-    //  docs: https://developer.mozilla.org/en/docs/Web/API/MutationObserver#MutationObserverInit
-    let videoStyleAttrObserver = new MutationObserver(videoStyleChanged);
+    let videoStyleAttrObserver = new MutationObserver(mutations => {
+        log("video style changed!")
+        mutations.forEach(mutationRecord => {
+            // type of mutationRecord = MutationRecord
+            // docs: https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord
+
+            // assign new video style attributes to the subtitle container
+            // type of videoElm.style = CSSStyleDeclaration
+            subtitleContainer.style.cssText = videoElm.style.cssText;
+            adjustSubtitlesFontAndPadding();
+            adjustSubtitlesWidths();
+        })
+    });
     videoStyleAttrObserver.observe(videoElm, {attributes: true, attributeFilter: ['style']});
 
-    if (videoElm.controls) { // TODO: must be done through observer since it can be changed later
-        // html5 video, we must not detect controls manually
-        const controlsHeight = 25; // magic number
-
-        // if video paused or mouse over it -> controls are shown
-        addMultipleListeners(videoElm, ['pause', 'mouseover'], () => {
-            document.dispatchEvent(new CustomEvent('controls-show', {detail: controlsHeight}));
-        }, false);
-
-        // if mouse out and playing OR playing alone -> controls are hidden
-        addMultipleListeners(videoElm, ['playing', 'play', 'mouseout'], () => {
-            if (!videoElm.paused)
-                document.dispatchEvent(new CustomEvent('controls-hide'))
-        }, false);
+    if (videoElm.controls) {
+        addControlsListeners()
+    } else {
+        // observer for controls attribute in html5 video (to push subtitle if active through events)
+        let videoControlsObserver = new MutationObserver(mutations => {
+            console.log(mutations);
+            if (videoElm.controls) {
+                addControlsListeners()
+            }
+        });
+        videoControlsObserver.observe(videoElm, {attributes: true, attributeFilter: ['controls']});
     }
+}
+
+function addControlsListeners() {
+    const controlsHeight = 25; // magic number
+
+    // if video paused or mouse over it -> controls are shown
+    addMultipleListeners(videoElm, ['pause', 'mouseover'], () => {
+        document.dispatchEvent(new CustomEvent('controls-show', {detail: controlsHeight}));
+    }, false);
+
+    // if mouse out and playing OR playing alone -> controls are hidden
+    addMultipleListeners(videoElm, ['playing', 'play', 'mouseout'], () => {
+        if (!videoElm.paused)
+            document.dispatchEvent(new CustomEvent('controls-hide'))
+    }, false);
 }
 
 function stopSearching() {
