@@ -27,9 +27,15 @@
  * 2. controls-hide: if controls are hidden
  * handler: controlsHide
  */
+/**
+ * Note: Subtitle Custom events
+ * sub-activated, sub-deactivated
+ * dispatched when a subtitle is (de)activated
+ * the (de)activated subtitle index can be found as the event detail
+ */
 
 // config
-const DEBUG = true;
+const DEBUG = false;
 const VIDEO_SEARCH_INTERVAL_TIME = 1000; // each VIDEO_SEARCH_INTERVAL_TIME ms the method find video will be fired
 const VIDEO_SEARCH_LIMIT = 10; // after VIDEO_SEARCH_LIMIT the video search interval will be removed
 const INITIAL_SUBTITLES_COLORS = {1: "white", 2: "lightcoral", 3: "lightblue"};
@@ -58,6 +64,8 @@ let isManualResizeActive = false;
 chrome.runtime.onMessage.addListener(receivedMessage);
 document.addEventListener('controls-show', controlsShown);
 document.addEventListener('controls-hide', controlsHide);
+document.addEventListener('sub-activated', subActivated);
+document.addEventListener('sub-deactivated', subDeactivated);
 
 // when done loading
 window.addEventListener("load", main, false);
@@ -95,6 +103,28 @@ function controlsHide(e) {
             $(subtitleHolders[index]).css('padding-bottom', `${originalPadding}px`);
         }
     }
+}
+
+function subActivated(e) {
+    const index = e.detail;
+    adjustBadgeToNumberOfActiveSubtitles();
+}
+
+function subDeactivated(e) {
+    const index = e.detail;
+    adjustBadgeToNumberOfActiveSubtitles();
+}
+
+function adjustBadgeToNumberOfActiveSubtitles(){
+    const activeSubtitles = getNumberOfActiveSubtitles();
+    if (activeSubtitles > 0)
+        setBadgeText(activeSubtitles.toString());
+    else if(activeSubtitles == 0)
+        setBadgeText("");
+}
+
+function setBadgeText(text) {
+    chrome.runtime.sendMessage({action: "setBrowserActionBadge", text});
 }
 
 function showSubtitle(event) {
@@ -140,6 +170,7 @@ function receivedMessage(request, sender, sendResponse) {
         case "srtParsed":
             subtitles[request.index] = request.subtitles;
             subtitleHolders[request.index].style.visibility = "visible";
+            document.dispatchEvent(new CustomEvent('sub-activated', {detail: request.index}));
             adjustSubtitlesWidths();
             break;
 
@@ -162,6 +193,7 @@ function receivedMessage(request, sender, sendResponse) {
         case "unloadSubtitle":
             subtitleHolders[request.index].style.visibility = "hidden";
             subtitles[request.index] = undefined;
+            document.dispatchEvent(new CustomEvent('sub-deactivated', {detail: request.index}));
             adjustSubtitlesWidths();
             break;
 
@@ -368,6 +400,7 @@ function checkIfVideoHasSubtitleInStorage() {
             chrome.storage.local.get(key, function (result) {
                 if (result[key]) {
                     subtitles[index] = JSON.parse(result[key])["subtitles"];
+                    document.dispatchEvent(new CustomEvent('sub-activated', {detail: index}));
                 }
             })
         }
@@ -376,14 +409,19 @@ function checkIfVideoHasSubtitleInStorage() {
     })
 }
 
+function getNumberOfActiveSubtitles() {
+    let result = 0;
+    for (let index = 1; index <= 3; index++) {
+        if (isSubtitleActive(index))
+            result++;
+    }
+    return result;
+}
+
 function adjustSubtitlesWidths() {
     if (!videoElm) return;
 
-    let numberOfEnabledSubtitles = 0;
-    for (let index = 1; index <= 3; index++) {
-        if (isSubtitleActive(index))
-            numberOfEnabledSubtitles++;
-    }
+    let numberOfEnabledSubtitles = getNumberOfActiveSubtitles();
     if (numberOfEnabledSubtitles <= 0) return;
 
     log("adjusting subtitles widths");

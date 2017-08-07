@@ -18,23 +18,36 @@ function messageHandler(request, sender, sendResponse) {
             break;
 
         case "scriptHasFoundVideo":
-            chrome.browserAction.enable(senderTabId); // TODO
-            // setPopupBadge(senderTabId);
+            chrome.browserAction.enable(senderTabId);
+            break;
+
+        case "setBrowserActionBadge":
+            setBrowserActionBadge(request.text, senderTabId);
             break;
     }
 }
 
-function setPopupBadge(tabId) {
+function setBrowserActionBadge(text, tabId) {
     chrome.browserAction.setBadgeBackgroundColor({
         color: "red",
         tabId: tabId
     });
 
     chrome.browserAction.setBadgeText({
-        text: "*", // Any number of characters can be passed, but only about four can fit in the space.
-        tabId: tabId
+        text, // Any number of characters can be passed, but only about four can fit in the space.
+        tabId
     });
 }
 
+////////////////// TESTING /////////////////////////////
 
+// ---------------------------------------- downloads
+// chrome.downloads.download(
+//     {
+//         url: 'https://i.imgur.com/yK7dFur.jpg'
+//     },
+//     downloadId => {
+//         console.log(downloadId);
+//     }
+// );
 
