@@ -38,7 +38,7 @@
 const DEBUG = false;
 const VIDEO_SEARCH_INTERVAL_TIME = 1000; // each VIDEO_SEARCH_INTERVAL_TIME ms the method find video will be fired
 const VIDEO_SEARCH_LIMIT = 10; // after VIDEO_SEARCH_LIMIT the video search interval will be removed
-const INITIAL_SUBTITLES_COLORS = {1: "white", 2: "lightcoral", 3: "lightblue"};
+const INITIAL_SUBTITLES_COLORS = {1: "lightgray", 2: "lightcoral", 3: "lightblue"};
 
 // style variables
 let subFontSizeHeightRatios = {1: 15, 2: 15, 3: 15}; // font-size = video.clientHeight / subFontSizeHeightRatio
@@ -118,13 +118,13 @@ function subDeactivated(e) {
 function adjustBadgeToNumberOfActiveSubtitles(){
     const activeSubtitles = getNumberOfActiveSubtitles();
     if (activeSubtitles > 0)
-        setBadgeText(activeSubtitles.toString());
+        setBadgeText(activeSubtitles.toString(), "green");
     else if(activeSubtitles == 0)
         setBadgeText("");
 }
 
-function setBadgeText(text) {
-    chrome.runtime.sendMessage({action: "setBrowserActionBadge", text});
+function setBadgeText(text, color = "red") {
+    chrome.runtime.sendMessage({action: "setBrowserActionBadge", text, color});
 }
 
 function showSubtitle(event) {
@@ -455,7 +455,7 @@ function findVideo() {
 
     searchCounter++;
     if (searchCounter > VIDEO_SEARCH_LIMIT) {
-        log("counter is up...")
+        log("counter is up...");
         stopSearching();
     }
 }
@@ -543,9 +543,13 @@ function stopSearching() {
 }
 
 function getVideoKey(index) {
-    const url = location.href;
-    const videoSrc = videoElm.currentSrc;
-    const videoKey = md5(`${url}_${videoSrc}`);
+    // old
+    // const url = location.href;
+    // const videoSrc = videoElm.currentSrc;
+    // const videoKey = md5(`${url}_${videoSrc}`);
+
+    // new
+    const videoKey = md5(`${location.href}`);
 
     if (index)
         return `${videoKey}_${index}`;

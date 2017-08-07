@@ -22,21 +22,17 @@ function messageHandler(request, sender, sendResponse) {
             break;
 
         case "setBrowserActionBadge":
-            setBrowserActionBadge(request.text, senderTabId);
+            setBrowserActionBadge(senderTabId, request.text, request.color);
             break;
     }
 }
 
-function setBrowserActionBadge(text, tabId) {
-    chrome.browserAction.setBadgeBackgroundColor({
-        color: "red",
-        tabId: tabId
-    });
-
-    chrome.browserAction.setBadgeText({
-        text, // Any number of characters can be passed, but only about four can fit in the space.
-        tabId
-    });
+/**
+ * @param text Any number of characters can be passed, but only about four can fit in the space.
+ */
+function setBrowserActionBadge(tabId, text = "", color = "red") {
+    chrome.browserAction.setBadgeBackgroundColor({color, tabId});
+    chrome.browserAction.setBadgeText({text, tabId});
 }
 
 ////////////////// TESTING /////////////////////////////
