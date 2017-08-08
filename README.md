@@ -6,6 +6,8 @@ See `bundle.bat`
 1. `npm install -g mustache`
 
 # TODOs:
+- [ ] add error reporting mechanism (maybe [StackTraceJS](https://www.stacktracejs.com/)) 
+- [ ] consider using `TextDecorder` instead of `FileReader`
 - [ ] resize subtitles with mouse
 - [x] reposition subtitles with mouse
 - [x] use other key for subtitles saving since all youtube videos have the same video source! (fixed: now using `location.href` + `video.currentSrc`) 

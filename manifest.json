@@ -4,9 +4,11 @@
   "version": "0.01",
   "background": {
     "scripts": [
+      "lib/jquery-3.2.1.min.js",
+      "data/private.js",
       "background.js"
     ],
-    "persistent": false
+    "persistent": true
   },
   //   "options_page": "options.html",
   "content_scripts": [
@@ -54,8 +56,7 @@
   },
   "permissions": [
     "tabs",
-    "storage",
-    "downloads"
+    "storage"
   ]
   // "web_accessible_resources": [
   //   "contentscript/contentscript.css"
