@@ -4,9 +4,10 @@ demo/
 node_modules/
 
 # privates
-/prod/data/private.js
+dist/data/private.js
 
 # bundles
-/prod/background.bundled.js
-/prod/popup/popup.bundled.html
-/prod/popup/js/popup.bundled.js
+dist/background.bundled.js
+dist/popup/popup.bundled.html
+dist/popup/js/popup.bundled.js
+subplayer.zip

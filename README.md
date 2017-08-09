@@ -1,9 +1,8 @@
 Add subtitle overlay from SRT files to any video element, with options to sync the subtitle.
 
 # Note:
-All files with `*.bundled.*` extension are generated dynamically. (by running `npm run build:os`) and included in the repo  
-Supported OSs:
-1. Windows (see `bundle.bat`)
+To install dependencies run `npm install`    
+All files with `*.bundled.*` extension are generated dynamically by running `npm run build` and they are not included in the repo.    
 
 # TODOs:
 - [ ] add indicator while searching or downloading a subtitle
