@@ -7,7 +7,5 @@ node_modules/
 dist/data/private.js
 
 # bundles
-dist/background.bundled.js
-dist/popup/popup.bundled.html
-dist/popup/js/popup.bundled.js
+*.bundled*
 subplayer.zip
