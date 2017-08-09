@@ -1,0 +1,1621 @@
+From: <Saved by Blink>
+Subject: DevReadFirst ? OpenSubtitles.org
+Date: Tue, 7 Aug 2017 19:30:55 -0000
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----MultipartBoundary--jn3CzTWsX5NXaaHeUNW46fSXosLWrDxsLIrvKeONeG----"
+
+------MultipartBoundary--jn3CzTWsX5NXaaHeUNW46fSXosLWrDxsLIrvKeONeG----
+Content-Type: text/html
+Content-ID: <frame-125-196ab10b-ee63-413d-8374-3aa654754b93@mhtml.blink>
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://trac.opensubtitles.org/projects/opensubtitles/wiki/DevReadFirst
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org=
+/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns=3D"http://www.w3.org/1999/xht=
+ml"><head><meta http-equiv=3D"Content-Type" content=3D"text/html; charset=
+=3DUTF-8">
+<title>
+DevReadFirst =E2=80=93 OpenSubtitles.org
+</title>
+
+<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
+
+<link rel=3D"search" href=3D"http://trac.opensubtitles.org/projects/opensub=
+titles/search">
+<link rel=3D"help" href=3D"http://trac.opensubtitles.org/projects/opensubti=
+tles/wiki/TracGuide">
+<link rel=3D"alternate" href=3D"http://trac.opensubtitles.org/projects/open=
+subtitles/wiki/DevReadFirst?format=3Dtxt" type=3D"text/x-trac-wiki" title=
+=3D"Plain Text">
+<link rel=3D"start" href=3D"http://trac.opensubtitles.org/projects/opensubt=
+itles/wiki">
+<link rel=3D"stylesheet" href=3D"http://trac.opensubtitles.org/projects/ope=
+nsubtitles/chrome/common/css/trac.css" type=3D"text/css"><link rel=3D"style=
+sheet" href=3D"http://trac.opensubtitles.org/projects/opensubtitles/chrome/=
+common/css/wiki.css" type=3D"text/css">
+<link rel=3D"shortcut icon" href=3D"http://trac.opensubtitles.org/projects/=
+opensubtitles/chrome/common/trac.ico" type=3D"image/x-icon">
+<link rel=3D"icon" href=3D"http://trac.opensubtitles.org/projects/opensubti=
+tles/chrome/common/trac.ico" type=3D"image/x-icon">
+<style id=3D"trac-noscript" type=3D"text/css">.trac-noscript { display: non=
+e !important }</style>
+<link type=3D"application/opensearchdescription+xml" rel=3D"search" href=3D=
+"http://trac.opensubtitles.org/projects/opensubtitles/search/opensearch" ti=
+tle=3D"Search OpenSubtitles.org">
+<style type=3D"text/css">
+:root tr[style^=3D"height:115px;text-align:center;margin:0px;padding:0px;ba=
+ckground-color:"],
+:root img[src*=3D"data:image"],
+:root fieldset > table[style=3D"width:100%;"] > tbody > .change,
+:root fieldset > legend + a[class],
+:root fieldset > a[target=3D"_blank"][href],
+:root div[style=3D"text-align:center;"] > a[class],
+:root [href^=3D"http://www.amazon."][href*=3D"tag=3D"],
+:root a[href=3D"/en/aoxwnwylgqtvicv"],
+:root .right_side_fixed,
+:root .msg.star,
+:root .msg.hint,
+:root .msg > div > fieldset > legend + div > a[class],
+:root .content > div[id] > div[id][style^=3D"z-index"],
+:root #watch_online,
+:root #scrubbuad_style,
+:root #bt-dwl,
+:root #content > #right > .dose > .dosesingle,
+:root #content > #center > .dose > .dosesingle,
+:root #header + #content > #left > #rlblock_left
+{ display: none !important; }</style>
+
+
+
+
+
+
+<link rel=3D"stylesheet" type=3D"text/css" href=3D"http://trac.opensubtitle=
+s.org/projects/opensubtitles/chrome/site/style.css">
+</head>
+<body>
+<div id=3D"siteheader">
+</div>
+<div id=3D"banner">
+<div id=3D"header">
+<a id=3D"logo" href=3D"http://trac.opensubtitles.org/projects/opensubtitles=
+"><img src=3D"http://static.opensubtitles.org/gfx/logo.gif" alt=3D"OpenSubt=
+itles.org" height=3D"50" width=3D"180"></a>
+</div>
+<form id=3D"search" action=3D"http://trac.opensubtitles.org/projects/opensu=
+btitles/search" method=3D"get">
+<div>
+<label for=3D"proj-search">Search:</label>
+<input type=3D"text" id=3D"proj-search" name=3D"q" size=3D"18" value=3D"" d=
+isabled=3D"">
+<input type=3D"submit" value=3D"Search" disabled=3D"">
+</div>
+</form>
+<div id=3D"metanav" class=3D"nav">
+<ul>
+<li class=3D"first"><a href=3D"http://trac.opensubtitles.org/projects/opens=
+ubtitles/login">Login</a></li><li><a href=3D"http://trac.opensubtitles.org/=
+projects/opensubtitles/prefs">Preferences</a></li><li><a href=3D"http://tra=
+c.opensubtitles.org/projects/opensubtitles/wiki/TracGuide">Help/Guide</a></=
+li><li class=3D"last"><a href=3D"http://trac.opensubtitles.org/projects/ope=
+nsubtitles/about">About Trac</a></li>
+</ul>
+</div>
+</div>
+<div id=3D"mainnav" class=3D"nav">
+<ul>
+<li class=3D"first active"><a href=3D"http://trac.opensubtitles.org/project=
+s/opensubtitles/wiki">Wiki</a></li><li><a href=3D"http://trac.opensubtitles=
+.org/projects/opensubtitles/timeline">Timeline</a></li><li><a href=3D"http:=
+//trac.opensubtitles.org/projects/opensubtitles/roadmap">Roadmap</a></li><l=
+i><a href=3D"http://trac.opensubtitles.org/projects/opensubtitles/report">V=
+iew Tickets</a></li><li class=3D"last"><a href=3D"http://trac.opensubtitles=
+.org/projects/opensubtitles/search">Search</a></li>
+</ul>
+</div>
+<div id=3D"main">
+<div id=3D"pagepath" class=3D"noprint">
+<a class=3D"pathentry first" title=3D"View WikiStart" href=3D"http://trac.o=
+pensubtitles.org/projects/opensubtitles/wiki">wiki:</a><a class=3D"pathentr=
+y" href=3D"http://trac.opensubtitles.org/projects/opensubtitles/wiki/DevRea=
+dFirst" title=3D"View DevReadFirst">DevReadFirst</a>
+</div>
+<div id=3D"ctxtnav" class=3D"nav">
+<h2>Context Navigation</h2>
+<ul>
+<li class=3D"first"><a href=3D"http://trac.opensubtitles.org/projects/opens=
+ubtitles/wiki/WikiStart">Start Page</a></li><li><a href=3D"http://trac.open=
+subtitles.org/projects/opensubtitles/wiki/TitleIndex">Index</a></li><li cla=
+ss=3D"last"><a href=3D"http://trac.opensubtitles.org/projects/opensubtitles=
+/wiki/DevReadFirst?action=3Dhistory">History</a></li>
+</ul>
+<hr>
+</div>
+<div id=3D"content" class=3D"wiki">
+<div class=3D"wikipage searchable">
+<div id=3D"wikipage" class=3D"trac-content"><p>
+</p><div class=3D"wiki-toc"><h4>Navigation</h4>
+<ol>
+<li>
+<a href=3D"http://trac.opensubtitles.org/projects/opensubtitles/wiki/DevRea=
+dFirst#Howtorequestanewuseragent">How to request a new user agent</a>
+</li>
+<li>
+<a href=3D"http://trac.opensubtitles.org/projects/opensubtitles/wiki/DevRea=
+dFirst#Implementingopensubtitles.orgsupport">Implementing opensubtitles.org=
+ support</a>
+</li>
+<li>
+<a href=3D"http://trac.opensubtitles.org/projects/opensubtitles/wiki/DevRea=
+dFirst#SupportingAutomaticSubtitleUploading">Supporting Automatic Subtitle =
+Uploading</a>
+</li>
+<li>
+<a href=3D"http://trac.opensubtitles.org/projects/opensubtitles/wiki/DevRea=
+dFirst#GettingVideoInformation">Getting Video Information</a>
+</li>
+<li>
+<a href=3D"http://trac.opensubtitles.org/projects/opensubtitles/wiki/DevRea=
+dFirst#Videofilesextensions">Video files extensions</a>
+</li>
+<li>
+<a href=3D"http://trac.opensubtitles.org/projects/opensubtitles/wiki/DevRea=
+dFirst#Subtitlefilesextensions">Subtitle files extensions</a>
+</li>
+<li>
+<a href=3D"http://trac.opensubtitles.org/projects/opensubtitles/wiki/DevRea=
+dFirst#RARsupport">RAR support</a>
+</li>
+<li>
+<a href=3D"http://trac.opensubtitles.org/projects/opensubtitles/wiki/DevRea=
+dFirst#Movieidentification">Movie identification</a>
+</li>
+<li>
+<a href=3D"http://trac.opensubtitles.org/projects/opensubtitles/wiki/DevRea=
+dFirst#Howtogetanddumpourdata">How to get and dump our data</a>
+</li>
+</ol>
+</div><p>
+</p>
+<h1 id=3D"ReadFirstforDevelopers">Read First for Developers</h1>
+<p>
+Hello and welcome! Maybe you've decided to develop a web-based or standalon=
+e application/script using opensubtitles.org. If so, that's great news!
+</p>
+<p>
+Due to the increasing number of developers who've been asking the same ques=
+tions, we decided to make a small FAQ for this area. Please read all topics=
+ carefully.
+</p>
+<h2 id=3D"Howtorequestanewuseragent">How to request a new user agent</h2>
+<p>
+According to the <a class=3D"wiki" href=3D"http://trac.opensubtitles.org/pr=
+ojects/opensubtitles/wiki/XMLRPC">API documentation</a>, you need a UserAge=
+nt string, if you will not fill valid UserAgent, you will get error.
+</p>
+<p>
+ONLY for testing and developing purposes you can use special user agent "OS=
+TestUserAgentTemp". Never use this UA as default/public/in production code,=
+ we periodically change this and your APP will stop work! Also don't abuse =
+usage of this test user agent.
+</p>
+<p>
+IF you need to download bulk sets of subtitles, User Agent will not help yo=
+u. There is <a class=3D"ext-link" href=3D"https://www.opensubtitles.org/en/=
+support#vip"><span class=3D"icon">=E2=80=8B</span>limitation</a> per day fo=
+r downloads per IP/User.
+</p>
+<p>
+For registering your own user agent follow these instructions:
+</p>
+<p>
+Please first register as an user on www.opensubtitles.org, if you will ask =
+for UA as not registered, your mail will be ignored. You can choose your ow=
+n useragent name (there is not guarantee you will have it, because somebody=
+ could register same name of UA before you), and please choose version numb=
+er as required. An example of a valid UserAgent (you pass it there with ver=
+sion!) in XML-RPC would be something like: <strong>My Application v0.1</str=
+ong> (please avoid using a weird version numbering, such as v2r1, because w=
+e're parsing version using regexp).
+</p>
+<p>
+IMPORTANT: If you are developing wrapper/module/script, which will use OTHE=
+R DEVELOPERS, never put there your UserAgent there as default. It is import=
+ant, every application/program/script will have own UA.
+</p>
+<p>
+Please fill the following form and email it to: admin at opensubtitles.org =
+with the subject "Register User Agent Request". You will then get a confirm=
+ation mail, we are adding UAs manually yet, so it can take couple of days, =
+if you think it is taking too long, contact us again.
+</p>
+<pre class=3D"wiki">Required info
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Your name: your real name
+Your registered OS username: your username on opensubtitles.org
+Contact mail: your mail
+Title of useragent: your name of useragent
+Version of useragent: for example: v1
+Programming language: C++/Java/PHP/Python...
+Approximate users of program: how many approx. users are using your program=
+?
+Opensource: yes/no
+Upload feature: yes/no/maybe in future
+
+
+Optional info
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Application URL: where is possible find homepage of application
+Developer URL: developers homepage
+</pre><p>
+If you provide an application URL, and subtitles are uploaded through your =
+application in future, your application URL will appear on the details page=
+ for those subtitles. If you also provide a Developer URL, a link will poin=
+t to your homepage instead of your profile page on opensubtitles. For examp=
+le, this is html for SubDownloader on subtitle <a class=3D"ext-link" href=
+=3D"http://www.opensubtitles.org/en/subtitles/3348814/girl-scouts-en"><span=
+ class=3D"icon">=E2=80=8B</span>details page</a>:
+</p>
+<pre class=3D"wiki">Uploaded by &lt;a target=3D'_blank' href=3D'http://www.=
+subdownloader.net'&gt;Subdownloader 1.2.4&lt;/a&gt; developed by &lt;a href=
+=3D'http://www.ivangarcia.org/blog/'&gt;capiscuas&lt;/a&gt;
+</pre><p>
+Please also send an email when your application goes public, or to let us k=
+now if you want to test it with us first.
+</p>
+<h2 id=3D"Implementingopensubtitles.orgsupport">Implementing opensubtitles.=
+org support</h2>
+<p>
+Everybody knows that using an API creates few or no real visits to the site=
+, which means no advertising revenue to cover server costs, nor publicity f=
+or us. In order to help us keep the site going, please follow these simple =
+steps to help us promote the site and build our brand:
+</p>
+<ul><li>In the "about" menu in your application, add an opensubtitles.org l=
+ogo or icon, with a clickable link to <a class=3D"ext-link" href=3D"http://=
+www.opensubtitles.org/"><span class=3D"icon">=E2=80=8B</span>http://www.ope=
+nsubtitles.org</a>. You could also write something like "Subtitles service =
+powered by www.OpenSubtitles.org". Here are some logos for you to use: (<a =
+class=3D"ext-link" href=3D"http://static.opensubtitles.org/favicon.ico"><sp=
+an class=3D"icon">=E2=80=8B</span>Favicon</a>, <a class=3D"ext-link" href=
+=3D"http://eduo.info/soleol-support/OpenSubtitlesFavIcon.gif"><span class=
+=3D"icon">=E2=80=8B</span>Favicon (GIF)</a>, <a class=3D"ext-link" href=3D"=
+http://static.opensubtitles.org/gfx/logo.gif"><span class=3D"icon">=E2=80=
+=8B</span>Logo</a>, <a class=3D"ext-link" href=3D"http://static.opensubtitl=
+es.org/gfx/logo-transparent.png"><span class=3D"icon">=E2=80=8B</span>Logo =
+(transparent)</a>)
+</li><li>In the application's "subtitles" menu/context menu, write somethin=
+g like "Download subtitles from OpenSubtitles.org"
+</li><li>If your application doesn't support automatic uploading (see later=
+ - more uploaded subs with your application's link means more subs availabl=
+e, and more happy users!), please add a manual Upload option, pointing the =
+user to: <a class=3D"ext-link" href=3D"http://www.opensubtitles.org/upload"=
+><span class=3D"icon">=E2=80=8B</span>http://www.opensubtitles.org/upload</=
+a>
+</li><li>Put a search link pointing to opensubtitles.org, using the followi=
+ng syntax: <a class=3D"ext-link" href=3D"http://www.opensubtitles.org/searc=
+h/sublanguageid-all/moviebytesize-$moviesize/moviehash-$moviehash"><span cl=
+ass=3D"icon">=E2=80=8B</span>http://www.opensubtitles.org/search/sublanguag=
+eid-all/moviebytesize-$moviesize/moviehash-$moviehash</a>
+</li><li>Please put an <a class=3D"ext-link" href=3D"http://www.opensubtitl=
+es.org/"><span class=3D"icon">=E2=80=8B</span>http://www.opensubtitles.org<=
+/a> link on your application webpage.
+</li><li>Write about opensubtitles.org support at your webpage, in the read=
+me.txt and in the user guide, if applicable.
+</li><li>Disable automatic search feature without user action, <strong>call=
+ opensubtitles.org API methods per user request only</strong>
+</li><li>There is download limit per IP, so if you wish to download subtitl=
+es on your server, contact us for more information, otherwise you might hit=
+ting download limit.
+</li><li>When implementing, it is preferred that user can insert his opensu=
+btitles.org USERNAME and PASSWORD - for higher limits for downloading, ther=
+e might be also problems if he access using proxy, TOR and so on.
+</li><li>When you put link on webpage, dont use rel=3D"nofollow" tag. Hey, =
+API is for free, so at least we got some backlink from you. Please use HTML=
+ for linking back to us.
+</li><li>There is script which is checking for link to opensubtitles.org in=
+ your Application URL or Developer URL, if none back-link present you will =
+get warning and maybe later disabling your UA, so please link to us, it is =
+important.
+</li><li>If you are registering User Agent to raise download limits from op=
+ensubtitles - it is wrong and it will not work. Download Limits are per Use=
+r IP and User ID, it doesn't have nothing common with UA.
+</li></ul><h2 id=3D"SupportingAutomaticSubtitleUploading">Supporting Automa=
+tic Subtitle Uploading</h2>
+<p>
+The idea's very simple - if a user watching a movie with subtitles, already=
+ saw 80% or more of the movie (without modifying the delay or framerate sub=
+titles, or fast forward the movie, he really must watch it), we can safely =
+say that those subtitles are suitable for the movie. In that case, why don'=
+t you upload them? In many cases this should be done in automated way, in t=
+he background (as the default setting). In your player preferences, user sh=
+ould of course be able to change login/password, enable/disable automatic u=
+pload, as well as changing any other settings.
+</p>
+<ul><li>Workflow:
+<ul><li>After 80% of <strong>watching</strong> movie (this means user can s=
+kip back and forth, but must watch at least 80% of the movie in real-time),=
+ launch the automatic uploader module in player,
+</li><li>LogIn()
+</li><li><a class=3D"wiki" href=3D"http://trac.opensubtitles.org/projects/o=
+pensubtitles/wiki/XMLRPC#TryUploadSubtitles">TryUploadSubtitles()</a>
+</li><li>If subtitles are not in the database, we need IMDB ID:
+<ul><li>use <a class=3D"wiki" href=3D"http://trac.opensubtitles.org/project=
+s/opensubtitles/wiki/XMLRPC#CheckMovieHash">CheckMovieHash()</a>
+</li><li>and/or get IMDB ID from .nfo file. Make sure, you scan all the .nf=
+o files in directory, if directory name is
+<pre class=3D"wiki">/^CD\d+$/
+</pre></li></ul></li></ul></li></ul><blockquote>
+<p>
+(CD1,CD2) search in parent directory, use this regex
+</p>
+<pre class=3D"wiki">/imdb\.\w{2,3}\/title\/tt(\d+)/
+</pre><p>
+(<a class=3D"ext-link" href=3D"http://www.imdb.com/title/tt1735898/"><span =
+class=3D"icon">=E2=80=8B</span>http://www.imdb.com/title/tt1735898/</a> <a =
+class=3D"ext-link" href=3D"http://www.imdb.it/title/tt1735898/"><span class=
+=3D"icon">=E2=80=8B</span>http://www.imdb.it/title/tt1735898/</a>) - match =
+all, and then make sure, there is only ONE match after UNIQUE OF IMDB IDs. =
+If you find more matches, it means, there is more .nfo in directory (for ex=
+ample users put in one directory whole TV-Series, or more movies with nfos)=
+, and result will be wrong.
+</p>
+</blockquote>
+<ul><li>If we don't have IMDB ID, user should be prompted to find it using =
+<a class=3D"wiki" href=3D"http://trac.opensubtitles.org/projects/opensubtit=
+les/wiki/XMLRPC#SearchMoviesOnIMDB">SearchMoviesOnIMDB()</a>
+</li><li><a class=3D"wiki" href=3D"http://trac.opensubtitles.org/projects/o=
+pensubtitles/wiki/XMLRPC#UploadSubtitles">UploadSubtitles()</a>
+</li></ul><h2 id=3D"GettingVideoInformation">Getting Video Information</h2>
+<p>
+Users don't like to fill fields and clicking too much when working with pro=
+gram, so here you can find information how to pre-fill some fields and hint=
+s about your program behavior.
+</p>
+<p>
+<strong>Finding more CDs</strong>
+In file explorer show to user <a class=3D"wiki" href=3D"http://trac.opensub=
+titles.org/projects/opensubtitles/wiki/DevReadFirst#Videofilesextensions">v=
+ideo files</a>. Let's say he will pick up one video file and movie is distr=
+ibuted in more than 1 file (2CD...), so we want to detect 2nd CD. Subtitles=
+ should be easy to detect, just search in same directory subtitles with sam=
+e name as movie and different <a class=3D"wiki" href=3D"http://trac.opensub=
+titles.org/projects/opensubtitles/wiki/DevReadFirst#Subtitlefilesextensions=
+">extension</a>. Here are the most common directory structures for movies:
+</p>
+<p>
+<strong>1CD release with subtitles, most left directory is scene release na=
+me</strong>
+</p>
+<pre class=3D"wiki">Restraint.2008.DVDSCR.XviD-PreVail\prv-rstrnt.dvdscr.xv=
+id.avi
+Restraint.2008.DVDSCR.XviD-PreVail\prv-rstrnt.dvdscr.xvid.sub
+Restraint.2008.DVDSCR.XviD-PreVail\prv-rstrnt.dvdscr.xvid.nfo
+</pre><p>
+<strong>2CD release with subtitles in same directory</strong>
+</p>
+<pre class=3D"wiki">Atonement.DVDRip.XviD-SVD\svd-tnmnt.nfo
+Atonement.DVDRip.XviD-SVD\svd-tnmnta.avi
+Atonement.DVDRip.XviD-SVD\svd-tnmnta.sub
+Atonement.DVDRip.XviD-SVD\svd-tnmntb.avi
+Atonement.DVDRip.XviD-SVD\svd-tnmntb.sub
+</pre><p>
+<strong>2CD release with subtitles in more directories</strong>
+</p>
+<pre class=3D"wiki">Atonement.DVDRip.XviD-SVD\svd-tnmnt.nfo
+Atonement.DVDRip.XviD-SVD\CD1\svd-tnmnta.avi
+Atonement.DVDRip.XviD-SVD\CD1\svd-tnmnta.sub
+Atonement.DVDRip.XviD-SVD\CD2\svd-tnmntb.avi
+Atonement.DVDRip.XviD-SVD\CD2\svd-tnmntb.sub
+</pre><p>
+For rar archive, just replace *.avi with *.rar -&gt; *.rxx (xx is number), =
+rest is same
+</p>
+<h2 id=3D"Videofilesextensions">Video files extensions</h2>
+<p>
+opensubtitles.org site/api does not restrict any extension for video files,=
+ nor movie filesize is not problem (movie file must be bigger than 128 kb:)=
+. If you want list of common videofiles here it is according <a class=3D"ex=
+t-link" href=3D"http://en.wikipedia.org/wiki/List_of_file_formats#Video"><s=
+pan class=3D"icon">=E2=80=8B</span>wikipedia</a> and <a class=3D"ext-link" =
+href=3D"http://www.filezed.com/file-types/1/movie-video-multimedia-files.ht=
+ml"><span class=3D"icon">=E2=80=8B</span>filezed</a>:
+</p>
+<ul><li>*.3g2, , *.3gp, *.3gp2, *.3gpp, *.60d, *.ajp, *.asf, *.asx, *.avchd=
+, *.avi, *.bik, *.bix, *.box, *.cam, *.dat, *.divx, *.dmf, *.dv, *.dvr-ms, =
+*.evo, *.flc, *.fli, *.flic, *.flv, *.flx, *.gvi, *.gvp, *.h264, *.m1v, *.m=
+2p, *.m2ts, *.m2v, *.m4e, *.m4v, *.mjp, *.mjpeg, *.mjpg, *.mkv, *.moov, *.m=
+ov, *.movhd, *.movie, *.movx, *.mp4, *.mpe, *.mpeg, *.mpg, *.mpv, *.mpv2, *=
+.mxf, *.nsv, *.nut, *.ogg, *.ogm, *.omf, *.ps, *.qt, *.ram, *.rm, *.rmvb, *=
+.swf, *.ts, *.vfw, *.vid, *.video, *.viv, *.vivo, *.vob, *.vro, *.wm, *.wmv=
+, *.wmx, *.wrap, *.wvx, *.wx, *.x264, *.xvid
+</li></ul><h2 id=3D"Subtitlefilesextensions">Subtitle files extensions</h2>
+<p>
+opensubtitles.org is supporting these subtitle formats: *.srt, *.sub, *.smi=
+, *.txt, *.ssa, *.ass, *.mpl - please don't upload UTF 16/32 files, if you =
+need some support for other formats - contact us and send example of subtit=
+le file. We will not support scene subtitles IDX/RAR.
+</p>
+<h2 id=3D"RARsupport">RAR support</h2>
+<p>
+Most of movies are released on warez scene first and according their rulez =
+(<a class=3D"ext-link" href=3D"http://en.wikipedia.org/wiki/Standard_(warez=
+)"><span class=3D"icon">=E2=80=8B</span>1</a>, <a class=3D"ext-link" href=
+=3D"http://www.scenereleases.info/2006/06/scene-rules.html"><span class=3D"=
+icon">=E2=80=8B</span>2</a>, <a class=3D"ext-link" href=3D"http://www.sbyte=
+s.info/blog/static.php?page=3Dstatic051030-153644"><span class=3D"icon">=E2=
+=80=8B</span>3</a>) they package video to RAR archives using STORE compress=
+ion (that means no compression at all is used). So movie is just divided in=
+to some parts and header/footer (?) is added to .rar files - if you need so=
+me example, just compress your movie with rar using store compression and s=
+et one archive to 15.000.000 bytes. It should be really nice, if players ar=
+e supporting this. So, if your player is supporting this, add downloading/u=
+ploading subtitles for movies, which are stored in RAR archive, please.
+Here are some source codes for reading RAR (store compression) files: <a cl=
+ass=3D"wiki" href=3D"http://trac.opensubtitles.org/projects/opensubtitles/w=
+iki/RarSourceCodes">Rar Source Codes</a>
+</p>
+<h2 id=3D"Movieidentification">Movie identification</h2>
+<p>
+see <a class=3D"wiki" href=3D"http://trac.opensubtitles.org/projects/opensu=
+btitles/wiki/MovieIdentification">Movie Identification</a>
+</p>
+<h2 id=3D"Howtogetanddumpourdata">How to get and dump our data</h2>
+<p>
+For website developers who wants print our data on their page, we got sever=
+al <a class=3D"ext-link" href=3D"http://www.opensubtitles.org/en/downloads#=
+exports"><span class=3D"icon">=E2=80=8B</span>dumps</a>. If you need parse =
+our website data, use <a class=3D"wiki" href=3D"http://trac.opensubtitles.o=
+rg/projects/opensubtitles/wiki/PageInXML">XML output</a>.
+</p>
+</div>
+<div class=3D"trac-modifiedby">
+<span><a href=3D"http://trac.opensubtitles.org/projects/opensubtitles/wiki/=
+DevReadFirst?action=3Ddiff&amp;version=3D41" title=3D"Version 41 by os">Las=
+t modified</a> <a class=3D"timeline" href=3D"http://trac.opensubtitles.org/=
+projects/opensubtitles/timeline?from=3D2016-11-28T05%3A05%3A44%2B01%3A00&am=
+p;precision=3Dsecond" title=3D"See timeline at Nov 28, 2016, 5:05:44 AM">8 =
+months ago</a></span>
+<span class=3D"trac-print">Last modified on Nov 28, 2016, 5:05:44 AM</span>
+</div>
+</div>
+</div>
+<div id=3D"altlinks">
+<h3>Download in other formats:</h3>
+<ul>
+<li class=3D"last first">
+<a rel=3D"nofollow" href=3D"http://trac.opensubtitles.org/projects/opensubt=
+itles/wiki/DevReadFirst?format=3Dtxt">Plain Text</a>
+</li>
+</ul>
+</div>
+</div>
+<div id=3D"footer" lang=3D"en" xml:lang=3D"en"><hr>
+<a id=3D"tracpowered" href=3D"http://trac.edgewall.org/"><img src=3D"http:/=
+/trac.opensubtitles.org/projects/opensubtitles/chrome/common/trac_logo_mini=
+.png" height=3D"30" width=3D"107" alt=3D"Trac Powered"></a>
+<p class=3D"left">Powered by <a href=3D"http://trac.opensubtitles.org/proje=
+cts/opensubtitles/about"><strong>Trac 1.0.13</strong></a><br>
+By <a href=3D"http://www.edgewall.org/">Edgewall Software</a>.</p>
+<p class=3D"right">Visit the Trac open source project at<br><a href=3D"http=
+://trac.edgewall.org/">http://trac.edgewall.org/</a></p>
+</div>
+<div id=3D"sitefooter">
+
+</div>
+
+</body></html>
+------MultipartBoundary--jn3CzTWsX5NXaaHeUNW46fSXosLWrDxsLIrvKeONeG----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://trac.opensubtitles.org/projects/opensubtitles/chrome/common/css/trac.css
+
+@charset "utf-8";
+
+html { overflow-y: scroll; }
+
+body { background: rgb(255, 255, 255); color: rgb(0, 0, 0); margin: 10px; p=
+adding: 0px; }
+
+body, th, tr { font-style: normal; font-variant: normal; font-weight: norma=
+l; font-stretch: normal; font-size: 13px; line-height: normal; font-family:=
+ Verdana, Arial, "Bitstream Vera Sans", Helvetica, sans-serif; }
+
+h1, h2, h3, h4 { font-family: Arial, Verdana, "Bitstream Vera Sans", Helvet=
+ica, sans-serif; font-weight: bold; letter-spacing: -0.018em; break-after: =
+avoid; }
+
+h1 { font-size: 19px; margin: 0.15em 1em 0.5em 0px; }
+
+h2 { font-size: 16px; }
+
+h3 { font-size: 14px; }
+
+hr { border-right: none; border-bottom: none; border-left: none; border-ima=
+ge: initial; border-top: 1px solid rgb(204, 204, 187); margin: 2em 0px; }
+
+address { font-style: normal; }
+
+img { border: none; }
+
+.underline { text-decoration: underline; }
+
+ol.loweralpha { list-style-type: lower-alpha; }
+
+ol.upperalpha { list-style-type: upper-alpha; }
+
+ol.lowerroman { list-style-type: lower-roman; }
+
+ol.upperroman { list-style-type: upper-roman; }
+
+ol.arabic { list-style-type: decimal; }
+
+:link, :visited { text-decoration: none; color: rgb(187, 0, 0); border-bott=
+om: 1px dotted rgb(187, 187, 187); }
+
+:link:hover, :visited:hover { background-color: rgb(238, 238, 238); color: =
+rgb(85, 85, 85); }
+
+h1 :link, h1 :visited, h2 :link, h2 :visited, h3 :link, h3 :visited, h4 :li=
+nk, h4 :visited, h5 :link, h5 :visited, h6 :link, h6 :visited { color: inhe=
+rit; }
+
+.anchor:link, .anchor:visited { border: none; color: rgb(215, 215, 215); fo=
+nt-size: 0.8em; vertical-align: text-top; }
+
+* > .anchor:link, * > .anchor:visited { visibility: hidden; }
+
+h1:hover .anchor, h2:hover .anchor, h3:hover .anchor, h4:hover .anchor, h5:=
+hover .anchor, h6:hover .anchor, span:hover .anchor { visibility: visible; =
+}
+
+h1:target, h2:target, h3:target, h4:target, h5:target, h6:target, span:targ=
+et { background: rgb(255, 255, 187); box-shadow: rgb(221, 221, 170) 0.1em 0=
+.1em 0.4em 0.1em; border-radius: 0.2em; }
+
+@media screen {
+  a.ext-link .icon { background: url("../extlink.gif") left center no-repea=
+t; padding-left: 15px; }
+  a.mail-link .icon { background: url("../envelope.png") left center no-rep=
+eat; padding-left: 16px; }
+  a.trac-rawlink, a.trac-ziplink { background: url("../download.png") right=
+ center no-repeat; padding-right: 16px; border-bottom: none; }
+}
+
+input, textarea, select { margin: 2px; }
+
+input, select, button { font-family: Arial, Verdana, "Bitstream Vera Sans",=
+ Helvetica, sans-serif; font-size: 100%; }
+
+textarea { white-space: pre-wrap; }
+
+input, select { vertical-align: middle; }
+
+input[type=3D"button"], input[type=3D"submit"], input[type=3D"reset"], butt=
+on { }
+
+input[type=3D"button"], input[type=3D"submit"], input[type=3D"reset"] { bac=
+kground: rgb(238, 238, 238); color: rgb(34, 34, 34); border: 1px outset rgb=
+(238, 238, 238); border-radius: 0.3em; box-shadow: rgb(136, 136, 136) 0.1em=
+ 0.1em 0.4em 0px; padding: 0.1em 0.5em 0.2em; text-shadow: rgb(221, 221, 22=
+1) 0.1em 0.1em; cursor: pointer; }
+
+input[type=3D"button"]:hover, input[type=3D"submit"]:hover, input[type=3D"r=
+eset"]:hover { background: rgb(246, 246, 246); box-shadow: rgb(153, 153, 15=
+3) 0.1em 0.1em 0.6em 0px; text-shadow: rgb(252, 252, 252) 0.1em 0.1em; }
+
+input[type=3D"button"]:active, input[type=3D"submit"]:active, input[type=3D=
+"reset"]:active { position: relative; top: 0.1em; left: 0.1em; }
+
+input[type=3D"button"][disabled], input[type=3D"submit"][disabled], input[t=
+ype=3D"reset"][disabled] { background: rgb(246, 246, 246); border-style: so=
+lid; color: rgb(153, 153, 153); }
+
+input[type=3D"text"], input.textwidget, textarea { border: 1px solid rgb(21=
+5, 215, 215); border-radius: 0.3em; }
+
+input[type=3D"text"], input.textwidget { padding: 0.25em 0.5em; }
+
+input[type=3D"text"]:focus, input.textwidget:focus, textarea:focus { border=
+: 1px solid rgb(136, 136, 102); }
+
+option { border-bottom: 1px dotted rgb(215, 215, 215); }
+
+fieldset { border: 1px solid rgb(215, 215, 215); border-radius: 0.4em; marg=
+in: 1em 0px; background: rgb(247, 247, 240); box-shadow: rgb(231, 231, 231)=
+ 0.1em 0.1em 1em 0px inset; padding: 1em; }
+
+p.hint, span.hint { color: rgb(102, 102, 102); font-size: 85%; font-style: =
+italic; margin: 0.5em 0px; padding-left: 1em; }
+
+legend { color: rgb(153, 153, 153); margin-left: 0.6em; padding: 0px 0.25em=
+; font-size: 90%; font-weight: bold; }
+
+label.disabled { color: rgb(215, 215, 215); }
+
+.buttons { margin: 0.5em 0.5em 0.5em 0px; }
+
+.buttons form, .buttons form div { display: inline; }
+
+.buttons input { margin: 1em 0.5em 0.1em 0px; }
+
+.inlinebuttons input { border: 1px solid rgb(221, 221, 221); border-radius:=
+ 1em; height: 1.6em; padding: 0px 0.4em 0.1em; font-size: 70%; box-shadow: =
+none; margin: 0px 0.1em 0.1em; background: none; color: rgb(128, 128, 128);=
+ cursor: pointer; }
+
+.uisymbols .inlinebuttons input[type=3D"button"], .uisymbols .inlinebuttons=
+ input[type=3D"submit"] { font-size: 100%; }
+
+.inlinebuttons input[type=3D"button"]:hover, .inlinebuttons input[type=3D"s=
+ubmit"]:hover { background: rgb(246, 246, 246); color: rgb(51, 51, 51); tex=
+t-shadow: rgb(252, 252, 252) 0.1em 0.1em; box-shadow: rgb(153, 153, 153) 0.=
+1em 0.1em 0.6em 0px; }
+
+input[type=3D"button"].trac-delete, input[type=3D"submit"].trac-delete { co=
+lor: rgb(211, 19, 19); }
+
+input[type=3D"button"].trac-delete:hover, input[type=3D"submit"].trac-delet=
+e:hover { color: rgb(227, 19, 19); }
+
+textarea.trac-fullwidth, input.trac-fullwidth { box-sizing: border-box; mar=
+gin-left: 0px; margin-right: 0px; width: 100%; }
+
+textarea.trac-fullwidth { padding: 2px; }
+
+#header hr { display: none; }
+
+#header h1 { margin: 1.5em 0px -1.5em; padding: 0px; }
+
+#header img { border: none; margin: 0px 0px -3em; }
+
+#header :link, #header :visited, #header :link:hover, #header :visited:hove=
+r { background: transparent; color: rgb(85, 85, 85); margin-bottom: 2px; bo=
+rder: none; padding: 0px; }
+
+#header h1 :link:hover, #header h1 :visited:hover { color: rgb(0, 0, 0); }
+
+#search { clear: both; font-size: 10px; height: 2.2em; margin: 0px 0px 1em;=
+ text-align: right; }
+
+#search input { font-size: 10px; }
+
+#search label { display: none; }
+
+.nav h2, .nav hr { display: none; }
+
+.nav ul { font-size: 10px; list-style: none; margin: 0px; padding: 0px; tex=
+t-align: right; }
+
+.nav li { border-right: 1px solid rgb(215, 215, 215); display: inline-block=
+; padding: 0px 0.75em; white-space: nowrap; zoom: 1; }
+
+.nav li.last { border-right: none; }
+
+#metanav { padding-top: 0.3em; }
+
+#metanav form.trac-logout { display: inline; margin: 0px; padding: 0px; }
+
+#metanav form.trac-logout button { margin: 0px; padding: 0px; border-width:=
+ 0px 0px 1px; border-top-style: initial; border-right-style: initial; borde=
+r-left-style: initial; border-top-color: initial; border-right-color: initi=
+al; border-left-color: initial; border-image: initial; outline: 0px; backgr=
+ound: transparent; font-family: inherit; font-size: 100%; color: rgb(187, 0=
+, 0); border-bottom-style: dotted; border-bottom-color: rgb(187, 187, 187);=
+ cursor: pointer; }
+
+#metanav form.trac-logout button:hover { background-color: rgb(238, 238, 23=
+8); color: rgb(85, 85, 85); }
+
+#metanav form.trac-logout button:active { position: static; }
+
+#mainnav { font-style: normal; font-variant: normal; font-weight: normal; f=
+ont-stretch: normal; font-size: 10px; line-height: normal; font-family: ver=
+dana, "Bitstream Vera Sans", helvetica, arial, sans-serif; box-shadow: rgb(=
+238, 238, 238) 0px 0.5em 1.5em; border: 1px solid rgb(228, 228, 228); borde=
+r-radius: 0.5em; margin: 0.66em 0px 0.33em; }
+
+#mainnav li { background: url("../topbar_gradient.png") 0px 0px white; bord=
+er: 1px solid rgb(228, 228, 228); margin: -1px 0.3em 0px -0.4em; padding: 0=
+.3em 0px; }
+
+#mainnav .first, #mainnav .first :link { border-top-left-radius: 0.5em; bor=
+der-bottom-left-radius: 0.5em; }
+
+#mainnav .last, #mainnav .last :link { border-top-right-radius: 0.5em; bord=
+er-bottom-right-radius: 0.5em; margin-right: 0px; }
+
+#mainnav :link, #mainnav :visited { border-bottom: none; box-shadow: rgb(15=
+3, 153, 153) 0px 0.1em 0.3em 0px; color: rgb(0, 0, 0); padding: 0.3em 20px;=
+ }
+
+#mainnav li:hover { border: 1px solid rgb(102, 102, 102); }
+
+#mainnav :link:hover, #mainnav :visited:hover { background: url("../topbar_=
+gradient2.png") 0px 0px repeat-x rgb(0, 0, 0); color: rgb(238, 238, 238); b=
+ox-shadow: rgb(102, 102, 102) 0px 0.1em 0.6em 0px; }
+
+#mainnav .active { border: 1px solid rgb(102, 102, 102); }
+
+#mainnav .active :link, #mainnav .active :visited { background: url("../top=
+bar_gradient2.png") 0px 0px repeat-x rgb(0, 0, 0); color: rgb(238, 238, 238=
+); text-shadow: rgb(238, 238, 238) 1px 0px; }
+
+#ctxtnav { min-height: 1em; padding: 0.4em 0px; }
+
+#ctxtnav li ul { background: rgb(247, 247, 247); color: rgb(204, 204, 204);=
+ border: 1px solid; padding: 0px; display: inline; margin: 0px; }
+
+#ctxtnav li li { padding: 0px; }
+
+#ctxtnav li li :link, #ctxtnav li li :visited { padding: 0px 1em; }
+
+#ctxtnav li li :link:hover, #ctxtnav li li :visited:hover { background: rgb=
+(187, 187, 170); color: rgb(255, 255, 255); }
+
+.trac-nav, .trac-topnav { float: right; font-size: 80%; }
+
+.trac-topnav { margin-top: 14px; }
+
+#altlinks { clear: both; margin-top: 0.4em; text-align: center; }
+
+#altlinks h3 { font-size: 12px; letter-spacing: normal; margin: 0px; }
+
+#altlinks ul { list-style: none; margin: 0px; padding: 0px; }
+
+#altlinks li { border-right: 1px solid rgb(215, 215, 215); display: inline;=
+ font-size: 11px; line-height: 1.5; padding: 0px 1em; white-space: nowrap; =
+}
+
+#altlinks li.last { border-right: none; }
+
+#altlinks li :link, #altlinks li :visited { background-repeat: no-repeat; c=
+olor: rgb(102, 102, 102); border: none; padding: 0px 0px 2px; }
+
+#altlinks li a.ics { background: url("../ics.png") left center no-repeat; p=
+adding-left: 22px; }
+
+#altlinks li a.rss { background: url("../feed.png") left center no-repeat; =
+padding-left: 20px; }
+
+#footer { clear: both; color: rgb(187, 187, 187); font-size: 10px; height: =
+31px; padding: 0.25em 0px; }
+
+#footer :link, #footer :visited { color: rgb(187, 187, 187); }
+
+#footer hr { display: none; }
+
+#footer #tracpowered { border: 0px; float: left; }
+
+#footer #tracpowered:hover { background: transparent; }
+
+#footer p { margin: 0px; }
+
+#footer p.left { float: left; margin-left: 1em; padding: 0px 1em; border-le=
+ft: 1px solid rgb(215, 215, 215); border-right: 1px solid rgb(215, 215, 215=
+); }
+
+#footer p.right { float: right; text-align: right; }
+
+#content { position: relative; }
+
+div.trac-content { padding: 0.5em 1em; margin: 0.3em auto; border: 1px soli=
+d rgb(228, 228, 228); border-radius: 0.5em; box-shadow: rgb(238, 238, 238) =
+0.2em 0.3em 1.5em; }
+
+.uinohelp #help { display: none; }
+
+#help { clear: both; color: rgb(153, 153, 153); font-size: 90%; margin: 1em=
+; text-align: right; }
+
+#help :link, #help :visited { cursor: help; }
+
+#help hr { display: none; }
+
+.foldable :link, .foldable :visited { background: url("../expanded.png") 4p=
+x 50% no-repeat; border: none; border-radius: 0.3em; box-shadow: rgb(187, 1=
+87, 187) 0.1em 0.1em 0.3em 0px; color: rgb(34, 34, 34); text-shadow: rgb(25=
+2, 252, 252) 0.1em 0.1em; padding: 0.3em 0.5em 0.3em 20px; }
+
+.foldable :link:hover, .foldable :visited:hover { background-color: transpa=
+rent; }
+
+.collapsed > .foldable :link, .collapsed > .foldable :visited { background-=
+image: url("../collapsed.png"); }
+
+.collapsed > div, .collapsed > table, .collapsed > ul, .collapsed > dl { di=
+splay: none; }
+
+fieldset > legend.foldable :link, fieldset > legend.foldable :visited { col=
+or: rgb(102, 102, 102); font-size: 110%; text-shadow: rgb(221, 221, 221) 0.=
+1em 0.1em; }
+
+.collapsed legend.foldable { background: white; }
+
+h2 .trac-count, h3 .trac-count { margin-left: 0.2em; vertical-align: baseli=
+ne; color: rgb(153, 153, 153); font-size: 90%; font-weight: normal; }
+
+#prefs { background: rgb(247, 247, 240); border: 1px outset rgb(238, 238, 2=
+38); border-radius: 1em; box-shadow: rgb(119, 119, 119) 0.2em 0.2em 0.7em 0=
+px; float: right; font-size: 9px; padding: 0.8em; position: relative; margi=
+n: 0px 1em 1em; }
+
+* html #prefs { width: 26em; }
+
+#prefs input, #prefs select { font-size: 9px; vertical-align: middle; }
+
+#prefs fieldset { background: transparent; border: none; box-shadow: none; =
+margin: 0.5em; padding: 0px; }
+
+#prefs fieldset legend { background: transparent; color: rgb(0, 0, 0); font=
+-size: 9px; font-weight: normal; margin: 0px 0px 0px -1.5em; padding: 0px; =
+}
+
+#prefs .buttons { text-align: right; }
+
+#info { margin: 1em 0px 0px; background: rgb(247, 247, 240); border: 1px so=
+lid rgb(215, 215, 215); border-collapse: collapse; border-spacing: 0px; cle=
+ar: both; width: 100%; }
+
+#info th, #info td { font-size: 85%; padding: 2px 0.5em; vertical-align: to=
+p; }
+
+#info th { font-weight: bold; text-align: left; }
+
+#info td.message { width: 100%; }
+
+#info .message ul { padding: 0px; margin: 0px 2em; }
+
+#info .message p { margin: 0px; padding: 0px; }
+
+a.trac-diff::after { content: "=E2=88=86"; }
+
+.wikipage { padding-left: 18px; }
+
+.wikipage h1, .wikipage h2, .wikipage h3 { margin-left: -18px; }
+
+.wikipage table h1, .wikipage table h2, .wikipage table h3 { margin-left: 0=
+px; }
+
+div.compact > p:first-child { margin-top: 0px; }
+
+div.compact > p:last-child { margin-bottom: 0px; }
+
+.rtl { direction: rtl; }
+
+.rtl div.wiki-toc { float: left; }
+
+.rtl .wiki-toc ul ul, .wiki-toc ol ol { padding-right: 1.2em; }
+
+a.missing:link, a.missing:visited, a.missing, span.missing, a.forbidden, sp=
+an.forbidden { color: rgb(153, 153, 136); }
+
+a.missing:hover { color: rgb(0, 0, 0); }
+
+a.closed:link, a.closed:visited, span.closed { text-decoration: line-throug=
+h; }
+
+.important { background: rgb(255, 204, 187); border: 1px dotted rgb(221, 0,=
+ 0); color: rgb(85, 0, 0); padding: 0px 0.5em; margin: 0.5em; }
+
+dl.wiki dt { font-weight: bold; }
+
+dl.compact dt { float: left; padding-right: 0.5em; }
+
+dl.compact dd { margin: 0px; padding: 0px; }
+
+pre.wiki, pre.literal-block { background: rgb(247, 247, 247); border: 1px s=
+olid rgb(215, 215, 215); box-shadow: rgb(238, 238, 238) 0px 0px 1em; border=
+-radius: 0.3em; margin: 1em 1.75em; padding: 0.25em; overflow: auto; }
+
+tt { color: rgb(102, 0, 0); border: 1px solid rgb(238, 221, 204); border-ra=
+dius: 0.25em; padding: 0px 0.3em; background: rgb(250, 250, 250); }
+
+blockquote.citation { margin: -0.6em 0px; border-style: solid; border-width=
+: 0px 0px 0px 2px; padding-left: 0.5em; border-color: rgb(187, 68, 68); }
+
+.citation blockquote.citation { border-color: rgb(68, 187, 68); }
+
+.citation .citation blockquote.citation { border-color: rgb(68, 68, 187); }
+
+.citation .citation .citation blockquote.citation { border-color: rgb(204, =
+85, 85); }
+
+table.wiki { border: 1px solid rgb(204, 204, 204); border-collapse: collaps=
+e; border-spacing: 0px; box-shadow: rgb(238, 238, 238) 0px 0px 1em; }
+
+table.wiki td { border: 1px solid rgb(204, 204, 204); padding: 0.1em 0.25em=
+; }
+
+table.wiki th { border: 1px solid rgb(187, 187, 187); padding: 0.1em 0.25em=
+; background-color: rgb(247, 247, 247); }
+
+table.wiki tbody tr.even { background-color: rgb(252, 252, 252); }
+
+table.wiki tbody tr.odd { background-color: rgb(247, 247, 247); }
+
+.wikitoolbar { margin-top: 0.3em; border-style: solid; border-color: rgb(21=
+5, 215, 215); border-image: initial; border-width: 1px 1px 1px 0px; height:=
+ 18px; width: 234px; }
+
+.wikitoolbar :link, .wikitoolbar :visited { background: url("../edit_toolba=
+r.png") no-repeat transparent; border-width: 1px; border-style: solid; bord=
+er-color: rgb(255, 255, 255) rgb(255, 255, 255) rgb(255, 255, 255) rgb(215,=
+ 215, 215); border-image: initial; cursor: default; display: block; float: =
+left; width: 24px; height: 16px; }
+
+.wikitoolbar :link:hover, .wikitoolbar :visited:hover { background-color: t=
+ransparent; border: 1px solid rgb(255, 187, 34); }
+
+.wikitoolbar a#em { background-position: 0px 0px; }
+
+.wikitoolbar a#strong { background-position: 0px -16px; }
+
+.wikitoolbar a#heading { background-position: 0px -32px; }
+
+.wikitoolbar a#link { background-position: 0px -48px; }
+
+.wikitoolbar a#code { background-position: 0px -64px; }
+
+.wikitoolbar a#hr { background-position: 0px -80px; }
+
+.wikitoolbar a#np { background-position: 0px -96px; }
+
+.wikitoolbar a#br { background-position: 0px -112px; }
+
+.wikitoolbar a#img { background-position: 0px -128px; }
+
+div.trac-resizable { display: table; width: 100%; }
+
+div.trac-resizable > div { display: table-cell; }
+
+div.trac-resizable textarea { display: block; margin-bottom: 0px; }
+
+div.trac-grip { height: 5px; overflow: hidden; background: url("../grip.png=
+") center 1px no-repeat rgb(238, 238, 238); border-width: 0px 1px 1px; bord=
+er-style: solid; border-color: rgb(221, 221, 221); border-image: initial; c=
+ursor: s-resize; }
+
+#attachment .field { margin-top: 1.3em; }
+
+#attachment label { padding-left: 0.2em; }
+
+#attachment fieldset { margin-top: 2em; }
+
+#attachment fieldset .field { float: left; margin: 0px 1em 0.5em 0px; }
+
+#attachment .options { float: left; padding: 0px 0px 1em 1em; }
+
+#attachment br { clear: left; }
+
+.attachment #preview { margin-top: 1em; }
+
+#attachments > div.attachments { padding: 0px 0px 1em 1em; }
+
+#attachments dl.attachments { margin-left: 2em; padding: 0px; }
+
+#attachments dt { display: list-item; list-style: square; }
+
+#attachments dd { font-style: italic; margin-left: 0px; padding-left: 0px; =
+}
+
+#attachments p { margin-left: 2em; font-size: 90%; color: rgb(102, 102, 102=
+); }
+
+#attachments > div.attachments > p { float: right; margin: 0.4em 0px; }
+
+table.listing { clear: both; border-bottom: 1px solid rgb(215, 215, 215); b=
+order-collapse: collapse; border-spacing: 0px; box-shadow: rgb(238, 238, 23=
+8) 0.2em 0.3em 1.5em; margin-top: 1em; width: 100%; }
+
+table.listing th { text-align: left; padding: 0px 1em 0.1em 0px; font-size:=
+ 12px; }
+
+table.listing th.sel, table.listing td.sel { text-align: center; width: 1%;=
+ }
+
+table.listing thead tr { background: rgb(247, 247, 240); }
+
+table.listing thead th { border-width: 1px; border-style: solid; border-col=
+or: rgb(215, 215, 215) rgb(215, 215, 215) rgb(153, 153, 153); border-image:=
+ initial; font-size: 11px; font-weight: bold; padding: 2px 0.5em; vertical-=
+align: bottom; white-space: nowrap; }
+
+table.listing thead th :link:hover, table.listing thead th :visited:hover {=
+ background-color: transparent; }
+
+table.listing thead th a { border: none; padding-right: 12px; }
+
+table.listing th.asc a, table.listing th.desc a { font-weight: bold; backgr=
+ound-position: 100% 50%; background-repeat: no-repeat; }
+
+table.listing th.asc a { background-image: url("../asc.png"); }
+
+table.listing th.desc a { background-image: url("../desc.png"); }
+
+table.listing tbody td, table.listing tbody th { border: 1px dotted rgb(221=
+, 221, 221); padding: 0.3em 0.5em; vertical-align: top; }
+
+table.listing tbody td a:hover, table.listing tbody th a:hover { background=
+-color: transparent; }
+
+table.listing tbody tr { border-top: 1px solid rgb(221, 221, 221); }
+
+table.listing tbody tr.even { background-color: rgb(252, 252, 252); }
+
+table.listing tbody tr.odd { background-color: rgb(247, 247, 247); }
+
+table.listing tbody tr:hover td { background: rgb(238, 238, 221) !important=
+; }
+
+table.listing tbody tr.focus { background: rgb(221, 221, 255) !important; }
+
+table.listing pre { white-space: pre-wrap; }
+
+#fieldhist td { padding: 0px 0.5em; }
+
+#fieldhist td.date, #fieldhist td.diff, #fieldhist td.version, #fieldhist t=
+d.author { white-space: nowrap; }
+
+#fieldhist td.version { text-align: center; }
+
+#fieldhist td.comment { width: 100%; }
+
+.suggestions { background: rgb(255, 255, 255); border: 1px solid rgb(136, 1=
+36, 102); color: rgb(34, 34, 34); }
+
+.suggestions ul { font-family: sans-serif; max-height: 20em; min-height: 3e=
+m; list-style: none; margin: 0px; overflow: auto; padding: 0px; width: 440p=
+x; }
+
+* html .suggestions ul { height: 10em; }
+
+.suggestions li { background: rgb(255, 255, 255); cursor: pointer; padding:=
+ 2px 5px; }
+
+.suggestions li.selected { background: rgb(185, 185, 185); }
+
+#content.error .message, div.system-message { background: rgb(255, 221, 204=
+); border: 2px solid rgb(221, 0, 0); color: rgb(85, 0, 0); padding: 0.5em; =
+margin: 1em 0px; }
+
+#content.error div.message pre, div.system-message pre { margin-left: 1em; =
+overflow: hidden; white-space: pre-wrap; }
+
+div.system-message p { margin: 0px; }
+
+div.system-message p.system-message-title { font-weight: bold; }
+
+span.system-message { float: left; background: rgb(255, 221, 204); padding:=
+ 0.2em; margin: 1px; border-radius: 0.25em; }
+
+div.system-message { border-radius: 0.5em; box-shadow: rgb(119, 119, 119) 0=
+.2em 0.2em 0.7em 0px; }
+
+#warning.system-message, .warning.system-message { background: rgb(255, 255=
+, 187); border: 1px solid rgb(85, 0, 0); }
+
+#warning.system-message li { list-style-type: square; }
+
+#notice.system-message, .notice.system-message { background: rgb(221, 255, =
+221); border: 1px solid rgb(85, 0, 0); }
+
+#notice.system-message li { list-style-type: square; }
+
+div.system-message .trac-close-msg { display: none; float: right; font-size=
+: 80%; border: 1px solid rgb(221, 221, 221); border-radius: 1em; padding: 0=
+px 0.4em 0.1em; box-shadow: none; margin: 0px 0.1em 0.1em 0px; background: =
+none; color: rgb(211, 19, 19); height: 1.4em; }
+
+div.system-message .trac-close-msg:hover { background: rgb(246, 246, 246); =
+color: rgb(51, 51, 51); text-shadow: rgb(252, 252, 252) 0.1em 0.1em; box-sh=
+adow: rgb(153, 153, 153) 0.1em 0.1em 0.6em 0px; }
+
+.uisymbols div.system-message .trac-close-msg > span { display: none; }
+
+.uisymbols div.system-message .trac-close-msg::after { content: "x"; }
+
+#content.error form.newticket { display: inline; }
+
+#content.error form.newticket textarea { display: none; }
+
+#content.error #systeminfo, #content.error #plugins { margin: 1em; width: a=
+uto; }
+
+#content.error #systeminfo th, #content.error #systeminfo td, #content.erro=
+r #plugins th, #content.error #plugins td { font-size: 90%; }
+
+#content.error #systeminfo th, #content.error #plugins th { background: rgb=
+(247, 247, 247); font-weight: bold; }
+
+#content.error #traceback { margin-left: 1em; }
+
+#content.error #traceback :link, #content.error #traceback :visited { borde=
+r: none; }
+
+#content.error #tbtoggle { font-size: 80%; }
+
+#content.error #traceback div { margin-left: 1em; }
+
+#content.error #traceback h3 { font-size: 95%; margin: 0.5em 0px 0px; }
+
+#content.error #traceback :link var, #content.error #traceback :visited var=
+ { font-family: monospace; font-style: normal; font-weight: bold; }
+
+#content.error #traceback span.file { color: rgb(102, 102, 102); font-size:=
+ 85%; }
+
+#content.error #traceback ul { list-style: none; margin: 0.5em 0px; padding=
+: 0px; }
+
+#content.error #traceback table.code td { white-space: pre; font-size: 90%;=
+ }
+
+#content.error #traceback table.code tr.current td { background: rgb(230, 2=
+30, 230); }
+
+#content.error #traceback table { margin: 0.5em 0px 1em; }
+
+#content.error #traceback th, #content.error #traceback td { font-size: 85%=
+; padding: 1px; }
+
+#content.error #traceback th var { font-family: monospace; font-style: norm=
+al; }
+
+#content.error #traceback td code { white-space: pre; }
+
+#content.error #traceback pre { font-size: 95%; }
+
+#content.error #plugins td.file { color: rgb(102, 102, 102); }
+
+#content .paging { margin: 0px 0px 2em; padding: 0.5em 0px 0px; font-size: =
+85%; line-height: 2em; text-align: center; }
+
+#content .paging .current { padding: 0.1em 0.3em; border: 1px solid rgb(51,=
+ 51, 51); background: rgb(153, 153, 153); color: rgb(255, 255, 255); }
+
+#content .paging :link, #content .paging :visited { padding: 0.1em 0.3em; b=
+order: 1px solid rgb(102, 102, 102); background: transparent; color: rgb(10=
+2, 102, 102); }
+
+#content .paging :link:hover, #content .paging :visited:hover { background:=
+ rgb(153, 153, 153); color: rgb(255, 255, 255); border-color: rgb(51, 51, 5=
+1); }
+
+#content .paging .previous a, #content .paging .next a { font-size: 150%; f=
+ont-weight: bold; border: none; }
+
+#content .paging .previous a:hover, #content .paging .next a:hover { backgr=
+ound: transparent; color: rgb(102, 102, 102); }
+
+#content h2 .numresults { color: rgb(102, 102, 102); font-size: 90%; }
+
+@media screen {
+  .searchword0 { background: rgb(255, 255, 153); }
+  .searchword1 { background: rgb(204, 255, 204); }
+  .searchword2 { background: rgb(204, 255, 255); }
+  .searchword3 { background: rgb(204, 204, 255); }
+  .searchword4 { background: rgb(255, 204, 255); }
+}
+
+@media print {
+  #header, #altlinks, #footer, #help, #warning, #notice { display: none; }
+  .nav, form, .buttons form, form .buttons, form .inlinebuttons, .noprint, =
+.trac-nav, .trac-topnav, #attachments > div.attachments > p { display: none=
+; }
+  form.printableform { display: block; }
+  div.code pre { white-space: pre-wrap; }
+  :link, :visited { border-bottom: none; }
+  div.trac-content { box-shadow: none; }
+  .foldable :link, .foldable :visited { text-shadow: none; box-shadow: none=
+; }
+}
+------MultipartBoundary--jn3CzTWsX5NXaaHeUNW46fSXosLWrDxsLIrvKeONeG----
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://trac.opensubtitles.org/projects/opensubtitles/chrome/common/extlink.gif
+
+R0lGODlhDQAHAMIEAJiolKKmkrm8rdLXv////////////////yH5BAEAAAQALAAAAAANAAcAAAMf
+OBIsQwRAIiYMEEiCrdUcNGhk2XmZVFkdSChM4GRTAgA7
+------MultipartBoundary--jn3CzTWsX5NXaaHeUNW46fSXosLWrDxsLIrvKeONeG----
+Content-Type: image/webp
+Content-Transfer-Encoding: base64
+Content-Location: http://trac.opensubtitles.org/projects/opensubtitles/chrome/common/topbar_gradient.png
+
+UklGRmQAAABXRUJQVlA4TFcAAAAvf8AHEEcgEEjy11xliBmfcYUAAqCgIZikqbZjAEb7Bqxp27Zy
+FI7CVjgKKaRwFFLIffb4jeh/Fl9+8uHhzW9evD+/ePPw4cfnDw9vXjx8+PLr95cPDwcA
+------MultipartBoundary--jn3CzTWsX5NXaaHeUNW46fSXosLWrDxsLIrvKeONeG----
+Content-Type: image/png
+Content-Transfer-Encoding: base64
+Content-Location: http://trac.opensubtitles.org/projects/opensubtitles/chrome/common/topbar_gradient2.png
+
+iVBORw0KGgoAAAANSUhEUgAAAQAAAAAgCAYAAAD9qabkAAAABmJLR0QAAAAAAAD5Q7t/AAAACXBI
+WXMAAAsTAAALEwEAmpwYAAABaUlEQVR4nO3dQW7bMBCF4cfhKDECZNMD9vBFgaK7BA6C2BKHvUCA
+WEosxp3/W2uktxqQIkWVP39//9QFunS45Lp3Ch821V1T0evqmtpW15Sit9XP2VjXZp0+usYs5i15
+8P/y4n1qS/y62hPK1e68r7a+pH99ik+JsGl0BnwvNjoAgHFoAEBiFhGPo0MAGIMRAJAYDQBIzCXJ
+7s4sDwEJuSQV27ZeDeC2uZkd51bXb4wBcPM8epwOU2cEACRkW7erArh9rAIAibkkzedWRwcBsD+X
+pGbORyJAQt67DpO37/fJLoCrc0lSLzQAICE301NIz6ODANif9xYvimAjEJCQL0t/rYeFBgAk5HWy
+Y8S04cArALfOJSmixeggAPZnOjP/B7KyuL9j+A8k5V6XKSyYAgAJ+XyKx1qdE4GAhNyt/AgzGgCQ
+kPG3GCAvj2jPNeI4OgiA/blMb6rsBAQycklaFt4BABlxJBiQ2D92q2apM5/lrgAAAABJRU5ErkJg
+gg==
+------MultipartBoundary--jn3CzTWsX5NXaaHeUNW46fSXosLWrDxsLIrvKeONeG----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://trac.opensubtitles.org/projects/opensubtitles/chrome/common/css/wiki.css
+
+@charset "utf-8";
+
+@import url("code.css");
+
+#info { margin: 0px 0px 1em; }
+
+#wikipage { clear: both; }
+
+.wikipage h2 { border-bottom: 1px solid rgb(221, 221, 221); box-shadow: rgb=
+(242, 242, 242) 0.1em 0.4em 0.7em 0px; padding: 0.2em 0.3em 0.1em; }
+
+@media print {
+  .wikipage h2 { box-shadow: none; }
+}
+
+.wikipage h3 { border-bottom: 1px dashed rgb(221, 221, 221); }
+
+.wikipage .trac-content { margin-left: -18px; padding-left: 28px; }
+
+#pagepath { font-size: 10px; float: left; padding: 0.4em 0px; }
+
+#pagepath :link, #pagepath :visited { margin: 0px 0.2em; }
+
+#pagepath .first:link, #pagepath .first:visited { color: rgb(153, 153, 136)=
+; }
+
+#pagepath .sep { color: rgb(102, 102, 102); padding: 0px 0.1em; }
+
+#pagepath .pathentry { float: left; }
+
+.preview-right { float: right; width: 50%; display: block; margin: 0px 0px =
+0px 1em; }
+
+.sidebyside > h2 { margin: 0.4em 0px; }
+
+.sidebyside #preview { margin: 0px; }
+
+.sidebyside #text { overflow: hidden; }
+
+#edit { margin-top: 0.5em; }
+
+#edit #rows { float: right; font-size: 80%; margin: 0.4em 0px 0px; }
+
+#edit #rows select { font-size: 90%; }
+
+#edit fieldset { margin-left: 1px; margin-right: 1px; }
+
+#edit #text { clear: both; min-height: 10em; resize: vertical; }
+
+#edit .wikitoolbar { float: left; }
+
+#edit div.trac-resizable { clear: both; }
+
+#edit + #info { margin-top: 1em; }
+
+#edit + #attachments { margin-top: 1.5em; }
+
+#changeinfo { padding: 0.5em; }
+
+#changeinfo .field { float: left; margin: 0px 1em 0.5em 0px; }
+
+#changeinfo { clear: both; }
+
+#changeinfo br { clear: left; }
+
+#changeinfo .options { padding: 0px 0px 1em 1em; }
+
+#changeinfo .options, #changeinfo .buttons { clear: left; }
+
+#delete, #rename, #save { margin-left: 3em; }
+
+#preview { background: url("../draft.png") rgb(248, 248, 248); margin: 1em =
+0px 2em; overflow: auto; }
+
+#template { vertical-align: middle; padding-top: 1em; }
+
+#overview .multi { color: rgb(153, 153, 153); }
+
+#overview .ipnr { color: rgb(153, 153, 153); font-size: 80%; }
+
+#overview .comment { padding: 1em 0px 0px; }
+
+@media print {
+  th.diff, td.diff { display: none; }
+}
+
+.wiki-toc { padding: 0.5em 1em; margin: 0px 0px 2em 1em; float: right; clea=
+r: right; border: 1px outset rgb(221, 221, 204); background: rgb(255, 255, =
+221); font-size: 85%; position: relative; }
+
+.wiki-toc h4 { font-size: 12px; margin: 0px; }
+
+.wiki-toc ul, .wiki-toc ol { list-style: none; padding: 0px; margin: 0px; }
+
+.wiki-toc ul ul, .wiki-toc ol ol { padding-left: 1.2em; }
+
+.wiki-toc li { margin: 0px; padding: 0px; }
+
+.wiki-toc .active { background: rgb(255, 255, 153); position: relative; }
+
+.wiki-toc-un ul, .wiki-toc-un ol { list-style: none; }
+
+div.trac-modifiedby { margin: 0.3em 0.5em; color: rgb(136, 136, 136); font-=
+size: 80%; font-style: italic; text-align: right; float: right; }
+
+div.trac-modifiedby :link, div.trac-modifiedby :visited { color: inherit; }
+
+div.trac-modifiedby span.trac-print { display: none; }
+
+@media print {
+  div.trac-modifiedby span { display: none; }
+  div.trac-modifiedby span.trac-print { display: block; }
+}
+
+div.tracini td.default { font-size: 90%; }
+
+div.tracini td.nodefault { color: rgb(119, 119, 119); font-size: 85%; font-=
+style: italic; white-space: nowrap; }
+
+div.tracini td > p:first-child { margin-top: 0px; }
+
+div.tracini td > p:last-child { margin-bottom: 0px; }
+------MultipartBoundary--jn3CzTWsX5NXaaHeUNW46fSXosLWrDxsLIrvKeONeG----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://trac.opensubtitles.org/projects/opensubtitles/chrome/common/css/code.css
+
+@charset "utf-8";
+
+div.code { background: rgb(247, 247, 247); border: 1px solid rgb(215, 215, =
+215); border-radius: 0.3em; margin: 1em 1.75em; padding: 0.25em; overflow: =
+auto; }
+
+div.code pre { margin: 0px; overflow: auto; }
+
+table.code { border-width: 0px 1px 1px; border-right-style: solid; border-b=
+ottom-style: solid; border-left-style: solid; border-right-color: rgb(221, =
+221, 221); border-bottom-color: rgb(221, 221, 221); border-left-color: rgb(=
+221, 221, 221); border-image: initial; border-spacing: 0px; border-top-styl=
+e: initial; border-top-color: initial; border-collapse: collapse; empty-cel=
+ls: show; font-size: 12px; line-height: 130%; padding: 0px; margin: 0px aut=
+o; table-layout: fixed; width: 100%; }
+
+table.code th { border-right: 1px solid rgb(215, 215, 215); border-bottom: =
+1px solid rgb(153, 153, 136); font-size: 11px; }
+
+table.code th.lineno { width: 4em; }
+
+table.code thead th { background: rgb(238, 238, 238); border-top: 1px solid=
+ rgb(215, 215, 215); color: rgb(153, 153, 153); padding: 0px 0.25em; text-a=
+lign: center; white-space: nowrap; }
+
+table.code thead th.content { text-align: left; }
+
+table.code thead th.content span.recover { background: rgb(247, 247, 247); =
+border-left: 1px solid; border-right: 1px solid; cursor: pointer; margin: 0=
+px 1em 0px 0px; padding: 0px 0.5em; }
+
+table.code tbody th { background: rgb(238, 238, 221); color: rgb(136, 136, =
+102); font-weight: normal; padding: 0px 0.5em; text-align: right; vertical-=
+align: top; }
+
+table.code tbody th :link, table.code tbody th :visited { border: none; col=
+or: rgb(136, 136, 102); text-decoration: none; }
+
+table.code tbody th :link:hover, table.code tbody th :visited:hover { color=
+: rgb(0, 0, 0); }
+
+table.code tbody tr:hover td { background: rgb(238, 238, 221); }
+
+table.code td { font-style: normal; font-variant: normal; font-weight: norm=
+al; font-stretch: normal; font-size: 11px; line-height: normal; font-family=
+: monospace; overflow: hidden; padding: 1px 2px; vertical-align: top; }
+
+table.code tr.hilite th { background: rgb(204, 204, 255); }
+
+table.code tr.hilite td { background: rgb(221, 221, 255); }
+
+.image-file { background: rgb(238, 238, 238); padding: 0.3em; }
+
+.image-file img { background: url("../imggrid.png"); }
+
+.code-block span { font-family: monospace; }
+
+.code-comment, .css_comment, .c_comment, .c_commentdoc, .c_commentline, .c_=
+commentlinedoc, .h_comment, .pl_commentline, .p_commentblock, .p_commentlin=
+e, .hphp_comment, .hphp_commentblock, .hphp_commentline, .yaml_comment { co=
+lor: rgb(153, 153, 136); font-style: italic; }
+
+.code-keyword, .pl_word { color: rgb(119, 136, 153); font-weight: bold; }
+
+.code-type, .c_word, .c_word2, .p_classname, .hphp_classname { color: rgb(6=
+8, 102, 136); font-weight: bold; }
+
+.code-func, .p_defname { color: rgb(153, 0, 0); font-weight: bold; border-b=
+ottom: none; }
+
+.code-prep, .c_preprocessor, .pl_preprocessor, .yaml_identifier { color: rg=
+b(153, 153, 153); font-weight: bold; }
+
+.code-lang, .p_word { color: rgb(0, 0, 0); font-weight: bold; }
+
+.code-string, .c_string, .c_stringeol, .css_doublestring, .css_singlestring=
+, .h_singlestring, .h_doublestring, .pl_string, .pl_string_q, .pl_string_qq=
+, .pl_string_qr, .pl_string_qw, .pl_string_qx, .pl_backticks, .pl_character=
+, .p_string, .p_stringeol, .hphp_string, .hphp_stringeol, .hphp_triple, .hp=
+hp_tripledouble, .p_character, .p_triple, .p_tripledouble { color: rgb(187,=
+ 136, 68); font-weight: normal; }
+
+.code-var { color: rgb(255, 153, 255); }
+
+.css_id, .css_class, .css_pseudoclass, .css_tag { color: rgb(144, 0, 0); }
+
+.css_directive { color: rgb(0, 144, 0); font-weight: bold; }
+
+.css_important { color: blue; }
+
+.css_operator { color: rgb(0, 0, 144); font-weight: bold; }
+
+.css_tag { font-weight: bold; }
+
+.css_unknown_identifier, .css_unknown_pseudoclass { color: red; }
+
+.css_value { color: navy; }
+
+.c_commentdockeyword { color: navy; font-weight: bold; }
+
+.c_commentdockeyworderror { color: red; font-weight: bold; }
+
+.c_character, .c_regex, .c_uuid, .c_verbatim { color: olive; }
+
+.c_number { color: rgb(0, 153, 153); }
+
+.h_asp { color: rgb(255, 255, 0); }
+
+.h_aspat { color: rgb(255, 223, 0); }
+
+.h_attribute { color: teal; }
+
+.h_attributeunknown { color: red; }
+
+.h_cdata { color: rgb(51, 119, 51); }
+
+.h_entity { color: purple; }
+
+.h_number { color: rgb(0, 153, 153); }
+
+.h_other { color: purple; }
+
+.h_script, .h_tag, .h_tagend { color: navy; }
+
+.h_tagunknown { color: red; }
+
+.h_xmlend, .h_xmlstart { color: blue; }
+
+.pl_datasection { color: olive; }
+
+.pl_error { color: red; font-weight: bold; }
+
+.pl_hash { color: rgb(0, 0, 0); }
+
+.pl_here_delim, .pl_here_q, .pl_here_qq, .pl_here_qx, .pl_longquote { color=
+: olive; }
+
+.pl_number { color: rgb(0, 153, 153); }
+
+.pl_pod { font-style: italic; }
+
+.pl_regex, .pl_regsubst { color: olive; }
+
+.p_number { color: rgb(0, 153, 153); }
+
+.hphp_character { color: olive; }
+
+.hphp_defname { color: rgb(0, 153, 153); font-weight: bold; }
+
+.hphp_number { color: rgb(0, 153, 153); }
+
+.hphp_word { color: navy; font-weight: bold; }
+
+.yaml_document { color: gray; font-style: italic; }
+
+.yaml_keyword { color: rgb(136, 0, 136); }
+
+.yaml_number { color: rgb(136, 0, 0); }
+
+.yaml_reference { color: rgb(0, 136, 136); }
+
+.v_comment { color: gray; font-style: italic; }
+
+.v_commentline, .v_commentlinebang { color: red; font-style: italic; }
+
+.v_number, .v_preprocessor { color: rgb(0, 153, 153); }
+
+.v_string, .v_stringeol { color: olive; }
+
+.v_user { color: blue; font-weight: bold; }
+
+.v_word, .v_word3 { color: navy; font-weight: bold; }
+
+.v_word2 { color: green; font-weight: bold; }
+------MultipartBoundary--jn3CzTWsX5NXaaHeUNW46fSXosLWrDxsLIrvKeONeG----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://trac.opensubtitles.org/projects/opensubtitles/chrome/site/style.css
+
+@charset "utf-8";
+=0A
+------MultipartBoundary--jn3CzTWsX5NXaaHeUNW46fSXosLWrDxsLIrvKeONeG----
+Content-Type: image/webp
+Content-Transfer-Encoding: base64
+Content-Location: http://static.opensubtitles.org/gfx/logo.gif
+
+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
+------MultipartBoundary--jn3CzTWsX5NXaaHeUNW46fSXosLWrDxsLIrvKeONeG----
+Content-Type: image/webp
+Content-Transfer-Encoding: base64
+Content-Location: http://trac.opensubtitles.org/projects/opensubtitles/chrome/common/trac_logo_mini.png
+
+UklGRmoCAABXRUJQVlA4TF4CAAAvakAHEJ+gKJKkhpxzfvJENXKQcxLQoSiSpOaegawggzc8Iika
+oGATAEAaPnd3uGhNHsJwLcHmPxAAGMD/f9UpVlBeCxoRp7jtF96ho7eFVUOjLIU9aMbgjQvmA/dz
+2wFIAoDEjdBsaKSU+v/PNizqdO4R/XfgNpIipW9ooWlg7w0wITfD/5Heh2BB+U1aDB0pJfxF7j4w
+lPRbcAmWxm/TenGqXqMeXg8HIhIiogDLtYly6Nj2C8V3cd9OFJqsHkwJf5gc0YuF1XuyJSsX696e
+jMhs02p7KA/PM43HwaRInhyhfzxJ7dpkV9wAvQ5xftE5Q07pRBG06bMh7ylts4+oyByqu6+Z9CNE
+xJeJ40QBsxJIxQWkrzx6iOZbnUQ9aAClDL2mQQYvfJ1FnfPdOeEWUKwDatGMc9gTBTdvStV0yipF
+JovsWSnDSLB2DPEynDrai260qqZDbhN4ZTvU47KOb2hcrO67NKO6TkHqijDA5VW0gtJNVM5clQHO
+CHQ8OJ2dnq41d+BuZgW63GbdmQXgEARr3kezJxa9Vk20d2UD262kV8N5UFjtQrJrWO+CDRGPWXMm
+eY6+FpzAp1nfLpICkcARWnBINccuA9/ul5lGgMuwWV/cc18mCU6O3kv0F8BOz8h+PomsL4yms8vk
+wFAM8ccSSIQ4zAuNuSI0ba85h7sjlvx6f1bL+5Xz9I+hjvEtOWeF1pTt9ey8FznxnkTt5uaWFqDj
+cjRlc8sEHDqxAHDul1pvhoEqYLhaSPfPprD6zFT5s77SXyyGGT7WxmcggYsuB5vEPcr+/LV/KQA=
+------MultipartBoundary--jn3CzTWsX5NXaaHeUNW46fSXosLWrDxsLIrvKeONeG------

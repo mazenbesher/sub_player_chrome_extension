@@ -1,13 +1,19 @@
 Add subtitle overlay from SRT files to any video element, with options to sync the subtitle.
 
-# Requirements for build:
-See `bundle.bat`
-1. `npm install -g browserify`
-1. `npm install -g mustache`
+# Note:
+All files with `*.bundled.*` extension are generated dynamically. (by running `npm run build:os`) and included in the repo  
+Supported OSs:
+1. Windows (see `bundle.bat`)
 
 # TODOs:
+- [ ] add indicator while searching or downloading a subtitle
+- [ ] add `watch` mode in `npm`
+- [ ] show limit for downloading subtitles from OpenSubtitles.org
+- [ ] use `setUninstallURL` to clear storage
+- [ ] use `chrome.runtime.getBackgroundPage` instead of messaging
+- [x] auto suggest file name from page info (done: page title as placeholder)
 - [ ] add error reporting mechanism (maybe [StackTraceJS](https://www.stacktracejs.com/)) 
-- [ ] consider using `TextDecorder` instead of `FileReader`
+- [ ] consider using `TextDecorder` instead of `FileReader` for local file upload
 - [ ] resize subtitles with mouse
 - [x] reposition subtitles with mouse
 - [x] use other key for subtitles saving since all youtube videos have the same video source! (fixed: now using `location.href` + `video.currentSrc`) 

@@ -49,3 +49,22 @@ div#subtitle_panes_container {
 input[type=file][disabled] + label {
     color: #ccc;
 }
+
+div.search-subtitle-section {
+    border-radius: 5px;
+    border: 1px solid black;
+    padding: 3px;
+}
+
+.glyphicon.spinning {
+    animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg); }
+    to { transform: scale(1) rotate(360deg); }
+}
+
+.hide {
+    display: none
+}

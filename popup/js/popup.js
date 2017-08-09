@@ -13,6 +13,23 @@ let activeTabId;
 let videoKey;
 let subtitleFileNames = {1: "", 2: "", 3: ""};
 
+// for detecting encoding
+let detect = require('charset-detector');
+
+// for downloading subtitles
+const request = require('request');
+
+// for unzipping downloaded subtitles
+const zlib = require('zlib');
+
+// seeks
+let subtitleSeeks = {
+    1: document.getElementById("subtitle_seek_1"),
+    2: document.getElementById("subtitle_seek_2"),
+    3: document.getElementById("subtitle_seek_3")
+};
+
+// promise for getting active tab id
 let getActiveTabId = () => new Promise(resolve => {
     chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
         activeTabId = tabs[0].id;
@@ -95,7 +112,7 @@ getActiveTabId().then(activeTabId => {
 
     // functions
     let toHexString = color => {
-        if(tinycolor(color).isValid())
+        if (tinycolor(color).isValid())
             return tinycolor(color).toHexString();
         else
             throw new Error("invalid color");
@@ -226,8 +243,61 @@ getActiveTabId().then(activeTabId => {
     });
 }
 
-// for detecting encoding
-let detect = require('charset-detector');
+// subtitle-search
+getActiveTabId().then(activeTabId => {
+    // placeholder = page title
+    chrome.tabs.sendMessage(activeTabId, {action: "getDocumentTitle"}, response => {
+        if (response.title) { // not empty
+            $(".search_term_input").each((i, elm) => console.log($(elm).attr("placeholder", response.title)));
+        }
+    });
+
+    chrome.runtime.getBackgroundPage(bg => {
+        let langs = [], ids = [];
+        bg.osLangs.forEach(elm => {
+            langs.push(elm.language);
+            ids.push(elm.id);
+        });
+
+        // get lang from langId
+        const getLang = id => bg.osLangs.find(elm => elm.id == id).language;
+
+        // populate language options
+        document.querySelectorAll('.search-langs-select').forEach(select => {
+            for (let i = 0; i < langs.length; i++) {
+                let option = document.createElement("option");
+                option.value = ids[i];
+                option.innerText = langs[i];
+                select.appendChild(option);
+            }
+        });
+
+        // add key listener
+        document.querySelectorAll('.search-subtitle-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                const index = e.target.dataset.subtitleIndex;
+                const term = document.querySelector(`.search_term_input[data-subtitle-index="${index}"`).value;
+                const langId = document.getElementById(`search_lang_${index}`).value;
+                const lang = getLang(langId);
+                searchForSubtitles(index, bg, term, langId);
+            })
+        });
+
+        document.querySelectorAll('.search_term_input').forEach(elm =>
+            elm.addEventListener('keyup', function (e) {
+                const term = e.target.value;
+                const index = e.target.dataset.subtitleIndex;
+                const langId = document.getElementById(`search_lang_${index}`).value;
+                const lang = getLang(langId);
+
+                if (e.code == "Enter") {
+                    searchForSubtitles(index, bg, term, langId);
+                } else if (e.target.value) {
+                    provideSuggestions(index, bg, term, langId);
+                }
+            }));
+    });
+});
 
 // set active tab id and search for video when the popup is opened
 chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
@@ -235,25 +305,20 @@ chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
     searchForVideos();
 });
 
-// seeks
-let subtitleSeeks = {
-    1: document.getElementById("subtitle_seek_1"),
-    2: document.getElementById("subtitle_seek_2"),
-    3: document.getElementById("subtitle_seek_3")
-};
-
 // hide encoding detection info
 document.querySelectorAll(".detected_encoding").forEach(elm => elm.style.visibility = "hidden");
 
 // state and register keyboard events for video playback
 const regKeyEventsState = document.getElementById("reg_keyboard_event_state");
 const regKeyEventsBtn = document.getElementById("reg_keyboard_event");
-regKeyEventsBtn.disabled = true; // enable if video found
-regKeyEventsBtn.onclick = () => {
-    chrome.tabs.sendMessage(activeTabId, {action: "regKeyboardEventForVideoPlayback"});
-    regKeyEventsBtn.disabled = true;
-    regKeyEventsState.innerText = "registered!";
-};
+getActiveTabId().then(activeTabId => {
+    regKeyEventsBtn.disabled = true; // enable if video found
+    regKeyEventsBtn.onclick = () => {
+        chrome.tabs.sendMessage(activeTabId, {action: "regKeyboardEventForVideoPlayback"});
+        regKeyEventsBtn.disabled = true;
+        regKeyEventsState.innerText = "registered!";
+    };
+});
 
 // Unload subtitle
 document.querySelectorAll(".unload_curr_subtitle").forEach(elm => {
@@ -658,4 +723,157 @@ function shadeColor(color, percent) {
         R = f >> 16, G = f >> 8 & 0x00FF, B = f & 0x0000FF;
     return "#" + (0x1000000 + (Math.round((t - R) * p) + R) * 0x10000 + (Math.round((t - G) * p) + G) * 0x100 +
         (Math.round((t - B) * p) + B)).toString(16).slice(1);
+}
+
+function searchForSubtitles(index, bg, term, langId) {
+    const select = document.getElementById(`search_result_${index}`);
+
+    // loading
+    const loading = $(`#subtitle_loading_${index}`); // remove hide class if loading
+    const loadingSpinner = $(`#subtitle_loading_spinner_${index}`); // add spinner class if loading
+    const loadingText = $(`#subtitle_loading_text_${index}`);
+
+    loading.toggleClass('hide');
+    loadingSpinner.toggleClass('spinning');
+    loadingText.text("Searching...");
+
+    // empty last search results (if exists)
+    select.innerHTML = "";
+    select.size = "10";
+    select.disabled = true;
+
+    bg.osSearch(term, langId).then(subtitles => {
+        // subtitles is an object with langId as key
+        // for sample output see samples folder
+        Object.keys(subtitles).forEach(key => {
+            if (subtitles[key].length > 0) {
+                select.disabled = false;
+
+                // lang disabled option
+                let option = document.createElement("option");
+                option.innerText = subtitles[key][0].lang;
+                option.disabled = true;
+                select.appendChild(option);
+
+                for (let subtitle of subtitles[key]) {
+                    select.appendChild(createSubtitleOption(subtitle, index));
+                }
+            }
+        });
+
+        // done loading
+        loading.toggleClass('hide');
+        loadingSpinner.toggleClass('spinning');
+        loadingText.text("");
+    }).catch(console.error); // TODO show user-friendly error
+}
+
+function provideSuggestions(index, bg, term, langId) {
+    const dataList = document.getElementById(`search_suggestions_datalist_${index}`);
+
+    // empty last suggestions
+    dataList.innerHTML = "";
+
+    bg.searchSuggestions(term, langId).then(suggestions => {
+        suggestions.forEach(suggestion => {
+            dataList.appendChild(createSuggestionOption(suggestion));
+        })
+    }).catch(console.error); // TODO show user-friendly error
+}
+
+function createSuggestionOption(suggestion){
+    // TODO make use of other props
+    // suggestion props: name, year, total, id, pic, kind, rating
+    let year = document.createElement('span');
+    year.classList += "suggestion-year";
+    year.innerText = suggestion.year;
+
+    let option = document.createElement('option');
+    option.value = suggestion.name;
+    option.appendChild(year);
+
+    return option;
+}
+
+function createSubtitleOption(subtitle, index) {
+    // subtitle props: downloads, filename, encoding, id, lang, langcode, score
+
+    // TODO show total number of downloads and score directly instead as tooltip (title)
+    // let downloads = document.createElement('span');
+    // downloads.title = "Total number of downloads";
+    // downloads.classList += "subtitle-number-of-downloads"; // to create
+    // downloads.innerText = subtitle.downloads;
+    //
+    // let score = document.createElement('span');
+    // score.title = "Subtitle score";
+    // score.classList += "subtitle-score"; // to create
+    // score.innerText = subtitle.score;
+
+    let option = document.createElement("option");
+    option.innerText = subtitle.filename;
+    option.title = `Lang: ${subtitle.lang}, Downloads: ${subtitle.downloads}, Score: ${subtitle.score}`;
+
+    // subtitle attributes as dataset of option
+    option.dataset.filename = subtitle.filename;
+    option.dataset.url = subtitle.url;
+    option.dataset.encoding = subtitle.encoding;
+    option.dataset.lang = subtitle.lang;
+    option.dataset.langcode = subtitle.langcode;
+    option.dataset.id = subtitle.id;
+    option.dataset.subtitleIndex = index;
+
+    // download when dbclick
+    option.addEventListener('dblclick', downloadSubtitle);
+
+    // option.appendChild(downloads);
+    // option.appendChild(score);
+
+    return option;
+}
+
+function downloadSubtitle(e) {
+    const option = e.target;
+    const filename = option.dataset.filename;
+    const url = option.dataset.url;
+    const encoding = option.dataset.encoding;
+    const lang = option.dataset.lang;
+    const langcode = option.dataset.langcode;
+    const id = option.dataset.id;
+    const index = option.dataset.subtitleIndex;
+
+    // loading
+    const loading = $(`#subtitle_loading_${index}`); // remove hide class if loading
+    const loadingSpinner = $(`#subtitle_loading_spinner_${index}`); // add spinner class if loading
+    const loadingText = $(`#subtitle_loading_text_${index}`);
+
+    loading.toggleClass('hide');
+    loadingSpinner.toggleClass('spinning');
+    loadingText.text("Downloading...");
+
+    // download it
+    request({url, encoding: null}, (error, response, data) => {
+        if (error) throw error;
+
+        zlib.unzip(data, (error, arrayBuffer) => {
+            if (error) throw error;
+            // Text Decoder
+            // https://developers.google.com/web/updates/2014/08/Easier-ArrayBuffer-String-conversion-with-the-Encoding-API
+            // The decode() method takes a DataView as a parameter, which is a wrapper on top of the ArrayBuffer.
+            // The TextDecoder interface is documented at http://encoding.spec.whatwg.org/#interface-textdecoder
+            let dataView = new DataView(arrayBuffer.buffer);
+            let decoder = new TextDecoder(encoding);
+            let decodedString = decoder.decode(dataView);
+
+            // done downloading
+            loading.toggleClass('hide');
+            loadingSpinner.toggleClass('spinning');
+            loadingText.text("");
+
+            // load subtitle
+            unloadSubtitle(index);
+            setCurrSubFileName(filename, index);
+            enableUnloadSubBtn(index);
+            parseSRT(decodedString, index);
+        });
+    });
 }

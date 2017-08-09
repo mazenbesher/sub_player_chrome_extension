@@ -18,7 +18,7 @@
         {{#subtitles_numbers}}
             <div id="subtitle_{{number}}" role="tabpanel" class="tab-pane{{#active}} active{{/active}}">
                 <div id="load_subtitle_section_{{number}}">
-                    Click to load subtitle:
+                    <h4>Open subtitle</h4>
                     <div class="btn btn-default">
                         <input type="file" class="subtitle_file_input hidden" id="subtitle_file_input_{{number}}"
                                data-subtitle-index="{{number}}">
@@ -56,7 +56,36 @@
                     </div>
                 </div>
 
+                <div id="search_subtitle_section_{{number}}" class="search-subtitle-section">
+                    <h4>Search for subtitles</h4>
+                    <input type="text"
+                           class="form-control search_term_input"
+                           data-subtitle-index="{{number}}"
+                           id="search_term_{{number}}"
+                           placeholder="Search term"
+                           list="search_suggestions_datalist_{{number}}">
+                    <datalist id="search_suggestions_datalist_{{number}}"></datalist>
+                    <select class="form-control search-langs-select" id="search_lang_{{number}}"></select>
+                    <button id="search_subtitle_btn_{{number}}"
+                            class="search-subtitle-btn btn btn-default"
+                            data-subtitle-index="{{number}}">Search</button>
+                    <div id="subtitle_loading_{{number}}" class="btn hide">
+                        <span id="subtitle_loading_spinner_{{number}}" class="glyphicon glyphicon-refresh"></span>
+                        <span id="subtitle_loading_text_{{number}}"></span>
+                    </div>
+
+
+                    <br>
+                    <select id="search_result_{{number}}" size="0" multiple="no" disabled class="form-control"></select>
+
+                    <br>
+                    Subtitles service powered by
+                    <a target="_blank" href="https://www.opensubtitles.org">www.OpenSubtitles.org</a>
+                    <img src="../lib/img/opensubtitles_logo.webp">
+                </div>
+
                 <div id="subtitle_style_controls_{{number}}" class="subtitle-style-controls">
+                    <h4>Style</h4>
                     <div id="font_size_{{number}}" class="font-size-control">
                         <div>
                             Size ratio: <span id="font_size_value_{{number}}">15</span>

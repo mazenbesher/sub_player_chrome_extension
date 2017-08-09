@@ -1,0 +1,37 @@
+{
+  "name": "sub_player_chrome_extension",
+  "version": "0.1.0",
+  "description": "Add subtitle overlay from SRT files to any video element, with options to sync the subtitle.",
+  "main": "background.src.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:windows": "bundle.bat"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mazenbesher/sub_player_chrome_extension.git"
+  },
+  "keywords": [
+    "chrome-extension",
+    "srt",
+    "subtitle",
+    "subtitles-parsing",
+    "chrome",
+    "subtitle-container",
+    "sync",
+    "subtitle-controls",
+    "language"
+  ],
+  "author": "Mazen Besher",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mazenbesher/sub_player_chrome_extension/issues"
+  },
+  "homepage": "https://github.com/mazenbesher/sub_player_chrome_extension#readme",
+  "dependencies": {
+    "browserify": "^14.4.0",
+    "mustache": "^2.3.0",
+    "opensubtitles-api": "^4.0.0",
+    "request": "^2.81.0"
+  }
+}

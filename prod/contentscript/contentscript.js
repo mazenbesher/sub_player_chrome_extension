@@ -192,6 +192,7 @@ function receivedMessage(request, sender, sendResponse) {
 
         case "unloadSubtitle":
             subtitleHolders[request.index].style.visibility = "hidden";
+            subtitleHolders[request.index].innerText = "";
             subtitles[request.index] = undefined;
             document.dispatchEvent(new CustomEvent('sub-deactivated', {detail: request.index}));
             adjustSubtitlesWidths();
@@ -286,6 +287,10 @@ function receivedMessage(request, sender, sendResponse) {
                 videoElm.removeEventListener("pause", showResizeHandlers);
                 videoElm.removeEventListener("play", hideResizeHandlers);
             }
+            break;
+
+        case "getDocumentTitle":
+            sendResponse({title: document.title});
             break;
     }
 }
