@@ -1,0 +1,7 @@
+1. Three subtitles at the same time!
+2. Load your own .srt subtitle or search for one online! (OpenSubtitles.org)
+With auto encoding detection
+Auto complete
+3. Individual sync and style controls!
+4. Reposition & resize as you want!
+5. Playback keys
