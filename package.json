@@ -9,7 +9,8 @@
     "clean": "del-cli dist/**/*.bundled*",
     "build:templates": "mustache -p  src/popup/templates/header.mustache -p  src/popup/templates/footer.mustache -p  src/popup/templates/subtitle_tabs.mustache -p  src/popup/templates/video_search.mustache -p  src/popup/templates/key_playback.mustache -p  src/popup/templates/general_style_controls.mustache src/popup/templates/template_data.json src/popup/templates/popup.mustache > dist/popup/popup.bundled.html",
     "build:browserify": "browserify src/popup/js/popup.js -o dist/popup/js/popup.bundled.js && browserify src/background.js -o dist/background.bundled.js",
-    "watch": "watchify src/popup/js/popup.js -o dist/popup/js/popup.bundled.js -v && watchify src/background.js -o dist/background.bundled.js -v",
+    "watch:popup": "watchify src/popup/js/popup.js -o dist/popup/js/popup.bundled.js -v",
+    "watch:bg": "watchify src/background.js -o dist/background.bundled.js -v",
     "build": "npm run build:templates && npm run build:browserify"
   },
   "repository": {
