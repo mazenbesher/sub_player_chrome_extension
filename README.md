@@ -7,7 +7,7 @@ All files with `*.bundled.*` extension are generated dynamically by running `npm
 # TODOs:
 - [x] redirect all log messages to bg page
 - [ ] add indicator while searching or downloading a subtitle
-- [ ] add `watch` mode in `npm`
+- [x] add `watch` mode in `npm`
 - [ ] show limit for downloading subtitles from OpenSubtitles.org
 - [ ] use `setUninstallURL` to clear storage
 - [ ] use `chrome.runtime.getBackgroundPage` instead of messaging
