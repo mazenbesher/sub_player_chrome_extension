@@ -568,6 +568,7 @@ function log(msg) {
     chrome.runtime.sendMessage({
         action: "globalLogger",
         sender: "contentscript",
+        color: "#63ff52",
         msg
     });
 }

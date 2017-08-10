@@ -35,7 +35,7 @@ function messageHandler(request, sender, sendResponse) {
             break;
 
         case "globalLogger":
-            globalLogger(request.sender, request.msg);
+            globalLogger(request.sender, request.msg, request.color);
             break;
     }
 }
@@ -85,11 +85,11 @@ function setBrowserActionBadge(tabId, text = "", color = "red") {
 }
 
 function log(msg) {
-    if (DEBUG) globalLogger("bg", msg);
+    if (DEBUG) globalLogger("bg", msg, "#ff3640");
 }
 
-function globalLogger(sender, msg){
-    console.log(`${sender}: ${msg}`);
+function globalLogger(sender, msg, color = "black"){
+    console.log(`%c${sender}: %c${msg}`, `color: ${color};`, `color: black;`);
 }
 
 // exported for extension-wide access

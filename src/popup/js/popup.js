@@ -15,7 +15,7 @@ let videoKey;
 let subtitleFileNames = {1: "", 2: "", 3: ""};
 
 // for detecting encoding
-let detect = require('charset-detector');
+const detect = require('charset-detector');
 
 // for downloading subtitles
 const request = require('request');
@@ -33,7 +33,7 @@ let subtitleSeeks = {
 // register global logger function
 let log;
 chrome.runtime.getBackgroundPage(bg => {
-    log = msg => bg.globalLogger("popup", msg);
+    log = msg => bg.globalLogger("popup", msg, "#32c0ef");
 });
 
 // promise for getting active tab id

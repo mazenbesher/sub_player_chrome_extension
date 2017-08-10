@@ -5,7 +5,7 @@ To install dependencies run `npm install`
 All files with `*.bundled.*` extension are generated dynamically by running `npm run build` and they are not included in the repo.    
 
 # TODOs:
-- [ ] redirect all log messages to bg page
+- [x] redirect all log messages to bg page
 - [ ] add indicator while searching or downloading a subtitle
 - [ ] add `watch` mode in `npm`
 - [ ] show limit for downloading subtitles from OpenSubtitles.org
