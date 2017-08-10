@@ -1,4 +1,5 @@
 "use strict";
+const DEBUG = true;
 
 // Notes
 /**
@@ -35,7 +36,6 @@
  */
 
 // config
-const DEBUG = false;
 const VIDEO_SEARCH_INTERVAL_TIME = 1000; // each VIDEO_SEARCH_INTERVAL_TIME ms the method find video will be fired
 const VIDEO_SEARCH_LIMIT = 10; // after VIDEO_SEARCH_LIMIT the video search interval will be removed
 const INITIAL_SUBTITLES_COLORS = {1: "lightgray", 2: "lightcoral", 3: "lightblue"};
@@ -115,11 +115,11 @@ function subDeactivated(e) {
     adjustBadgeToNumberOfActiveSubtitles();
 }
 
-function adjustBadgeToNumberOfActiveSubtitles(){
+function adjustBadgeToNumberOfActiveSubtitles() {
     const activeSubtitles = getNumberOfActiveSubtitles();
     if (activeSubtitles > 0)
         setBadgeText(activeSubtitles.toString(), "green");
-    else if(activeSubtitles == 0)
+    else if (activeSubtitles == 0)
         setBadgeText("");
 }
 
@@ -563,7 +563,13 @@ function getVideoKey(index) {
 }
 
 function log(msg) {
-    if (DEBUG) console.log(`${msg}`);
+    if (!DEBUG) return;
+
+    chrome.runtime.sendMessage({
+        action: "globalLogger",
+        sender: "contentscript",
+        msg
+    });
 }
 
 function applyResizalbeAndDraggable(index) {

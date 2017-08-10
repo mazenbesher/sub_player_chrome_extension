@@ -1,4 +1,5 @@
 "use strict";
+const DEBUG = true;
 
 // Notes
 /**
@@ -28,6 +29,12 @@ let subtitleSeeks = {
     2: document.getElementById("subtitle_seek_2"),
     3: document.getElementById("subtitle_seek_3")
 };
+
+// register global logger function
+let log;
+chrome.runtime.getBackgroundPage(bg => {
+    log = msg => bg.globalLogger("popup", msg);
+});
 
 // promise for getting active tab id
 let getActiveTabId = () => new Promise(resolve => {
@@ -248,12 +255,13 @@ getActiveTabId().then(activeTabId => {
     // placeholder = page title
     chrome.tabs.sendMessage(activeTabId, {action: "getDocumentTitle"}, response => {
         if (response.title) { // not empty
-            $(".search_term_input").each((i, elm) => console.log($(elm).attr("placeholder", response.title)));
+            $(".search_term_input").each((i, elm) => log($(elm).attr("placeholder", response.title)));
         }
     });
 
     chrome.runtime.getBackgroundPage(bg => {
         let langs = [], ids = [];
+        bg = bg;
         bg.osLangs.forEach(elm => {
             langs.push(elm.language);
             ids.push(elm.id);
@@ -449,7 +457,7 @@ function enableUnloadSubBtn(index) {
 }
 
 function setCurrSubFileName(newName, index) {
-    console.info(`setting subtitle ${index} to: ${newName}`);
+    log(`setting subtitle ${index} to: ${newName}`);
     subtitleFileNames[index] = newName;
 
     const id = `current_subtitle_file_name_${index}`;
@@ -470,7 +478,7 @@ function readFile() {
         setCurrSubFileName(this.files[0].name, index);
         enableUnloadSubBtn(index);
         detectEncoding(this, index).then(encoding => {
-            console.info("selected encoding: " + encoding);
+            log("selected encoding: " + encoding);
             var reader = new FileReader();
 
             reader.onload = e => {
@@ -495,7 +503,7 @@ function setDetectedEncoding(detectRes, index) {
         document.getElementById(containerId).style.visibility = "hidden";
         return;
     }
-    console.info(`setting subtitle ${index} file encoding info`);
+    log(`setting subtitle ${index} file encoding info`);
 
     document.getElementById(containerId).style.visibility = "visible";
 
@@ -508,7 +516,7 @@ function saveDetectedEncodingInfoForFile(fileName, encodingInfo) {
     let toSave = {};
     toSave[fileName] = JSON.stringify(encodingInfo);
     chrome.storage.local.set(toSave, () => {
-        console.info(`saved detected file encodings info for: ${fileName}`);
+        log(`saved detected file encodings info for: ${fileName}`);
     });
 }
 
@@ -643,7 +651,7 @@ function saveAndNotify(subtitles, index) {
 }
 
 function seek(value, index) {
-    // console.log(`request seeking index: ${index}, value: ${value}`);
+    // log(`request seeking index: ${index}, value: ${value}`);
 
     // value in ms
     chrome.tabs.sendMessage(activeTabId, {action: "seekSubtitle", index: index, amount: value}, function (response) {
@@ -660,7 +668,7 @@ function unloadSubtitle(index) {
 
     // set file name
     setCurrSubFileName("None", index);
-    console.info(`unloading subtitle with index ${index}`);
+    log(`unloading subtitle with index ${index}`);
 
     // delete from storage
     if (videoKey === null || videoKey === undefined) // double check
@@ -765,7 +773,7 @@ function searchForSubtitles(index, bg, term, langId) {
         loading.toggleClass('hide');
         loadingSpinner.toggleClass('spinning');
         loadingText.text("");
-    }).catch(console.error); // TODO show user-friendly error
+    }).catch(log); // TODO show user-friendly error
 }
 
 function provideSuggestions(index, bg, term, langId) {
@@ -778,10 +786,10 @@ function provideSuggestions(index, bg, term, langId) {
         suggestions.forEach(suggestion => {
             dataList.appendChild(createSuggestionOption(suggestion));
         })
-    }).catch(console.error); // TODO show user-friendly error
+    }).catch(log); // TODO show user-friendly error
 }
 
-function createSuggestionOption(suggestion){
+function createSuggestionOption(suggestion) {
     // TODO make use of other props
     // suggestion props: name, year, total, id, pic, kind, rating
     let year = document.createElement('span');

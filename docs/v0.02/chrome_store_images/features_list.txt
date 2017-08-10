@@ -5,3 +5,4 @@ Auto complete
 3. Individual sync and style controls!
 4. Reposition & resize as you want!
 5. Playback keys
+6. Play subtitles over any video

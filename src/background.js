@@ -1,7 +1,7 @@
 "use strict";
+const DEBUG = true;
 
 // globals
-const DEBUG = true;
 const OpenSubtitles = require('opensubtitles-api');
 const OS = new OpenSubtitles({
     useragent: privates.OpenSubtitles.UserAgent,
@@ -32,6 +32,10 @@ function messageHandler(request, sender, sendResponse) {
 
         case "setBrowserActionBadge":
             setBrowserActionBadge(senderTabId, request.text, request.color);
+            break;
+
+        case "globalLogger":
+            globalLogger(request.sender, request.msg);
             break;
     }
 }
@@ -81,11 +85,15 @@ function setBrowserActionBadge(tabId, text = "", color = "red") {
 }
 
 function log(msg) {
-    if (DEBUG)
-        console.log(msg);
+    if (DEBUG) globalLogger("bg", msg);
+}
+
+function globalLogger(sender, msg){
+    console.log(`${sender}: ${msg}`);
 }
 
 // exported for extension-wide access
 window.osLangs = OS_LANGS;
 window.searchSuggestions = searchSuggestions;
 window.osSearch = osSearch;
+window.globalLogger = globalLogger;
