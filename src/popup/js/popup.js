@@ -734,7 +734,8 @@ function shadeColor(color, percent) {
 }
 
 function searchForSubtitles(index, bg, term, langId) {
-    const select = document.getElementById(`search_result_${index}`);
+    const select = document.getElementById(`search_result_${index}`);// activate load btn on click
+    const loadBtn = document.getElementById(`load_selected_subtitle_btn_${index}`);
 
     // loading
     const loading = $(`#subtitle_loading_${index}`); // remove hide class if loading
@@ -766,6 +767,23 @@ function searchForSubtitles(index, bg, term, langId) {
                 for (let subtitle of subtitles[key]) {
                     select.appendChild(createSubtitleOption(subtitle, index));
                 }
+            }
+        });
+
+        // activate load btn
+        loadBtn.disabled = false;
+
+        // trigger dblclick event on selected option if loadBtn is click
+        loadBtn.addEventListener('click', e => {
+            const selectedOption = select.options[select.selectedIndex];
+            console.log(selectedOption);
+            if (selectedOption) {
+                var dblClickEvent = new MouseEvent('dblclick', {
+                    'view': window,
+                    'bubbles': true,
+                    'cancelable': true
+                });
+                select.options[select.selectedIndex].dispatchEvent(dblClickEvent);
             }
         });
 

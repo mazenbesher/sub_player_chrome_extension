@@ -68,7 +68,8 @@
                     <select class="form-control search-langs-select" id="search_lang_{{number}}"></select>
                     <button id="search_subtitle_btn_{{number}}"
                             class="search-subtitle-btn btn btn-default"
-                            data-subtitle-index="{{number}}">Search</button>
+                            data-subtitle-index="{{number}}">Search
+                    </button>
                     <div id="subtitle_loading_{{number}}" class="btn hide">
                         <span id="subtitle_loading_spinner_{{number}}" class="glyphicon glyphicon-refresh"></span>
                         <span id="subtitle_loading_text_{{number}}"></span>
@@ -77,6 +78,10 @@
 
                     <br>
                     <select id="search_result_{{number}}" size="0" multiple="no" disabled class="form-control"></select>
+                    <button id="load_selected_subtitle_btn_{{number}}"
+                            class="select-subtitle-btn btn btn-default"
+                            data-subtitle-index="{{number}}" disabled>Load
+                    </button>
 
                     <br>
                     Subtitles service powered by
