@@ -1,6 +1,9 @@
 "use strict";
 const DEBUG = true;
 
+// global configurations
+import {config} from './config';
+
 // globals
 const OpenSubtitles = require('opensubtitles-api');
 const OS = new OpenSubtitles({
@@ -36,6 +39,10 @@ function messageHandler(request, sender, sendResponse) {
 
         case "globalLogger":
             globalLogger(request.sender, request.msg, request.color);
+            break;
+
+        case "jsError":
+            globalWinOnerror(request.sender, request.color);
             break;
     }
 }
@@ -85,11 +92,15 @@ function setBrowserActionBadge(tabId, text = "", color = "red") {
 }
 
 function log(msg) {
-    if (DEBUG) globalLogger("bg", msg, "#ff3640");
+    if (DEBUG) globalLogger("bg", msg, config.bg.debugColor);
 }
 
-function globalLogger(sender, msg, color = "black"){
-    console.log(`%c${sender}: %c${msg}`, `color: ${color};`, `color: black;`);
+function globalLogger(sender, msg, colorSender = "black", colorMsg = "black"){
+    console.log(`%c${sender}: %c${msg}`, `color: ${colorSender};`, `color: ${colorMsg};`);
+}
+
+function globalWinOnerror(sender, color){
+    globalLogger(sender, "Uncaught Error, see console.", color, "red");
 }
 
 // exported for extension-wide access
@@ -97,3 +108,4 @@ window.osLangs = OS_LANGS;
 window.searchSuggestions = searchSuggestions;
 window.osSearch = osSearch;
 window.globalLogger = globalLogger;
+window.globalWinOnerror = globalWinOnerror;

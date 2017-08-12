@@ -1,5 +1,5 @@
 "use strict";
-const DEBUG = true;
+const DEBUG = false;
 
 // Notes
 /**
@@ -35,10 +35,14 @@ const DEBUG = true;
  * the (de)activated subtitle index can be found as the event detail
  */
 
+// global configurations
+import {config} from '../config';
+
 // config
 const VIDEO_SEARCH_INTERVAL_TIME = 1000; // each VIDEO_SEARCH_INTERVAL_TIME ms the method find video will be fired
 const VIDEO_SEARCH_LIMIT = 10; // after VIDEO_SEARCH_LIMIT the video search interval will be removed
 const INITIAL_SUBTITLES_COLORS = {1: "lightgray", 2: "lightcoral", 3: "lightblue"};
+
 
 // style variables
 let subFontSizeHeightRatios = {1: 15, 2: 15, 3: 15}; // font-size = video.clientHeight / subFontSizeHeightRatio
@@ -69,6 +73,7 @@ document.addEventListener('sub-deactivated', subDeactivated);
 
 // when done loading
 window.addEventListener("load", main, false);
+window.onerror = () => chrome.runtime.sendMessage({action: "jsError", sender: "contentscript", color: config.contentscript.debugColor});
 
 function main() {
     if (videoSearchIntervall == null)
@@ -568,7 +573,7 @@ function log(msg) {
     chrome.runtime.sendMessage({
         action: "globalLogger",
         sender: "contentscript",
-        color: "#63ff52",
+        color: config.contentscript.debugColor,
         msg
     });
 }

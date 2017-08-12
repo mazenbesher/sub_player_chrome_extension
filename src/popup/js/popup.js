@@ -9,6 +9,9 @@ const DEBUG = true;
  * the (de)activated subtitle index can be found as the event detail
  */
 
+// global configurations
+import {config} from '../../config';
+
 // Globals
 let activeTabId;
 let videoKey;
@@ -30,11 +33,16 @@ let subtitleSeeks = {
     3: document.getElementById("subtitle_seek_3")
 };
 
-// register global logger function
+// register global logger function and onerror
 let log;
 chrome.runtime.getBackgroundPage(bg => {
-    log = msg => bg.globalLogger("popup", msg, "#32c0ef");
+    log = msg => bg.globalLogger("popup", msg, config.popup.debugColor);
 });
+window.onerror = () => {
+    chrome.runtime.getBackgroundPage(bg => {
+        bg.globalWinOnerror("popup", config.popup.debugColor);
+    })
+};
 
 // promise for getting active tab id
 let getActiveTabId = () => new Promise(resolve => {
@@ -736,6 +744,7 @@ function shadeColor(color, percent) {
 function searchForSubtitles(index, bg, term, langId) {
     const select = document.getElementById(`search_result_${index}`);// activate load btn on click
     const loadBtn = document.getElementById(`load_selected_subtitle_btn_${index}`);
+    loadBtn.disabled = true;
 
     // loading
     const loading = $(`#subtitle_loading_${index}`); // remove hide class if loading
@@ -776,9 +785,8 @@ function searchForSubtitles(index, bg, term, langId) {
         // trigger dblclick event on selected option if loadBtn is click
         loadBtn.addEventListener('click', e => {
             const selectedOption = select.options[select.selectedIndex];
-            console.log(selectedOption);
             if (selectedOption) {
-                var dblClickEvent = new MouseEvent('dblclick', {
+                const dblClickEvent = new MouseEvent('dblclick', {
                     'view': window,
                     'bubbles': true,
                     'cancelable': true

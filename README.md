@@ -5,14 +5,15 @@ To install dependencies run `npm install`
 All files with `*.bundled.*` extension are generated dynamically by running `npm run build` and they are not included in the repo.    
 
 # TODOs:
+- [ ] global log to log errors (`window.onerror`)
 - [x] redirect all log messages to bg page
-- [ ] add indicator while searching or downloading a subtitle
+- [x] add indicator while searching or downloading a subtitle
 - [x] add `watch` mode in `npm`
 - [ ] show limit for downloading subtitles from OpenSubtitles.org
 - [ ] use `setUninstallURL` to clear storage
 - [ ] use `chrome.runtime.getBackgroundPage` instead of messaging
 - [x] auto suggest file name from page info (done: page title as placeholder)
-- [ ] add error reporting mechanism (maybe [StackTraceJS](https://www.stacktracejs.com/)) 
+- [ ] add error reporting mechanism (maybe [StackTraceJS](https://www.stacktracejs.com/) or [jsErrLog](http://jserrlog.appspot.com/)) 
 - [ ] consider using `TextDecorder` instead of `FileReader` for local file upload
 - [ ] resize subtitles with mouse
 - [x] reposition subtitles with mouse
