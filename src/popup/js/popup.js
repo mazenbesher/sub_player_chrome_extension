@@ -911,3 +911,12 @@ function downloadSubtitle(e) {
         });
     });
 }
+
+/* TESTING REACT */
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+ReactDOM.render(
+    <h3>Hello from react!</h3>,
+    document.getElementById('react_test')
+);

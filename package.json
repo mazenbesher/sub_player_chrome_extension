@@ -8,13 +8,13 @@
     "zip": "bestzip subplayer.zip dist/*",
     "clean": "del-cli dist/**/*.bundled*",
     "build:templates": "mustache -p  src/popup/templates/header.mustache -p  src/popup/templates/footer.mustache -p  src/popup/templates/subtitle_tabs.mustache -p  src/popup/templates/video_search.mustache -p  src/popup/templates/key_playback.mustache -p  src/popup/templates/general_style_controls.mustache src/popup/templates/template_data.json src/popup/templates/popup.mustache > dist/popup/popup.bundled.html",
-    "build:browserify:bg": "browserify src/background.js -t babelify -o dist/background.bundled.js",
-    "build:browserify:popup": "browserify src/popup/js/popup.js -t babelify -o dist/popup/js/popup.bundled.js",
-    "build:browserify:contentscript": "browserify src/contentscript/contentscript.js -t babelify -o dist/contentscript/contentscript.bundled.js",
+    "build:browserify:bg": "browserify src/background.js -t [ babelify --presets [ es2015 react ] ] -o dist/background.bundled.js",
+    "build:browserify:popup": "browserify src/popup/js/popup.js -t [ babelify --presets [ es2015 react ] ] -o dist/popup/js/popup.bundled.js",
+    "build:browserify:contentscript": "browserify src/contentscript/contentscript.js -t [ babelify --presets [ es2015 react ] ] -o dist/contentscript/contentscript.bundled.js",
     "build:browserify": "run-s build:browserify:*",
+    "build": "run-s build:templates build:browserify",
     "watch:popup": "watchify src/popup/js/popup.js -o dist/popup/js/popup.bundled.js -v",
-    "watch:bg": "watchify src/background.js -o dist/background.bundled.js -v",
-    "build": "run-s build:templates build:browserify"
+    "watch:bg": "watchify src/background.js -o dist/background.bundled.js -v"
   },
   "repository": {
     "type": "git",
@@ -38,6 +38,7 @@
   },
   "homepage": "https://mazenbesher.github.io/sub_player_chrome_extension/",
   "dependencies": {
+    "charset-detector": "0.0.2",
     "opensubtitles-api": "^4.0.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
@@ -46,16 +47,17 @@
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-preset-env": "^1.6.0",
+    "babel-preset-react-es2015": "^1.3.0",
     "babelify": "^7.3.0",
+    "bestzip": "^1.1.4",
+    "browserify": "^14.4.0",
     "bundle-collapser": "^1.2.1",
+    "del-cli": "^1.1.0",
     "envify": "^4.1.0",
+    "mustache": "^2.3.0",
     "npm-run-all": "^4.0.2",
     "uglify-js": "^3.0.27",
     "uglifyify": "^4.0.3",
-    "watchify": "^3.9.0",
-    "mustache": "^2.3.0",
-    "bestzip": "^1.1.4",
-    "browserify": "^14.4.0",
-    "del-cli": "^1.1.0"
+    "watchify": "^3.9.0"
   }
 }

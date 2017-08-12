@@ -1,4 +1,4 @@
-const OS_LANGS = [
+export const OS_LANGS = [
     {
         "id": "all",
         "language": "All"

@@ -3,6 +3,8 @@ const DEBUG = true;
 
 // global configurations
 import {config} from './config';
+import {OS_LANGS} from './data/os_supported_languages';
+import {privates} from "./data/private";
 
 // globals
 const OpenSubtitles = require('opensubtitles-api');

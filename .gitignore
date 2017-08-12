@@ -4,7 +4,7 @@ demo/
 node_modules/
 
 # privates
-dist/data/private.js
+src/data/private.js
 
 # bundles
 *.bundled*
