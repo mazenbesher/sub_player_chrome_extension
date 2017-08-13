@@ -39,9 +39,11 @@
     "build:browserify:contentscript": "browserify src/contentscript/contentscript.js -o dist/contentscript/contentscript.bundled.js",
     "build:browserify": "run-s build:browserify:*",
     "build": "run-s build:templates build:browserify",
-    "watch:popup": "watchify src/popup/js/popup.js -o dist/popup/js/popup.bundled.js -v -d",
-    "watch:bg": "watchify src/background.js -o dist/background.bundled.js -v -d",
-    "watch:contentscript": "watchify src/contentscript/contentscript.js -o dist/contentscript/contentscript.bundled.js -v -d",
+    "watch:templates": "nodemon --ignore *.json -e mustache -x \"npm run build:templates\"",
+    "watch:browserify:popup": "watchify src/popup/js/popup.js -o dist/popup/js/popup.bundled.js -v -d",
+    "watch:browserify:bg": "watchify src/background.js -o dist/background.bundled.js -v -d",
+    "watch:browserify:contentscript": "watchify src/contentscript/contentscript.js -o dist/contentscript/contentscript.bundled.js -v -d",
+    "watch:browserify": "run-p watch:browserify:*",
     "watch": "run-p watch:*"
   },
   "repository": {
@@ -83,6 +85,7 @@
     "del-cli": "^1.1.0",
     "envify": "^4.1.0",
     "mustache": "^2.3.0",
+    "nodemon": "^1.11.0",
     "npm-run-all": "^4.0.2",
     "uglify-js": "^3.0.27",
     "uglifyify": "^4.0.3",
