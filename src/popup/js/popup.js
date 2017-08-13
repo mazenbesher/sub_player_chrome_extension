@@ -1,6 +1,18 @@
 "use strict";
 const DEBUG = true;
 
+
+// TESTING REACT 
+{
+    // import React from 'react';
+    // import ReactDOM from 'react-dom';
+
+    // ReactDOM.render(
+    //     <h3>Hello from react!</h3>,
+    //     document.getElementById('react_test')
+    // );
+}
+
 // Notes
 /**
  * Subtitle Custom events
@@ -23,12 +35,12 @@ const detect = require('charset-detector'); // for detecting encoding
 const request = require('request'); // for downloading subtitles
 
 // global configurations
-import {config} from '../../config';
+import { config } from '../../config';
 
 // Globals
 let activeTabId;
 let videoKey;
-let subtitleFileNames = {1: "", 2: "", 3: ""};
+let subtitleFileNames = { 1: "", 2: "", 3: "" };
 
 // for unzipping downloaded subtitles
 const zlib = require('zlib');
@@ -53,7 +65,7 @@ window.onerror = () => {
 
 // promise for getting active tab id
 let getActiveTabId = () => new Promise(resolve => {
-    chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         activeTabId = tabs[0].id;
         resolve(activeTabId);
     });
@@ -142,13 +154,13 @@ getActiveTabId().then(activeTabId => {
 
     let setTabColor = (color, index) => {
         const shadedColor = shadeColor(toHexString(color), .5);
-        $(`#subtitles_nav_tabs > li > a[aria-controls="subtitle_${index}"]`).css("background-color", shadedColor);
+        $(`#subtitles_nav_tabs > a[aria-controls="subtitle_${index}"]`).css("background-color", shadedColor);
         $(`div#subtitle_${index}`).css("background-color", shadedColor);
     };
 
     let getSubColor = (index) => {
         return new Promise(resolve => {
-            chrome.tabs.sendMessage(activeTabId, {action: "getSubColor", index: index}, response => {
+            chrome.tabs.sendMessage(activeTabId, { action: "getSubColor", index: index }, response => {
                 if (response && response.color)
                     resolve(response.color);
             });
@@ -210,9 +222,9 @@ getActiveTabId().then(activeTabId => {
             checkbox.checked = response.state;
             checkbox.onchange = (e) => {
                 if (e.target.checked) {
-                    chrome.tabs.sendMessage(activeTabId, {action: "activatedManualResize"});
+                    chrome.tabs.sendMessage(activeTabId, { action: "activatedManualResize" });
                 } else {
-                    chrome.tabs.sendMessage(activeTabId, {action: "deactivatedManualResize"});
+                    chrome.tabs.sendMessage(activeTabId, { action: "deactivatedManualResize" });
                 }
             };
         }
@@ -256,6 +268,7 @@ getActiveTabId().then(activeTabId => {
 {
     document.addEventListener('sub-activated', e => {
         const a = document.querySelector(`#subtitles_nav_tabs a[href="#subtitle_${e.detail}"]`);
+        console.log(a);
         $(a).addClass("active-subtitle");
     });
 
@@ -268,7 +281,7 @@ getActiveTabId().then(activeTabId => {
 // subtitle-search
 getActiveTabId().then(activeTabId => {
     // placeholder = page title
-    chrome.tabs.sendMessage(activeTabId, {action: "getDocumentTitle"}, response => {
+    chrome.tabs.sendMessage(activeTabId, { action: "getDocumentTitle" }, response => {
         if (response.title) { // not empty
             $(".search_term_input").each((i, elm) => log($(elm).attr("placeholder", response.title)));
         }
@@ -323,7 +336,7 @@ getActiveTabId().then(activeTabId => {
 });
 
 // set active tab id and search for video when the popup is opened
-chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
+chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     activeTabId = tabs[0].id;
     searchForVideos();
 });
@@ -337,7 +350,7 @@ const regKeyEventsBtn = document.getElementById("reg_keyboard_event");
 getActiveTabId().then(activeTabId => {
     regKeyEventsBtn.disabled = true; // enable if video found
     regKeyEventsBtn.onclick = () => {
-        chrome.tabs.sendMessage(activeTabId, {action: "regKeyboardEventForVideoPlayback"});
+        chrome.tabs.sendMessage(activeTabId, { action: "regKeyboardEventForVideoPlayback" });
         regKeyEventsBtn.disabled = true;
         regKeyEventsState.innerText = "registered!";
     };
@@ -397,7 +410,7 @@ for (let index = 1; index <= 3; index++) {
 }
 
 function setUpSyncInfo(index) {
-    chrome.tabs.sendMessage(activeTabId, {action: "getSubSeek", index: index}, function (response) {
+    chrome.tabs.sendMessage(activeTabId, { action: "getSubSeek", index: index }, function (response) {
         if (response != undefined && response.seeked) {
             subtitleSeeks[index].innerText = response.amount;
         }
@@ -405,7 +418,7 @@ function setUpSyncInfo(index) {
 }
 
 function searchForVideos() {
-    chrome.tabs.sendMessage(activeTabId, {action: "searchForVideos"}, function (response) {
+    chrome.tabs.sendMessage(activeTabId, { action: "searchForVideos" }, function (response) {
         if (response != undefined && response.videoDetected) { // NOTE: response can be undefined if none of the content scripts (possibly in multiple frames) detected a video -> no response is sent back
             videoKey = response["videoKey"];
             videoFound();
@@ -431,7 +444,7 @@ function videoFound() {
 }
 
 function checkIfKeyEventsAreRegistered() {
-    chrome.tabs.sendMessage(activeTabId, {action: "getRegKeyEventsState"}, function (response) {
+    chrome.tabs.sendMessage(activeTabId, { action: "getRegKeyEventsState" }, function (response) {
         if (response.registered) {
             regKeyEventsState.innerText = "registered!";
             regKeyEventsBtn.disabled = true;
@@ -450,7 +463,7 @@ function checkIfVideoHasSubtitleInStorage() {
                 enableSyncControls(index);
                 enableUnloadSubBtn(index);
                 setUpSyncInfo(index);
-                document.dispatchEvent(new CustomEvent('sub-activated', {detail: index}));
+                document.dispatchEvent(new CustomEvent('sub-activated', { detail: index }));
 
                 // enable file input buttons
                 document.getElementById("subtitle_file_input_" + index).disabled = false;
@@ -659,9 +672,9 @@ function saveAndNotify(subtitles, index) {
     chrome.storage.local.set(toSave, function () {
         // when done saving
         // send them to content script
-        chrome.tabs.sendMessage(activeTabId, {action: "srtParsed", subtitles: subtitles, index: index});
+        chrome.tabs.sendMessage(activeTabId, { action: "srtParsed", subtitles: subtitles, index: index });
         enableSyncControls(index);
-        document.dispatchEvent(new CustomEvent('sub-activated', {detail: index}));
+        document.dispatchEvent(new CustomEvent('sub-activated', { detail: index }));
     });
 }
 
@@ -669,13 +682,13 @@ function seek(value, index) {
     // log(`request seeking index: ${index}, value: ${value}`);
 
     // value in ms
-    chrome.tabs.sendMessage(activeTabId, {action: "seekSubtitle", index: index, amount: value}, function (response) {
+    chrome.tabs.sendMessage(activeTabId, { action: "seekSubtitle", index: index, amount: value }, function (response) {
         subtitleSeeks[index].innerText = response.seekedValue
     });
 }
 
 function unloadSubtitle(index) {
-    document.dispatchEvent(new CustomEvent('sub-deactivated', {detail: index}));
+    document.dispatchEvent(new CustomEvent('sub-deactivated', { detail: index }));
 
     // disable unload sub button
     const selector = `button.unload_curr_subtitle[data-subtitle-index="${index}"`;
@@ -695,7 +708,7 @@ function unloadSubtitle(index) {
     setDetectedEncoding("hide", index);
 
     // Send message to active tab to hide subtitle
-    chrome.tabs.sendMessage(activeTabId, {action: "unloadSubtitle", index: index});
+    chrome.tabs.sendMessage(activeTabId, { action: "unloadSubtitle", index: index });
 }
 
 function setSubFontSize(index, span, newRatio) {
@@ -892,7 +905,7 @@ function downloadSubtitle(e) {
     loadingText.text("Downloading...");
 
     // download it
-    request({url, encoding: null}, (error, response, data) => {
+    request({ url, encoding: null }, (error, response, data) => {
         if (error) throw error;
 
         zlib.unzip(data, (error, arrayBuffer) => {
@@ -918,12 +931,3 @@ function downloadSubtitle(e) {
         });
     });
 }
-
-/* TESTING REACT */
-import React from 'react';
-import ReactDOM from 'react-dom';
-
-ReactDOM.render(
-    <h3>Hello from react!</h3>,
-    document.getElementById('react_test')
-);

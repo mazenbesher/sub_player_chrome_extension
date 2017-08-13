@@ -2,15 +2,17 @@
     <!-- http://getbootstrap.com/javascript/#tabs -->
     <!-- Nav tabs -->
     <ul id="subtitles_nav_tabs" class="nav nav-tabs" role="tablist">
-        <li class="active" role="presentation">
-            <a href="#subtitle_1" aria-controls="subtitle_1" role="tab" data-toggle="tab">Subtitle 1</a>
-        </li>
-        <li role="presentation">
-            <a href="#subtitle_2" aria-controls="subtitle_2" role="tab" data-toggle="tab">Subtitle 2</a>
-        </li>
-        <li role="presentation">
-            <a href="#subtitle_3" aria-controls="subtitle_3" role="tab" data-toggle="tab">Subtitle 3</a>
-        </li>
+        {{#subtitles_numbers}}
+        <a 
+            class="nav-item nav-link{{#active}} active{{/active}}"
+            data-toggle="tab"
+            href="#subtitle_{{number}}" 
+            role="tab"
+            aria-controls="subtitle_{{number}}"
+            {{#active}} aria-expanded="true"{{/active}}>
+            Subtitle {{number}}
+        </a>
+        {{/subtitles_numbers}}
     </ul>
 
     <!-- Tab panes -->
