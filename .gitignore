@@ -1,6 +1,6 @@
-demo/
 .vscode/
 .idea/
+docs/v0.01/
 node_modules/
 
 # privates
