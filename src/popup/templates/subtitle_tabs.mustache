@@ -22,7 +22,7 @@
                     <div class="btn btn-default">
                         <label for="subtitle_file_input_{{number}}" id="current_subtitle_file_name_{{number}}">Select
                             file</label><br>
-                        <input type="file" class="subtitle_file_input hidden" id="subtitle_file_input_{{number}}"
+                        <input type="file" class="form-control-file subtitle_file_input" id="subtitle_file_input_{{number}}"
                                data-subtitle-index="{{number}}">
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                             data-subtitle-index="{{number}}">Search
                     </button>
                     <div id="subtitle_loading_{{number}}" class="btn hide">
-                        <span id="subtitle_loading_spinner_{{number}}" class="glyphicon glyphicon-refresh"></span>
+                        <img src="../assets/svg/loop-circular.svg" id="subtitle_loading_spinner_{{number}}"  >
                         <span id="subtitle_loading_text_{{number}}"></span>
                     </div>
 

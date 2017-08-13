@@ -30,10 +30,6 @@ table, th, td {
     text-align: left;
 }
 
-.hidden {
-    visibility: hidden;
-}
-
 div#subtitle_panes_container {
     background-color: lightgray;
 }
@@ -56,7 +52,8 @@ div.search-subtitle-section {
     padding: 3px;
 }
 
-.glyphicon.spinning {
+.spinning {
+    width: 1.3em;
     animation: spin 1s infinite linear;
 }
 
