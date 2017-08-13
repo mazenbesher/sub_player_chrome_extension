@@ -1,5 +1,8 @@
 "use strict";
 
+// requires
+const $ = require('jquery');
+
 const classChangeMutationConfig = {
     attributes: true, attributeFilter: ['class']
 };

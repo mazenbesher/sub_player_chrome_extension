@@ -1,6 +1,9 @@
 "use strict";
 const DEBUG = true;
 
+// requires
+const $ = require('jquery');
+
 // global configurations
 import {config} from './config';
 import {OS_LANGS} from './data/os_supported_languages';

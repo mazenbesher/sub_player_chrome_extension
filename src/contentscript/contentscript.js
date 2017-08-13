@@ -35,6 +35,12 @@ const DEBUG = false;
  * the (de)activated subtitle index can be found as the event detail
  */
 
+// requires
+const md5 = require('app/md5.min.js');
+const $ = require('jquery');
+window.jQuery = $; // requried for ui
+require('app/jquery-ui.min.js');
+
 // global configurations
 import {config} from '../config';
 

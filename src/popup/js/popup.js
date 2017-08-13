@@ -9,6 +9,19 @@ const DEBUG = true;
  * the (de)activated subtitle index can be found as the event detail
  */
 
+// requires
+const $ = require('jquery');
+window.jQuery = $; // because it is required by bootstrap
+
+const Popper = require('popper.js');
+window.Popper = Popper; // because it is required by bootstrap
+
+require('bootstrap');
+require('app/bootstrap-colorpicker.min.js'); // note: app is symbloic link of lib in src
+const tinycolor = require('app/tinycolor.min.js'); // note: app is symbloic link of lib in src
+const detect = require('charset-detector'); // for detecting encoding
+const request = require('request'); // for downloading subtitles
+
 // global configurations
 import {config} from '../../config';
 
@@ -16,12 +29,6 @@ import {config} from '../../config';
 let activeTabId;
 let videoKey;
 let subtitleFileNames = {1: "", 2: "", 3: ""};
-
-// for detecting encoding
-const detect = require('charset-detector');
-
-// for downloading subtitles
-const request = require('request');
 
 // for unzipping downloaded subtitles
 const zlib = require('zlib');

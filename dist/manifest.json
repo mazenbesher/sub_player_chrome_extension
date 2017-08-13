@@ -4,7 +4,6 @@
   "version": "0.02",
   "background": {
     "scripts": [
-      "lib/jquery-3.2.1.min.js",
       "background.bundled.js"
     ],
     "persistent": true
@@ -18,9 +17,6 @@
       ],
       "all_frames": true,
       "js": [
-        "lib/md5.min.js",
-        "lib/jquery-3.2.1.min.js",
-        "lib/jquery-ui.min.js",
         "contentscript/contentscript.bundled.js"
       ],
       "css": [
@@ -33,8 +29,7 @@
       ],
       "all_frames": true,
       "js": [
-        "lib/jquery-3.2.1.min.js",
-        "contentscript/netflix.js"
+        "contentscript/netflix.bundled.js"
       ]
     },{
       "run_at": "document_end",
@@ -43,8 +38,7 @@
       ],
       "all_frames": true,
       "js": [
-        "lib/jquery-3.2.1.min.js",
-        "contentscript/youtube.js"
+        "contentscript/youtube.bundled.js"
       ]
     }
   ],

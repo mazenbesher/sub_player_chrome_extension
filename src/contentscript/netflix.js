@@ -1,5 +1,8 @@
 "use strict";
 
+// requires
+const $ = require('jquery');
+
 let netflixControls;
 
 // when done loading
