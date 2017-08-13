@@ -5,7 +5,8 @@ To install dependencies run `npm install`
 All files with `*.bundled.*` extension are generated dynamically by running `npm run build` and they are not included in the repo.    
 
 # TODOs:
-- [ ] global log to log errors (`window.onerror`)
+- [ ] add linting scripts
+- [x] global log to log errors (`window.onerror`)
 - [x] redirect all log messages to bg page
 - [x] add indicator while searching or downloading a subtitle
 - [x] add `watch` mode in `npm`
