@@ -1,18 +1,6 @@
 "use strict";
 const DEBUG = true;
 
-
-// TESTING REACT 
-{
-    // import React from 'react';
-    // import ReactDOM from 'react-dom';
-
-    // ReactDOM.render(
-    //     <h3>Hello from react!</h3>,
-    //     document.getElementById('react_test')
-    // );
-}
-
 // Notes
 /**
  * Subtitle Custom events
@@ -22,17 +10,19 @@ const DEBUG = true;
  */
 
 // requires
-const $ = require('jquery');
-window.jQuery = $; // because it is required by bootstrap
-
-const Popper = require('popper.js');
-window.Popper = Popper; // because it is required by bootstrap
-
+const $ = require('jquery'); window.jQuery = $; // because it is required by bootstrap
+const Popper = require('popper.js'); window.Popper = Popper; // because it is required by bootstrap
 require('bootstrap');
 require('app/bootstrap-colorpicker.min.js'); // note: app is symbloic link of lib in src
 const tinycolor = require('app/tinycolor.min.js'); // note: app is symbloic link of lib in src
 const detect = require('charset-detector'); // for detecting encoding
 const request = require('request'); // for downloading subtitles
+
+// react
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { SubtitlesNavTabs } from './components/SubtitlesNavTabs';
+import { SubtitlePaneContainer } from './components/SubtitlePaneContainer';
 
 // global configurations
 import { config } from '../../config';
@@ -45,12 +35,14 @@ let subtitleFileNames = { 1: "", 2: "", 3: "" };
 // for unzipping downloaded subtitles
 const zlib = require('zlib');
 
-// seeks
-let subtitleSeeks = {
-    1: document.getElementById("subtitle_seek_1"),
-    2: document.getElementById("subtitle_seek_2"),
-    3: document.getElementById("subtitle_seek_3")
-};
+// generate subtitles tabs
+ReactDOM.render(
+    <div>
+        <SubtitlesNavTabs />
+        <SubtitlePaneContainer />
+    </div>,
+    document.getElementById("subtitle_tabs_react")
+);
 
 // register global logger function and onerror
 let log;
@@ -268,7 +260,6 @@ getActiveTabId().then(activeTabId => {
 {
     document.addEventListener('sub-activated', e => {
         const a = document.querySelector(`#subtitles_nav_tabs a[href="#subtitle_${e.detail}"]`);
-        console.log(a);
         $(a).addClass("active-subtitle");
     });
 
@@ -412,7 +403,7 @@ for (let index = 1; index <= 3; index++) {
 function setUpSyncInfo(index) {
     chrome.tabs.sendMessage(activeTabId, { action: "getSubSeek", index: index }, function (response) {
         if (response != undefined && response.seeked) {
-            subtitleSeeks[index].innerText = response.amount;
+            document.getElementById(`subtitle_seek_${index}`).innerText = response.amount;
         }
     });
 }
@@ -683,7 +674,7 @@ function seek(value, index) {
 
     // value in ms
     chrome.tabs.sendMessage(activeTabId, { action: "seekSubtitle", index: index, amount: value }, function (response) {
-        subtitleSeeks[index].innerText = response.seekedValue
+        document.getElementById(`subtitle_seek_${index}`).innerText = response.seekedValue
     });
 }
 
