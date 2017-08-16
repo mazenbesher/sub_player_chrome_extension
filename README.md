@@ -1,8 +1,10 @@
 Add subtitle overlay from SRT files to any video element, with options to sync the subtitle.
 
 # Note:
-To install dependencies run `npm install`    
+1. To install dependencies run `npm install`    
 All files with `*.bundled.*` extension are generated dynamically by running `npm run build` and they are not included in the repo.    
+
+2. A `symlink` in `node_modules\lib` pointing to `src\lib` is required for `imports` in `.js` files (generated under windows, i.e. it may not work on your system)
 
 # TODOs:
 - [ ] add linting scripts

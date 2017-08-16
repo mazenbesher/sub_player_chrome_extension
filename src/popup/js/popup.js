@@ -13,15 +13,15 @@ const DEBUG = true;
 const $ = require('jquery'); window.jQuery = $; // because it is required by bootstrap
 const Popper = require('popper.js'); window.Popper = Popper; // because it is required by bootstrap
 require('bootstrap');
-require('app/bootstrap-colorpicker.min.js'); // note: app is symbloic link of lib in src
-const tinycolor = require('app/tinycolor.min.js'); // note: app is symbloic link of lib in src
+require('lib/bootstrap-colorpicker.min.js'); // note: app is symbloic link of lib in src
+const tinycolor = require('lib/tinycolor.min.js'); // note: app is symbloic link of lib in src
 const detect = require('charset-detector'); // for detecting encoding
 const request = require('request'); // for downloading subtitles
 
 // imports
-import { config } from '../../config';
-import { getActiveTabId, searchSuggestions, osSearch } from '../../utils';
-import { OS_LANGS } from '../../data/os_supported_languages';
+import { config } from 'lib/config';
+import { getActiveTabId, searchSuggestions, osSearch } from 'lib/utils';
+import { OS_LANGS } from 'lib/data/os_supported_languages';
 
 // react
 import React from 'react';

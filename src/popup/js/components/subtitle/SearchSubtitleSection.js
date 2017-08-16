@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { sendMessage } from '../../../../utils';
-import { OS_LANGS } from '../../../../data/os_supported_languages.js';
+import { sendMessage } from 'lib/utils';
+import { OS_LANGS } from 'lib/data/os_supported_languages.js';
 
 export class SearchSubtitleSection extends React.Component {
     constructor(props) {

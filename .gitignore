@@ -1,11 +1,14 @@
 .vscode/
 .idea/
 docs/v0.01/
-node_modules/
+node_modules/*
 
 # privates
-src/data/private.js
+src/lib/data/private.js
 
 # bundles
 *.bundled*
 subplayer.zip
+
+# exclude lib symlink
+!node_modules/lib
