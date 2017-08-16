@@ -1,25 +1,44 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { sendMessage } from '../../../../utils';
-
-
-
+import { OS_LANGS } from '../../../../data/os_supported_languages.js';
 
 export class SearchSubtitleSection extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { tabTitle: "" };
+
+        this.osLangs = OS_LANGS.map(obj => obj.language);
+        this.osIds = OS_LANGS.map(obj => obj.id);
+
+        this.state = {
+            tabTitle: ""
+        };
     }
 
     getActiveTabTitle() {
-        sendMessage({action: "getDocumentTitle"}).then(response => {
-                if (response.title) // not empty
-                    this.setState({ tabTitle: response.title });
+        sendMessage({ action: "getDocumentTitle" }).then(response => {
+            if (response.title) // not empty
+                this.setState({ tabTitle: response.title });
         })
     }
 
     componentDidMount() {
         this.getActiveTabTitle();
+    }
+
+    getLangOptions() {
+        // populate language options
+        const { osLangs, osIds } = this;
+        let options = []
+        osLangs.map((lang, i) => {
+            options.push(
+                <option key={i} value={osIds[i]}>
+                    {lang}
+                </option>
+            )
+        })
+
+        return options;
     }
 
     render() {
@@ -41,7 +60,9 @@ export class SearchSubtitleSection extends React.Component {
                 <datalist id={`search_suggestions_datalist_${subId}`}></datalist>
                 <select
                     className="form-control search-langs-select"
-                    id={`search_lang_${subId}`}></select>
+                    id={`search_lang_${subId}`}>
+                    {this.getLangOptions()}
+                </select>
                 <button
                     id={`search_subtitle_btn_${subId}`}
                     className="search-subtitle-btn btn btn-default"
@@ -55,7 +76,6 @@ export class SearchSubtitleSection extends React.Component {
                         id={`subtitle_loading_spinner_${subId}`} />
                     <span id={`subtitle_loading_text_${subId}`}></span>
                 </div>
-
 
                 <br />
                 <select

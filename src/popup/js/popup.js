@@ -274,16 +274,6 @@ getActiveTabId().then(activeTabId => {
     // get lang from langId
     const getLang = id => OS_LANGS.find(elm => elm.id == id).language;
 
-    // populate language options
-    document.querySelectorAll('.search-langs-select').forEach(select => {
-        for (let i = 0; i < langs.length; i++) {
-            let option = document.createElement("option");
-            option.value = ids[i];
-            option.innerText = langs[i];
-            select.appendChild(option);
-        }
-    });
-
     // add key listener
     document.querySelectorAll('.search-subtitle-btn').forEach(btn => {
         btn.addEventListener('click', function (e) {
