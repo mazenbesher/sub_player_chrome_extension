@@ -1,4 +1,5 @@
-import {privates} from "./data/private";
+import { privates } from "./data/private";
+import { config } from 'lib/config';
 import * as $ from 'jquery';
 
 // globals
@@ -57,5 +58,16 @@ export function osSearch(query, langId) {
         query,
         limit: 'all', // Can be 'best', 'all' or an arbitrary nb. Defaults to 'best'
         gzip: true
+    });
+}
+
+export function log(msg) {
+    if (!config.debug) return;
+
+    chrome.runtime.sendMessage({
+        action: "globalLogger",
+        sender: "contentscript",
+        color: config.contentscript.debugColor,
+        msg
     });
 }
