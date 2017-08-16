@@ -19,16 +19,15 @@ const detect = require('charset-detector'); // for detecting encoding
 const request = require('request'); // for downloading subtitles
 
 // imports
-import { getActiveTabId } from 'utils';
+import { config } from '../../config';
+import { getActiveTabId, searchSuggestions, osSearch } from '../../utils';
+import { OS_LANGS } from '../../data/os_supported_languages';
 
 // react
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { SubtitlesNavTabs } from './components/SubtitlesNavTabs';
 import { SubtitlePaneContainer } from './components/SubtitlePaneContainer';
-
-// global configurations
-import { config } from '../../config';
 
 // Globals
 let activeTabId;
@@ -266,52 +265,49 @@ getActiveTabId().then(activeTabId => {
 
 // subtitle-search
 getActiveTabId().then(activeTabId => {
-    chrome.runtime.getBackgroundPage(bg => {
-        let langs = [], ids = [];
-        bg = bg;
-        bg.osLangs.forEach(elm => {
-            langs.push(elm.language);
-            ids.push(elm.id);
-        });
-
-        // get lang from langId
-        const getLang = id => bg.osLangs.find(elm => elm.id == id).language;
-
-        // populate language options
-        document.querySelectorAll('.search-langs-select').forEach(select => {
-            for (let i = 0; i < langs.length; i++) {
-                let option = document.createElement("option");
-                option.value = ids[i];
-                option.innerText = langs[i];
-                select.appendChild(option);
-            }
-        });
-
-        // add key listener
-        document.querySelectorAll('.search-subtitle-btn').forEach(btn => {
-            btn.addEventListener('click', function (e) {
-                const index = e.target.dataset.subtitleIndex;
-                const term = document.querySelector(`.search_term_input[data-subtitle-index="${index}"`).value;
-                const langId = document.getElementById(`search_lang_${index}`).value;
-                const lang = getLang(langId);
-                searchForSubtitles(index, bg, term, langId);
-            })
-        });
-
-        document.querySelectorAll('.search_term_input').forEach(elm =>
-            elm.addEventListener('keyup', function (e) {
-                const term = e.target.value;
-                const index = e.target.dataset.subtitleIndex;
-                const langId = document.getElementById(`search_lang_${index}`).value;
-                const lang = getLang(langId);
-
-                if (e.code == "Enter") {
-                    searchForSubtitles(index, bg, term, langId);
-                } else if (e.target.value) {
-                    provideSuggestions(index, bg, term, langId);
-                }
-            }));
+    let langs = [], ids = [];
+    OS_LANGS.forEach(elm => {
+        langs.push(elm.language);
+        ids.push(elm.id);
     });
+
+    // get lang from langId
+    const getLang = id => OS_LANGS.find(elm => elm.id == id).language;
+
+    // populate language options
+    document.querySelectorAll('.search-langs-select').forEach(select => {
+        for (let i = 0; i < langs.length; i++) {
+            let option = document.createElement("option");
+            option.value = ids[i];
+            option.innerText = langs[i];
+            select.appendChild(option);
+        }
+    });
+
+    // add key listener
+    document.querySelectorAll('.search-subtitle-btn').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            const index = e.target.dataset.subtitleIndex;
+            const term = document.querySelector(`.search_term_input[data-subtitle-index="${index}"`).value;
+            const langId = document.getElementById(`search_lang_${index}`).value;
+            const lang = getLang(langId);
+            searchForSubtitles(index, term, langId);
+        })
+    });
+
+    document.querySelectorAll('.search_term_input').forEach(elm =>
+        elm.addEventListener('keyup', function (e) {
+            const term = e.target.value;
+            const index = e.target.dataset.subtitleIndex;
+            const langId = document.getElementById(`search_lang_${index}`).value;
+            const lang = getLang(langId);
+
+            if (e.code == "Enter") {
+                searchForSubtitles(index, term, langId);
+            } else if (e.target.value) {
+                provideSuggestions(index, term, langId);
+            }
+        }));
 });
 
 // set active tab id and search for video when the popup is opened
@@ -759,7 +755,7 @@ function searchForSubtitles(index, bg, term, langId) {
     select.size = "10";
     select.disabled = true;
 
-    bg.osSearch(term, langId).then(subtitles => {
+    osSearch(term, langId).then(subtitles => {
         // subtitles is an object with langId as key
         // for sample output see samples folder
         Object.keys(subtitles).forEach(key => {
@@ -801,13 +797,13 @@ function searchForSubtitles(index, bg, term, langId) {
     }).catch(log); // TODO show user-friendly error
 }
 
-function provideSuggestions(index, bg, term, langId) {
+function provideSuggestions(index, term, langId) {
     const dataList = document.getElementById(`search_suggestions_datalist_${index}`);
 
     // empty last suggestions
     dataList.innerHTML = "";
 
-    bg.searchSuggestions(term, langId).then(suggestions => {
+    searchSuggestions(term, langId).then(suggestions => {
         suggestions.forEach(suggestion => {
             dataList.appendChild(createSuggestionOption(suggestion));
         })

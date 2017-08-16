@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { sendMessage } from 'utils';
+import { sendMessage } from '../../../../utils';
 
 
 
@@ -12,7 +12,6 @@ export class SearchSubtitleSection extends React.Component {
     }
 
     getActiveTabTitle() {
-        // placeholder example = page title
         sendMessage({action: "getDocumentTitle"}).then(response => {
                 if (response.title) // not empty
                     this.setState({ tabTitle: response.title });
