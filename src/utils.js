@@ -6,3 +6,10 @@ export const getActiveTabId = () => new Promise(resolve => {
 });
 
 // send message
+export const sendMessage = msg => {
+    return new Promise(resolve => {
+        getActiveTabId().then(activeTabId => {
+            chrome.tabs.sendMessage(activeTabId, msg, response => resolve(response));
+        });
+    });
+}
