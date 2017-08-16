@@ -18,6 +18,9 @@ const tinycolor = require('app/tinycolor.min.js'); // note: app is symbloic link
 const detect = require('charset-detector'); // for detecting encoding
 const request = require('request'); // for downloading subtitles
 
+// imports
+import { getActiveTabId } from 'utils';
+
 // react
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -54,14 +57,6 @@ window.onerror = () => {
         bg.globalWinOnerror("popup", config.popup.debugColor);
     })
 };
-
-// promise for getting active tab id
-let getActiveTabId = () => new Promise(resolve => {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        activeTabId = tabs[0].id;
-        resolve(activeTabId);
-    });
-});
 
 // style: font-size slider
 getActiveTabId().then(activeTabId => {
@@ -271,13 +266,6 @@ getActiveTabId().then(activeTabId => {
 
 // subtitle-search
 getActiveTabId().then(activeTabId => {
-    // placeholder = page title
-    chrome.tabs.sendMessage(activeTabId, { action: "getDocumentTitle" }, response => {
-        if (response.title) { // not empty
-            $(".search_term_input").each((i, elm) => log($(elm).attr("placeholder", response.title)));
-        }
-    });
-
     chrome.runtime.getBackgroundPage(bg => {
         let langs = [], ids = [];
         bg = bg;
