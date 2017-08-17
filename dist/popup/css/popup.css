@@ -7,6 +7,10 @@ body {
     width: 330px;
 }
 
+input[type="range"], input[type="text"], select, button {
+    width: 100%;
+}
+
 #subtitle_controls {
     display: flex;
 }
@@ -44,12 +48,6 @@ div#subtitle_panes_container {
 
 input[type=file][disabled] + label {
     color: #ccc;
-}
-
-div.search-subtitle-section {
-    border-radius: 5px;
-    border: 1px solid black;
-    padding: 3px;
 }
 
 .spinning {

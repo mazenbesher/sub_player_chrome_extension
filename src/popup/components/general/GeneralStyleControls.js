@@ -4,7 +4,6 @@ export class GeneralStyleControls extends React.Component {
     render() {
         return (
             <section>
-                <h3>General Style Controls:</h3>
                 <input
                     className="btn btn-default"
                     type="checkbox"

@@ -8,7 +8,6 @@ export class SubtitleSyncControls extends React.Component {
         return (
 
             <div id={`subtitle_sync_controls_${subId}`}>
-                <h4>Sync Controls:</h4>
                 <div id={`subtitle_controls_${subId}`}>
                     <input 
                         className="btn btn-default" type="button" 

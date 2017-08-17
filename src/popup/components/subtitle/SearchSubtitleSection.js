@@ -1,7 +1,5 @@
 import React from 'react';
-import request from 'request';
-import zlib from 'zlib';
-import { sendMessage, osSearch, searchSuggestions } from 'lib/utils';
+import { sendMessage, osSearch, searchSuggestions, downloadSubtitle } from 'lib/utils';
 import { loadSubtitle } from '../../popup'; // TODO make load subtitle global function
 import { OS_LANGS } from 'lib/data/os_supported_languages.js';
 import * as $ from 'jquery';
@@ -21,7 +19,8 @@ export class SearchSubtitleSection extends React.Component {
             isDownloadingSubtitle: false,
             selectedSubtitleOption: null,
             searchResult: [],
-            suggestions: []
+            suggestions: [],
+            cantReachServerError: false
         };
 
         // bindings
@@ -63,7 +62,11 @@ export class SearchSubtitleSection extends React.Component {
         const term = this.state.searchTerm;
         const langId = this.state.selectedLangId;
 
-        this.setState({ isSearchingForSubtitle: true, searchResult: [] });
+        this.setState({
+            isSearchingForSubtitle: true,
+            searchResult: [],
+            cantReachServerError: false
+        });
 
         let reactKey = 0;
         let currSearchResult = [];
@@ -104,41 +107,35 @@ export class SearchSubtitleSection extends React.Component {
             this.setState({ isSearchingForSubtitle: false, searchResult: currSearchResult });
         }).catch(err => {
             console.error(err);
-            this.setState({ isSearchingForSubtitle: false, searchResult: currSearchResult });
+            this.setState({
+                isSearchingForSubtitle: false,
+                searchResult: currSearchResult,
+                cantReachServerError: true
+            });
         }); // TODO show user-friendly error
     }
 
     downloadSelectedSubtitle() {
         if (!this.state.selectedSubtitleOption) return;
 
+        const index = this.props.subId;
         const option = this.state.selectedSubtitleOption;
+
         const filename = option.dataset.filename;
         const url = option.dataset.url;
         const encoding = option.dataset.encoding;
-        const lang = option.dataset.lang;
-        const langcode = option.dataset.langcode;
-        const id = option.dataset.id;
-        const index = this.props.subId;
+        // const lang = option.dataset.lang;
+        // const langcode = option.dataset.langcode;
+        // const id = option.dataset.id;
 
         this.setState({ isDownloadingSubtitle: true });
 
         // download it
-        request({ url, encoding: null }, (error, response, data) => {
-            if (error) throw error;
-
-            zlib.unzip(data, (error, arrayBuffer) => {
-                if (error) throw error;
-
-                // Text Decoder
-                // https://developers.google.com/web/updates/2014/08/Easier-ArrayBuffer-String-conversion-with-the-Encoding-API
-                // The decode() method takes a DataView as a parameter, which is a wrapper on top of the ArrayBuffer.
-                // The TextDecoder interface is documented at http://encoding.spec.whatwg.org/#interface-textdecoder
-                let dataView = new DataView(arrayBuffer.buffer);
-                let decoder = new TextDecoder(encoding);
-                let decodedString = decoder.decode(dataView);
-                this.setState({ isDownloadingSubtitle: false });
-                loadSubtitle(index, filename, decodedString);
-            });
+        downloadSubtitle(url, encoding).then(decodedSubtitle => {
+            this.setState({ isDownloadingSubtitle: false, cantReachServerError: false });
+            loadSubtitle(index, filename, decodedSubtitle);
+        }).catch(err => {
+            this.setState({ cantReachServerError: true });
         });
     }
 
@@ -170,7 +167,6 @@ export class SearchSubtitleSection extends React.Component {
             <div
                 id={`search_subtitle_section_${subId}`}
                 className="search-subtitle-section">
-                <h4>Search for subtitles</h4>
                 <input
                     type="text"
                     className="form-control search_term_input"
@@ -200,7 +196,7 @@ export class SearchSubtitleSection extends React.Component {
                 </select>
                 <button
                     id={`search_subtitle_btn_${subId}`}
-                    className="search-subtitle-btn btn btn-default"
+                    className="search-subtitle-btn btn btn-success"
                     onClick={this.searchForSubtitle}
                     data-subtitle-index={`${subId}`}
                     disabled={this.state.isSearchingForSubtitle || this.state.isDownloadingSubtitle}
@@ -222,10 +218,27 @@ export class SearchSubtitleSection extends React.Component {
                 </div>
 
                 <br />
-                <span
-                    style={(this.state.searchResult.length > 0) ? {} : { display: "none" }} >
-                    Hover over any result to see number of downloads and subtitle score
-                </span>
+
+                {
+                    (this.state.searchResult.length > 0) ?
+                        (
+                            <span id="subtitle-download-info" >
+                                Hover over any result to see number of downloads and subtitle score.
+                            <br />
+                                To download any subtitle double click on it.
+                            </span>
+                        ) : (this.state.cantReachServerError) ?
+                            (
+                                <span id="subtitle-download-info" >
+                                    Service unavailable please try again later.
+                                </span>
+                            ) :
+                            (
+                                <span id="subtitle-download-info" >
+                                </span>
+                            )
+
+                }
                 <select
                     id={`search_result_${subId}`}
                     size={(this.state.searchResult.length > 0) ? "10" : "3"}
@@ -241,18 +254,24 @@ export class SearchSubtitleSection extends React.Component {
                 </select>
                 <button
                     id={`load_selected_subtitle_btn_${subId}`}
-                    onClick={() => this.downloadSelectedSubtitle}
-                    className="select-subtitle-btn btn btn-default"
+                    onClick={this.downloadSelectedSubtitle}
+                    className="load-subtitle-btn btn btn-primary"
                     data-subtitle-index={`${subId}`}
-                    disabled={this.state.searchResult.length <= 0}
+                    disabled={this.state.searchResult.length <= 0 || !this.state.selectedSubtitleOption}
                 >
                     Load
                 </button>
 
                 <br />
-                Subtitles service powered by
-                <a target="_blank" href="https://www.opensubtitles.org">www.OpenSubtitles.org</a>
-                <img src="../assets/img/opensubtitles_logo.webp" />
+                <p>
+                    Subtitles service powered by: <a target="_blank" href="https://www.opensubtitles.org">www.OpenSubtitles.org</a>
+                </p>
+                <img
+                    style={{
+                        display: "block",
+                        margin: "auto"
+                    }}
+                    src="../assets/img/opensubtitles_logo.webp" />
             </div>
         )
     }

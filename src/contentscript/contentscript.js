@@ -36,10 +36,10 @@ const DEBUG = false;
  */
 
 // requires
-const md5 = require('app/md5.min.js');
+const md5 = require('lib/external/md5.min.js');
 const $ = require('jquery');
 window.jQuery = $; // requried for ui
-require('app/jquery-ui.min.js');
+require('lib/external/jquery-ui.min.js');
 
 // global configurations
 import { config } from 'lib/config';

@@ -9,7 +9,6 @@ export class SubtitleStyleControls extends React.Component {
             <div
                 id={`subtitle_style_controls_${subId}`}
                 className="subtitle-style-controls">
-                <h4>Style</h4>
                 <div
                     id={`font_size_${subId}`}
                     className="font-size-control">

@@ -1,5 +1,4 @@
 "use strict";
-const DEBUG = true;
 
 // Notes
 /**
@@ -13,39 +12,32 @@ const DEBUG = true;
 const $ = require('jquery'); window.jQuery = $; // because it is required by bootstrap
 const Popper = require('popper.js'); window.Popper = Popper; // because it is required by bootstrap
 require('bootstrap');
-require('lib/bootstrap-colorpicker.min.js'); // note: app is symbloic link of lib in src
-const tinycolor = require('lib/tinycolor.min.js'); // note: app is symbloic link of lib in src
+require('lib/external/bootstrap-colorpicker.min.js');
+const tinycolor = require('lib/external/tinycolor.min.js');
 const detect = require('charset-detector'); // for detecting encoding
-const request = require('request'); // for downloading subtitles
 
 // imports
 import { config } from 'lib/config';
-import { getActiveTabId, searchSuggestions, osSearch } from 'lib/utils';
-import { OS_LANGS } from 'lib/data/os_supported_languages';
+import { getActiveTabId } from 'lib/utils';
 
 // react
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { SubtitlesNavTabs } from './components/SubtitlesNavTabs';
 import { SubtitlePaneContainer } from './components/SubtitlePaneContainer';
-import { GeneralStyleControls } from './components/GeneralStyleControls';
-import { KeyPlayback } from './components/KeyPlayback';
+import { GeneralSection } from './components/GeneralSection';
 
 // Globals
 let activeTabId;
 let videoKey;
 let subtitleFileNames = { 1: "", 2: "", 3: "" };
 
-// for unzipping downloaded subtitles
-const zlib = require('zlib');
-
-// generate subtitles tabs
+// generate react components
 ReactDOM.render(
     <div>
         <SubtitlesNavTabs />
         <SubtitlePaneContainer />
-        <GeneralStyleControls />
-        <KeyPlayback />
+        <GeneralSection />
     </div>,
     document.getElementById("react_container")
 );
@@ -145,7 +137,8 @@ getActiveTabId().then(activeTabId => {
     let setTabColor = (color, index) => {
         const shadedColor = shadeColor(toHexString(color), .5);
         $(`#subtitles_nav_tabs > a[aria-controls="subtitle_${index}"]`).css("background-color", shadedColor);
-        $(`div#subtitle_${index}`).css("background-color", shadedColor);
+        $(`div#subtitle_${index} .card`).css("background-color", shadedColor);
+        $(`div#subtitle_${index} .unload_curr_subtitle`).css("background-color", shadedColor);
     };
 
     let getSubColor = (index) => {
@@ -300,28 +293,12 @@ document.querySelectorAll(".subtitle_file_input").forEach(elm => {
     elm.onchange = readFile;
 });
 
-// Enable/Disable manual encoding selection
+// manual encoding checkboxes
 let manEncodingCheckboxes = {
     1: document.getElementById("manual_encoding_detection_1"),
     2: document.getElementById("manual_encoding_detection_2"),
     3: document.getElementById("manual_encoding_detection_3")
 };
-let manEncodingSections = {
-    1: document.getElementById("manual_encoding_selection_1"),
-    2: document.getElementById("manual_encoding_selection_2"),
-    3: document.getElementById("manual_encoding_selection_3")
-};
-
-for (let index = 1; index <= 3; index++) {
-    manEncodingSections[index].style.visibility = "hidden";
-    manEncodingCheckboxes[index].onchange = () => {
-        if (manEncodingCheckboxes[index].checked) {
-            manEncodingSections[index].style.visibility = "visible";
-        } else {
-            manEncodingSections[index].style.visibility = "hidden";
-        }
-    };
-}
 
 // Body width based on current window width TODO: consider dynamic css instead (media queries [@min-width ...)
 // chrome.windows.getCurrent(w => { // w = current window

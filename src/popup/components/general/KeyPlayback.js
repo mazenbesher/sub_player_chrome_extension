@@ -4,7 +4,6 @@ export class KeyPlayback extends React.Component {
     render() {
         return (
             <section>
-                <h3>Key Playback:</h3>
                 <p>Register keyboard events to control video</p>
                 <button className="btn btn-default" id="reg_keyboard_event">Register</button>
                 <span>State: <span id="reg_keyboard_event_state">not registered</span></span>
