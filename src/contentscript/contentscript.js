@@ -42,21 +42,21 @@ window.jQuery = $; // requried for ui
 require('app/jquery-ui.min.js');
 
 // global configurations
-import {config} from 'lib/config';
+import { config } from 'lib/config';
 
 // config
 const VIDEO_SEARCH_INTERVAL_TIME = 1000; // each VIDEO_SEARCH_INTERVAL_TIME ms the method find video will be fired
 const VIDEO_SEARCH_LIMIT = 10; // after VIDEO_SEARCH_LIMIT the video search interval will be removed
-const INITIAL_SUBTITLES_COLORS = {1: "lightgray", 2: "lightcoral", 3: "lightblue"};
+const INITIAL_SUBTITLES_COLORS = { 1: "lightgray", 2: "lightcoral", 3: "lightblue" };
 
 
 // style variables
-let subFontSizeHeightRatios = {1: 15, 2: 15, 3: 15}; // font-size = video.clientHeight / subFontSizeHeightRatio
-let subPadHeightRatios = {1: 36, 2: 36, 3: 36}; // padding-down = video.clientHeight / subPadHeightRatios
+let subFontSizeHeightRatios = { 1: 15, 2: 15, 3: 15 }; // font-size = video.clientHeight / subFontSizeHeightRatio
+let subPadHeightRatios = { 1: 36, 2: 36, 3: 36 }; // padding-down = video.clientHeight / subPadHeightRatios
 
 // Created DOM Elements
 let subtitleContainer;
-let subtitleHolders = {1: undefined, 2: undefined, 3: undefined};
+let subtitleHolders = { 1: undefined, 2: undefined, 3: undefined };
 
 // video pointer
 let videoElm = null;
@@ -64,10 +64,10 @@ let videoSearchIntervall;
 let searchCounter = 0;
 
 // Globals
-let subtitleSeeks = {1: 0, 2: 0, 3: 0};
-let lastSubIndexes = {1: -1, 2: -1, 3: -1};
+let subtitleSeeks = { 1: 0, 2: 0, 3: 0 };
+let lastSubIndexes = { 1: -1, 2: -1, 3: -1 };
 let registeredKeyboardEventsForVideoPlayback = false;
-let subtitles = {1: undefined, 2: undefined, 3: undefined};
+let subtitles = { 1: undefined, 2: undefined, 3: undefined };
 let isManualResizeActive = false;
 
 // Listeners
@@ -79,7 +79,7 @@ document.addEventListener('sub-deactivated', subDeactivated);
 
 // when done loading
 window.addEventListener("load", main, false);
-window.onerror = () => chrome.runtime.sendMessage({action: "jsError", sender: "contentscript", color: config.contentscript.debugColor});
+window.onerror = () => chrome.runtime.sendMessage({ action: "jsError", sender: "contentscript", color: config.contentscript.debugColor });
 
 function main() {
     if (videoSearchIntervall == null)
@@ -135,7 +135,7 @@ function adjustBadgeToNumberOfActiveSubtitles() {
 }
 
 function setBadgeText(text, color = "red") {
-    chrome.runtime.sendMessage({action: "setBrowserActionBadge", text, color});
+    chrome.runtime.sendMessage({ action: "setBrowserActionBadge", text, color });
 }
 
 function showSubtitle(event) {
@@ -181,17 +181,17 @@ function receivedMessage(request, sender, sendResponse) {
         case "srtParsed":
             subtitles[request.index] = request.subtitles;
             subtitleHolders[request.index].style.visibility = "visible";
-            document.dispatchEvent(new CustomEvent('sub-activated', {detail: request.index}));
+            document.dispatchEvent(new CustomEvent('sub-activated', { detail: request.index }));
             adjustSubtitlesWidths();
             break;
 
         case "seekSubtitle":
             subtitleSeeks[request.index] += request.amount;
-            sendResponse({seekedValue: subtitleSeeks[request.index]});
+            sendResponse({ seekedValue: subtitleSeeks[request.index] });
             break;
 
         case "getSubSeek":
-            sendResponse({seeked: true, amount: subtitleSeeks[request.index]});
+            sendResponse({ seeked: true, amount: subtitleSeeks[request.index] });
             break;
 
         case "searchForVideos":
@@ -205,7 +205,7 @@ function receivedMessage(request, sender, sendResponse) {
             subtitleHolders[request.index].style.visibility = "hidden";
             subtitleHolders[request.index].innerText = "";
             subtitles[request.index] = undefined;
-            document.dispatchEvent(new CustomEvent('sub-deactivated', {detail: request.index}));
+            document.dispatchEvent(new CustomEvent('sub-deactivated', { detail: request.index }));
             adjustSubtitlesWidths();
             break;
 
@@ -214,7 +214,7 @@ function receivedMessage(request, sender, sendResponse) {
             break;
 
         case "getRegKeyEventsState":
-            sendResponse({registered: registeredKeyboardEventsForVideoPlayback});
+            sendResponse({ registered: registeredKeyboardEventsForVideoPlayback });
             break;
 
         // sub font size
@@ -224,22 +224,22 @@ function receivedMessage(request, sender, sendResponse) {
             break;
 
         case "getSubFontSize":
-            sendResponse({newRatio: subFontSizeHeightRatios[request.index]});
+            sendResponse({ newRatio: subFontSizeHeightRatios[request.index] });
             break;
 
         case "isAllSubSameFontSize":
             // is all equal?
             const value = subFontSizeHeightRatios[1];
             if (Object.values(subFontSizeHeightRatios).reduce((a, b) => (a === b) ? a : NaN) === value) {
-                sendResponse({isAllSubSameFontSize: true, fontSize: value});
+                sendResponse({ isAllSubSameFontSize: true, fontSize: value });
             } else {
-                sendResponse({isAllSubSameFontSize: false});
+                sendResponse({ isAllSubSameFontSize: false });
             }
             break;
 
         // sub color
         case "getSubColor":
-            sendResponse({color: subtitleHolders[request.index].style.color});
+            sendResponse({ color: subtitleHolders[request.index].style.color });
             break;
 
         case "setSubColor":
@@ -253,12 +253,12 @@ function receivedMessage(request, sender, sendResponse) {
             break;
 
         case "getSubPadding":
-            sendResponse({newRatio: subPadHeightRatios[request.index]});
+            sendResponse({ newRatio: subPadHeightRatios[request.index] });
             break;
 
         // manual resize
         case "manualResizeState":
-            sendResponse({state: isManualResizeActive});
+            sendResponse({ state: isManualResizeActive });
             break;
 
         case "activatedManualResize":
@@ -301,7 +301,7 @@ function receivedMessage(request, sender, sendResponse) {
             break;
 
         case "getDocumentTitle":
-            sendResponse({title: document.title});
+            sendResponse({ title: document.title });
             break;
     }
 }
@@ -416,7 +416,7 @@ function checkIfVideoHasSubtitleInStorage() {
             chrome.storage.local.get(key, function (result) {
                 if (result[key]) {
                     subtitles[index] = JSON.parse(result[key])["subtitles"];
-                    document.dispatchEvent(new CustomEvent('sub-activated', {detail: index}));
+                    document.dispatchEvent(new CustomEvent('sub-activated', { detail: index }));
                 }
             })
         }
@@ -493,13 +493,13 @@ function addMultipleListeners(element, events, handler, useCapture, args) {
 
 function videoFound() {
     // notify bg that a content script has found a video
-    chrome.runtime.sendMessage({action: "scriptHasFoundVideo"});
+    chrome.runtime.sendMessage({ action: "scriptHasFoundVideo" });
 
     // i.e. videoElm != null
     stopSearching();
 
     // notify other content scripts on this tab to stop searching
-    chrome.runtime.sendMessage({action: "stopSearching"});
+    chrome.runtime.sendMessage({ action: "stopSearching" });
 
     checkIfVideoHasSubtitleInStorage();
     displaySubtitleElements(doneLoadingSubtitleElements);
@@ -524,7 +524,7 @@ function doneLoadingSubtitleElements() {
             adjustSubtitlesWidths();
         })
     });
-    videoStyleAttrObserver.observe(videoElm, {attributes: true, attributeFilter: ['style']});
+    videoStyleAttrObserver.observe(videoElm, { attributes: true, attributeFilter: ['style'] });
 
     if (videoElm.controls) {
         addControlsListeners()
@@ -535,7 +535,7 @@ function doneLoadingSubtitleElements() {
                 addControlsListeners()
             }
         });
-        videoControlsObserver.observe(videoElm, {attributes: true, attributeFilter: ['controls']});
+        videoControlsObserver.observe(videoElm, { attributes: true, attributeFilter: ['controls'] });
     }
 }
 
@@ -544,7 +544,7 @@ function addControlsListeners() {
 
     // if video paused or mouse over it -> controls are shown
     addMultipleListeners(videoElm, ['pause', 'mouseover'], () => {
-        document.dispatchEvent(new CustomEvent('controls-show', {detail: controlsHeight}));
+        document.dispatchEvent(new CustomEvent('controls-show', { detail: controlsHeight }));
     }, false);
 
     // if mouse out and playing OR playing alone -> controls are hidden
