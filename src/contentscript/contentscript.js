@@ -42,7 +42,7 @@ window.jQuery = $; // requried for ui
 require('app/jquery-ui.min.js');
 
 // global configurations
-import {config} from '../config';
+import {config} from 'lib/config';
 
 // config
 const VIDEO_SEARCH_INTERVAL_TIME = 1000; // each VIDEO_SEARCH_INTERVAL_TIME ms the method find video will be fired
