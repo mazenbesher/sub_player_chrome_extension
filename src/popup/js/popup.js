@@ -28,6 +28,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { SubtitlesNavTabs } from './components/SubtitlesNavTabs';
 import { SubtitlePaneContainer } from './components/SubtitlePaneContainer';
+import { GeneralStyleControls } from './components/GeneralStyleControls';
+import { KeyPlayback } from './components/KeyPlayback';
 
 // Globals
 let activeTabId;
@@ -42,8 +44,10 @@ ReactDOM.render(
     <div>
         <SubtitlesNavTabs />
         <SubtitlePaneContainer />
+        <GeneralStyleControls />
+        <KeyPlayback />
     </div>,
-    document.getElementById("subtitle_tabs_react")
+    document.getElementById("react_container")
 );
 
 // register global logger function and onerror
@@ -296,10 +300,6 @@ document.querySelectorAll(".subtitle_file_input").forEach(elm => {
     elm.onchange = readFile;
 });
 
-// Search btn
-const searchBtn = document.getElementById("search_for_video_btn");
-searchBtn.onclick = searchForVideos;
-
 // Enable/Disable manual encoding selection
 let manEncodingCheckboxes = {
     1: document.getElementById("manual_encoding_detection_1"),
@@ -355,9 +355,6 @@ function searchForVideos() {
 }
 
 function videoFound() {
-    // enable search button
-    searchBtn.disabled = true;
-
     // enable file inputs
     document.querySelectorAll(".subtitle_file_input").forEach(
         elm => elm.disabled = false
