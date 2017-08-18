@@ -4,6 +4,20 @@ import { loadSubtitle } from '../../popup'; // TODO make load subtitle global fu
 import { OS_LANGS } from 'lib/data/os_supported_languages.js';
 import * as $ from 'jquery';
 
+const netState = {
+    downloading: "Downloading...",
+    searching: "Searching...",
+    none: ""
+}
+
+const infoState = {
+    toDownload: `Hover over any result to see number of downloads and subtitle score.
+            To download any subtitle double click on it.`,
+    downloaded: "Subtitle downloaded",
+    error: "Service unavailable please try again later.",
+    none: ""
+}
+
 export class SearchSubtitleSection extends React.Component {
     constructor(props) {
         super(props);
@@ -15,12 +29,11 @@ export class SearchSubtitleSection extends React.Component {
             tabTitle: "",
             searchTerm: "",
             selectedLangId: "all",
-            isSearchingForSubtitle: false,
-            isDownloadingSubtitle: false,
+            netState: netState.none,
+            infoState: infoState.none,
             selectedSubtitleOption: null,
             searchResult: [],
-            suggestions: [],
-            cantReachServerError: false
+            suggestions: []
         };
 
         // bindings
@@ -63,9 +76,9 @@ export class SearchSubtitleSection extends React.Component {
         const langId = this.state.selectedLangId;
 
         this.setState({
-            isSearchingForSubtitle: true,
+            netState: netState.searching,
+            infoState: infoState.none,
             searchResult: [],
-            cantReachServerError: false
         });
 
         let reactKey = 0;
@@ -104,13 +117,17 @@ export class SearchSubtitleSection extends React.Component {
                 }
             });
 
-            this.setState({ isSearchingForSubtitle: false, searchResult: currSearchResult });
+            this.setState({
+                netState: netState.none,
+                infoState: infoState.toDownload,
+                searchResult: currSearchResult
+            });
         }).catch(err => {
             console.error(err);
             this.setState({
-                isSearchingForSubtitle: false,
+                netState: netState.none,
+                infoState: infoState.error,
                 searchResult: currSearchResult,
-                cantReachServerError: true
             });
         }); // TODO show user-friendly error
     }
@@ -128,14 +145,23 @@ export class SearchSubtitleSection extends React.Component {
         // const langcode = option.dataset.langcode;
         // const id = option.dataset.id;
 
-        this.setState({ isDownloadingSubtitle: true });
+        this.setState({
+            netState: netState.downloading,
+            infoState: infoState.none
+        });
 
         // download it
         downloadSubtitle(url, encoding).then(decodedSubtitle => {
-            this.setState({ isDownloadingSubtitle: false, cantReachServerError: false });
+            this.setState({
+                netState: netState.none,
+                infoState: infoState.downloaded
+            });
             loadSubtitle(index, filename, decodedSubtitle);
         }).catch(err => {
-            this.setState({ cantReachServerError: true });
+            this.setState({
+                netState: netState.none,
+                infoState: infoState.error
+            });
         });
     }
 
@@ -176,7 +202,7 @@ export class SearchSubtitleSection extends React.Component {
                         searchTerm: e.target.value
                     })}
                     onKeyUp={this.provideSuggestions}
-                    disabled={this.state.isSearchingForSubtitle || this.state.isDownloadingSubtitle}
+                    disabled={this.state.netState != netState.none} // i.e. there is an activity on the net and we don't want to allow interaction with input elements
                     placeholder={(tabTitle) ? `ex: ${tabTitle}` : "Search term"}
                     list={`search_suggestions_datalist_${subId}`} />
                 <datalist id={`search_suggestions_datalist_${subId}`}>
@@ -190,7 +216,7 @@ export class SearchSubtitleSection extends React.Component {
                         const selectedOption = e.target.options[selectedIndex];
                         this.setState({ selectedLangId: selectedOption.value });
                     }}
-                    disabled={this.state.isSearchingForSubtitle || this.state.isDownloadingSubtitle}
+                    disabled={this.state.netState != netState.none}
                 >
                     {this.getLangOptions()}
                 </select>
@@ -199,46 +225,28 @@ export class SearchSubtitleSection extends React.Component {
                     className="search-subtitle-btn btn btn-success"
                     onClick={this.searchForSubtitle}
                     data-subtitle-index={`${subId}`}
-                    disabled={this.state.isSearchingForSubtitle || this.state.isDownloadingSubtitle}
+                    disabled={this.state.netState != netState.none}
                 >
                     Search
                     </button>
                 <div
                     id={`subtitle_loading_${subId}`}
-                    className={(this.state.isSearchingForSubtitle) ? "btn" : "btn hide"}>
+                    className={(this.state.netState != netState.none) ? "btn" : "btn hide"}>
                     <img
                         src="../assets/svg/loop-circular.svg"
                         id={`subtitle_loading_spinner_${subId}`}
-                        className={(this.state.isSearchingForSubtitle) ? "spinning" : ""}
+                        className={(this.state.netState != netState.none) ? "spinning" : ""}
                     />
                     <span id={`subtitle_loading_text_${subId}`}>
-                        {(this.state.isSearchingForSubtitle) ? "Searching..." :
-                            (this.state.isDownloadingSubtitle) ? "Downloading..." : ""}
+                        {this.state.netState}
                     </span>
                 </div>
 
                 <br />
 
-                {
-                    (this.state.searchResult.length > 0) ?
-                        (
-                            <span id="subtitle-download-info" >
-                                Hover over any result to see number of downloads and subtitle score.
-                            <br />
-                                To download any subtitle double click on it.
-                            </span>
-                        ) : (this.state.cantReachServerError) ?
-                            (
-                                <span id="subtitle-download-info" >
-                                    Service unavailable please try again later.
-                                </span>
-                            ) :
-                            (
-                                <span id="subtitle-download-info" >
-                                </span>
-                            )
-
-                }
+                <p id="subtitle_info" >
+                    {this.state.infoState}
+                </p>
                 <select
                     id={`search_result_${subId}`}
                     size={(this.state.searchResult.length > 0) ? "10" : "3"}
