@@ -18,7 +18,7 @@ const detect = require('charset-detector'); // for detecting encoding
 
 // imports
 import { config } from 'lib/config';
-import { getActiveTabId } from 'lib/utils';
+import { getActiveTabId, parseSRT } from 'lib/utils';
 
 // react
 import React from 'react';
@@ -401,7 +401,7 @@ function readFile() {
             reader.onload = e => {
                 // e = ProgressEvent
                 // e.target = FileReader
-                parseSRT(e.target.result, index);
+                parseSRT(e.target.result).then(subtitles => saveAndNotify(subtitles, index));
             };
 
             reader.readAsText(this.files[0], encoding);
@@ -478,77 +478,6 @@ function detectEncoding(inputElm, index) {
 
         reader.readAsArrayBuffer(inputElm.files[0]);
     });
-}
-
-function timeToMs(hour, min, sec, ms) {
-    hour = parseInt(hour);
-    min = parseInt(min);
-    sec = parseInt(sec);
-    ms = parseInt(ms);
-
-    if (isNaN(hour)) hour = 0;
-    if (isNaN(min)) min = 0;
-    if (isNaN(sec)) sec = 0;
-    if (isNaN(ms)) ms = 0;
-
-    return ms +
-        sec * 1000 +
-        min * 60000 +
-        hour * 3600000;
-}
-
-function parseSRT(srt, index) {
-    // parse srt
-    const timeRegex = /(\d+):(\d+):(\d+),(\d+) --> (\d+):(\d+):(\d+),(\d+)/g;
-    //                 1      2      3      4            5      6      7      8
-    srt = srt.split("\n");
-
-    let subtitles = []; // [{start:...ms, end:...ms, subtitle: ...}, ...]
-    let text = "";
-    let curr = -1;
-    let last_start;
-    let last_end;
-    let line;
-
-    for (let i = 0; i < srt.length; i++) {
-        line = srt[i].trim();
-
-        // discards number
-        if (line.match(/^(\d+)$/g)) {
-            continue;
-        }
-
-        let match = timeRegex.exec(line);
-        if (match) {
-            if (curr != -1) {
-                // save last 
-                subtitles[curr] = {
-                    start: last_start,
-                    end: last_end,
-                    text: text
-                };
-            }
-
-            last_start = timeToMs(match[1], match[2], match[3], match[4]);
-            last_end = timeToMs(match[5], match[6], match[7], match[8]);
-            text = "";
-            curr += 1;
-        } else {
-            // adding subtitle text
-            if (line.length > 0)
-                text += line + "<br>";
-        }
-    }
-
-    // add last subtitle
-    subtitles[curr] = {
-        start: last_start,
-        end: last_end,
-        text: text
-    };
-
-    // save subtitle for this video in storage and notify content script to load it
-    saveAndNotify(subtitles, index);
 }
 
 function saveAndNotify(subtitles, index) {
@@ -654,5 +583,5 @@ export function loadSubtitle(index, filename, decodedSubtitle) {
     unloadSubtitle(index);
     setCurrSubFileName(filename, index);
     enableUnloadSubBtn(index);
-    parseSRT(decodedSubtitle, index);
+    parseSRT(decodedSubtitle).then(subtitles => saveAndNotify(subtitles, index));
 }
