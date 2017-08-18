@@ -26,17 +26,17 @@ export class ManualFileEncodingSetting extends React.Component {
         return (
             <div
                 id={`manual_file_encoding_setting_${subId}`}>
-                <div className="form-check form-check-inline">
-                    <label htmlFor={`manual_encoding_detection_${subId}`} className="form-check-label">
-                        <input
-                            type="checkbox"
-                            onChange={this.manCheckboxChanged}
-                            className="manual_encoding_detection form-check-input"
-                            value=""
-                            id={`manual_encoding_detection_${subId}`} />
-                        I want to set file encoding manually
-                    </label>
-                </div>
+                <label htmlFor={`manual_encoding_detection_${subId}`}>
+                    <input
+                        type="checkbox"
+                        onChange={this.manCheckboxChanged}
+                        className="manual_encoding_detection"
+                        value=""
+                        id={`manual_encoding_detection_${subId}`} />
+                        <span className="checkbox-label">
+                            I want to set file encoding manually
+                        </span>
+                </label>
                 <br />
                 {
                     (this.state.manEncodingMode) ?
