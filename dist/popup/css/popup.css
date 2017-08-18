@@ -47,6 +47,10 @@ div#subtitle_panes_container {
     font-weight: bold;
 }
 
+.sub_activated_label {
+    margin: -6px;
+}
+
 input[type=file][disabled] + label {
     color: #ccc;
 }

@@ -138,7 +138,7 @@ getActiveTabId().then(activeTabId => {
         const shadedColor = shadeColor(toHexString(color), .5);
         $(`#subtitles_nav_tabs > a[aria-controls="subtitle_${index}"]`).css("background-color", shadedColor);
         $(`div#subtitle_${index} .card`).css("background-color", shadedColor);
-        $(`div#subtitle_${index} .unload_curr_subtitle`).css("background-color", shadedColor);
+        $(`div#subtitle_${index} .unload_curr_subtitle`).css("background-color", color);
     };
 
     let getSubColor = (index) => {
@@ -246,19 +246,6 @@ getActiveTabId().then(activeTabId => {
         }
     });
 });
-
-// make subtitle tab head bold if a subtitle is active
-{
-    document.addEventListener('sub-activated', e => {
-        const a = document.querySelector(`#subtitles_nav_tabs a[href="#subtitle_${e.detail}"]`);
-        $(a).addClass("active-subtitle");
-    });
-
-    document.addEventListener('sub-deactivated', e => {
-        const a = document.querySelector(`#subtitles_nav_tabs a[href="#subtitle_${e.detail}"]`);
-        $(a).removeClass("active-subtitle");
-    });
-}
 
 // set active tab id and search for video when the popup is opened
 chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
