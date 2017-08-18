@@ -44,11 +44,11 @@ export class ManualFileEncodingSetting extends React.Component {
                             <div
                                 className="manual_encoding_selection"
                                 id={`manual_encoding_selection_${subId}`}>
-                                <span>
+                                <p>
                                     Please chose an encoding from the list or
                                     type one in the box below and then load
                                     your subtitle in the open subtitle section
-                                </span>
+                                </p>
                                 <select id={`encoding_select_${subId}`}>
                                     <option value="UTF-8">UTF-8 (default)</option>
                                     <option value="CP1251">CP1251</option>
