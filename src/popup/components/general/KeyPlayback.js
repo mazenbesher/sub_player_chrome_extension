@@ -8,11 +8,11 @@ export class KeyPlayback extends React.Component {
                 <button className="btn btn-default" id="reg_keyboard_event">Register</button>
                 <span>State: <span id="reg_keyboard_event_state">not registered</span></span>
                 <br />
-                <table>
+                <table className="table">
                     <tbody>
                         <tr>
-                            <th>Right Arrow</th>
-                            <th>Seek +5 Sec</th>
+                            <td>Right Arrow</td>
+                            <td>Seek +5 Sec</td>
                         </tr>
                         <tr>
                             <td>Left Arrow</td>
