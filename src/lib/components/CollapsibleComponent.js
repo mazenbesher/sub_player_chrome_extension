@@ -1,23 +1,29 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export class CollapsibleComponent extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     tabIt(ReactElm, elmProps, header, headingId, collapseId, parentId) {
+        const { headerType } = this.props;
         return (
             <div className="card">
                 <div
                     className="card-header"
                     role="tab"
                     id={headingId}>
-                    <h5 className="mb-0">
+                    {React.createElement(headerType,{},
                         <a
                             data-toggle="collapse"
                             href={`#${collapseId}`}
                             aria-expanded="true"
-                            aria-controls={collapseId}>
+                                aria-controls={collapseId}>
                             {header}
                         </a>
-                    </h5>
-                </div>
+                    )}
+            </div>
 
                 <div
                     id={collapseId}
@@ -29,7 +35,17 @@ export class CollapsibleComponent extends React.Component {
                         {React.createElement(ReactElm, elmProps)}
                     </div>
                 </div>
-            </div>
+            </div >
         )
     }
+}
+
+// default props
+CollapsibleComponent.defaultProps = {
+    headerType: 'h5'
+}
+
+// proptypes
+CollapsibleComponent.propTypes = {
+    headerType: PropTypes.string
 }

@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { CollapsibleComponent } from 'lib/components/CollapsibleComponent'
 import { LoadSubtitleSection } from './subtitle/LoadSubtitleSection'
-import { EncodingInfoSection } from './subtitle/EncodingInfoSection'
-import { ManualFileEncodingSetting } from './subtitle/ManualFileEncodingSetting'
 import { SearchSubtitleSection } from './subtitle/SearchSubtitleSection'
 import { SubtitleStyleControls } from './subtitle/SubtitleStyleControls'
 import { SubtitleSyncControls } from './subtitle/SubtitleSyncControls'
@@ -24,7 +22,7 @@ class Subtitle extends CollapsibleComponent {
         const headingId = `heading_${key}_subtitle_${subId}`;
         const collapseId = `collapse_${key}_subtitle_${subId}`;
         const parentId = `subtitles_tablist_container_${subId}`;
-        
+
         return super.tabIt(ReactElm, elmProps, header, headingId, collapseId, parentId);
     }
 
@@ -39,9 +37,7 @@ class Subtitle extends CollapsibleComponent {
                     id={`subtitles_tablist_container_${subId}`}
                     role="tablist">
                     <UnloadSubtitleBtn subId={subId} />
-                    {this.tabIt(LoadSubtitleSection, { subId }, "Open Subtitle")}
-                    {this.tabIt(EncodingInfoSection, { subId }, "Subtitle Encoding Info")}
-                    {this.tabIt(ManualFileEncodingSetting, { subId }, "Manual File Encoding")}
+                    {this.tabIt(LoadSubtitleSection, { subId, headerType: 'h6' }, "Open Subtitle")}
                     {this.tabIt(SearchSubtitleSection, { subId }, "Search for subtitles")}
                     {this.tabIt(SubtitleStyleControls, { subId }, "Style")}
                     {this.tabIt(SubtitleSyncControls, { subId }, "Sync Controls")}
