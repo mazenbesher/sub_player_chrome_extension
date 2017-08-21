@@ -1,31 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { subscribeToSubtitleEvents } from 'lib/components/hoc';
 
 class SubtitleTab extends React.Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            isSubActivated: false
-        };
     }
 
     render() {
-        const { subId } = this.props;
-
-        document.addEventListener('sub-activated', e => {
-            if (e.detail == this.props.subId)
-                this.setState({
-                    isSubActivated: true
-                })
-        })
-
-        document.addEventListener('sub-deactivated', e => {
-            if (e.detail == this.props.subId)
-                this.setState({
-                    isSubActivated: false
-                })
-        })
+        const { subId, isSubActivated } = this.props;
 
         return (
             <a
@@ -33,7 +16,7 @@ class SubtitleTab extends React.Component {
                     "nav-item nav-link" +
                     (subId == 1 ? " active" : "") +
                     // make subtitle tab head bold if a subtitle is active
-                    (this.state.isSubActivated ? " active-subtitle" : "")
+                    (isSubActivated ? " active-subtitle" : "")
                 }
                 data-toggle="tab"
                 href={`#subtitle_${subId}`}
@@ -42,7 +25,7 @@ class SubtitleTab extends React.Component {
                 aria-expanded={subId == 1 ? "true" : ""}>
                 Subtitle {subId}
                 {
-                    (this.state.isSubActivated) ? (
+                    (isSubActivated) ? (
                         <p className="sub_activated_label">
                             active
                         </p>
@@ -56,7 +39,7 @@ class SubtitleTab extends React.Component {
 
 // first one is active
 const listItems = [1, 2, 3].map(num =>
-    React.createElement(SubtitleTab, { key: num, subId: num })
+    React.createElement(subscribeToSubtitleEvents(SubtitleTab), { key: num, subId: num })
 );
 
 export class SubtitlesNavTabs extends React.Component {
