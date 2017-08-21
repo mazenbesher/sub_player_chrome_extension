@@ -8,7 +8,9 @@ All files with `*.bundled.*` extension are generated dynamically by running `npm
 
 # TODOs:
 - [ ] add linting scripts
-- [x] global log to log errors (`window.onerror`)
+- [ ] global log to log errors (`window.onerror`)
+    - [x] global log in main scripts (`contentscript` and `popup`)
+    - [ ] global log in components
 - [x] redirect all log messages to bg page
 - [x] add indicator while searching or downloading a subtitle
 - [x] add `watch` mode in `npm`
