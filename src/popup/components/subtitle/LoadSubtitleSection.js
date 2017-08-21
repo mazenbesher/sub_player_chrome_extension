@@ -37,6 +37,7 @@ export class LoadSubtitleSection extends CollapsibleComponent {
                     </p>
                     <input
                         type="file"
+                        accept=".srt"
                         className="form-control-file subtitle_file_input btn btn-default"
                         id={`subtitle_file_input_${subId}`}
                         data-subtitle-index={`${subId}`} />
