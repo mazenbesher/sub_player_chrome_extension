@@ -3,13 +3,23 @@ import ReactDOM from 'react-dom';
 import { EncodingInfoSection } from './load_section/EncodingInfoSection'
 import { ManualFileEncodingSetting } from './load_section/ManualFileEncodingSetting'
 import { CollapsibleComponent } from 'lib/components/CollapsibleComponent'
+import { subscribeToSubtitleEvents } from 'lib/components/hoc'
 
 export class LoadSubtitleSection extends CollapsibleComponent {
     constructor(props) {
         super(props);
 
+        const { subId } = this.props;
+
         this.reactKey = 0;
-        this.containerId = `load_subtitle_section_${this.props.subId}`;
+        this.containerId = `load_subtitle_section_${subId}`;
+
+        this.TabbedEncodingInfoWithSub = super.tabIt(
+            subscribeToSubtitleEvents(EncodingInfoSection),
+            { subId },
+            "Subtitle Encoding Info",
+            `encoding_subtitle_${subId}_heading_${this.reactKey++}`,
+            `encoding_subtitle_${subId}_collapse_${this.reactKey++}`, this.containerId)
     }
 
     render() {
@@ -31,12 +41,12 @@ export class LoadSubtitleSection extends CollapsibleComponent {
                         id={`subtitle_file_input_${subId}`}
                         data-subtitle-index={`${subId}`} />
                 </div>
-                {this.tabIt(EncodingInfoSection, { subId }, "Subtitle Encoding Info", 
-                    `encoding_subtitle_${subId}_heading_${this.reactKey++}`,
-                    `encoding_subtitle_${subId}_collapse_${this.reactKey++}`, this.containerId)}
-                {this.tabIt(ManualFileEncodingSetting, { subId }, "Manual File Encoding", 
-                    `man_encoding_subtitle_${subId}_heading_${this.reactKey++}`,
-                    `man_encoding_subtitle_${subId}_collapse_${this.reactKey++}`, this.containerId)}
+                {this.TabbedEncodingInfoWithSub}
+                {
+                    this.tabIt(ManualFileEncodingSetting, { subId }, "Manual File Encoding",
+                        `man_encoding_subtitle_${subId}_heading_${this.reactKey++}`,
+                        `man_encoding_subtitle_${subId}_collapse_${this.reactKey++}`, this.containerId)
+                }
             </div>
         )
     }

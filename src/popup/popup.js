@@ -414,19 +414,16 @@ function readFile() {
 }
 
 function setDetectedEncoding(detectRes, index) {
-    const containerId = `detected_encoding_${index}`;
-    if (detectRes === "hide") {
-        // hide detection info
-        document.getElementById(containerId).style.visibility = "hidden";
-        return;
-    }
+    if (detectRes === "hide") 
+        detectRes = null;
     log(`setting subtitle ${index} file encoding info`);
+    document.dispatchEvent(new CustomEvent('set-detected-encoding-info', {detail: detectRes}))
 
-    document.getElementById(containerId).style.visibility = "visible";
+    // document.getElementById(containerId).style.visibility = "visible";
 
-    document.querySelector(`#${containerId} .detected_encoding_charset`).innerText = detectRes["charsetName"];
-    document.querySelector(`#${containerId} .detected_encoding_lang`).innerText = detectRes["lang"];
-    document.querySelector(`#${containerId} .detected_encoding_confidence`).innerText = Math.round(detectRes["confidence"]) + "%";
+    // document.querySelector(`#${containerId} .detected_encoding_charset`).innerText = detectRes["charsetName"];
+    // document.querySelector(`#${containerId} .detected_encoding_lang`).innerText = detectRes["lang"];
+    // document.querySelector(`#${containerId} .detected_encoding_confidence`).innerText = Math.round(detectRes["confidence"]) + "%";
 }
 
 function saveDetectedEncodingInfoForFile(fileName, encodingInfo) {
