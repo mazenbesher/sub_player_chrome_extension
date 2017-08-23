@@ -2,6 +2,7 @@
 .idea/
 docs/v0.01/
 node_modules/*
+links/
 
 # privates
 src/lib/data/private.js
