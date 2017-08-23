@@ -1,8 +1,9 @@
-import { privates } from "./data/private";
-import { config } from 'lib/config';
-import request from 'request';
-import zlib from 'zlib';
-import * as $ from 'jquery';
+import { privates } from "./data/private"
+import { config } from 'lib/config'
+import request from 'request'
+import zlib from 'zlib'
+import $ from 'jquery'
+import tinycolor from 'lib/external/tinycolor.min'
 
 // globals
 const OpenSubtitles = require('opensubtitles-api');
@@ -11,6 +12,25 @@ const OS = new OpenSubtitles({
     ssl: true
 });
 
+// helpers
+function timeToMs(hour, min, sec, ms) {
+    hour = parseInt(hour);
+    min = parseInt(min);
+    sec = parseInt(sec);
+    ms = parseInt(ms);
+
+    if (isNaN(hour)) hour = 0;
+    if (isNaN(min)) min = 0;
+    if (isNaN(sec)) sec = 0;
+    if (isNaN(ms)) ms = 0;
+
+    return ms +
+        sec * 1000 +
+        min * 60000 +
+        hour * 3600000;
+}
+
+// exports
 // promise for getting active tab id
 export function getActiveTabId() {
     return new Promise(resolve => {
@@ -18,7 +38,7 @@ export function getActiveTabId() {
             resolve(tabs[0].id);
         });
     })
-};
+}
 
 // send message
 export function sendMessage(msg) {
@@ -97,23 +117,6 @@ export function downloadSubtitle(url, encoding) {
     });
 }
 
-function timeToMs(hour, min, sec, ms) {
-    hour = parseInt(hour);
-    min = parseInt(min);
-    sec = parseInt(sec);
-    ms = parseInt(ms);
-
-    if (isNaN(hour)) hour = 0;
-    if (isNaN(min)) min = 0;
-    if (isNaN(sec)) sec = 0;
-    if (isNaN(ms)) ms = 0;
-
-    return ms +
-        sec * 1000 +
-        min * 60000 +
-        hour * 3600000;
-}
-
 export function parseSRT(decodedSRT) {
     return new Promise(resolve => {
 
@@ -186,3 +189,11 @@ export function shadeColor(color, percent) {
     return "#" + (0x1000000 + (Math.round((t - R) * p) + R) * 0x10000 + (Math.round((t - G) * p) + G) * 0x100 +
         (Math.round((t - B) * p) + B)).toString(16).slice(1);
 }
+
+// returns a hex string
+export function colorToHex(color) {
+    if (tinycolor(color).isValid())
+        return tinycolor(color).toHexString();
+    else
+        throw new Error("invalid color");
+};
