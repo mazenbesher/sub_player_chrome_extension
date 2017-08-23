@@ -5,13 +5,15 @@ import { LoadSubtitleSection } from './subtitle/LoadSubtitleSection'
 import { SearchSubtitleSection } from './subtitle/SearchSubtitleSection'
 import { SubtitleStyleControls } from './subtitle/SubtitleStyleControls'
 import { SubtitleSyncControls } from './subtitle/SubtitleSyncControls'
+import { subscribeToSubtitleEvents } from 'lib/components/hoc'
 
 class Subtitle extends CollapsibleComponent {
     constructor(props) {
         super(props);
 
         this.reactKey = 0;
-
+        // Subscribe component to subtitle events (this.props.isSubActivated)
+        this.SubtitleStyleControlsWithSub = subscribeToSubtitleEvents(SubtitleStyleControls)
         // bindings
         this.tabIt = this.tabIt.bind(this);
     }
@@ -39,7 +41,7 @@ class Subtitle extends CollapsibleComponent {
                     <UnloadSubtitleBtn subId={subId} />
                     {this.tabIt(LoadSubtitleSection, { subId, headerType: 'h6' }, "Open Subtitle")}
                     {this.tabIt(SearchSubtitleSection, { subId }, "Search for subtitles")}
-                    {this.tabIt(SubtitleStyleControls, { subId }, "Style")}
+                    {this.tabIt(this.SubtitleStyleControlsWithSub, { subId }, "Style")}
                     {this.tabIt(SubtitleSyncControls, { subId }, "Sync Controls")}
                 </div>
             </div>

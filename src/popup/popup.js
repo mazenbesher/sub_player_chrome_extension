@@ -52,148 +52,6 @@ window.onerror = () => {
     })
 };
 
-// style: font-size slider
-getActiveTabId().then(activeTabId => {
-    // event listeners
-    document.querySelectorAll(".font-size-slider").forEach(slider => {
-        let sliderChangeHandler = (e) => {
-            const index = e.target.dataset.subtitleIndex;
-            setSubFontSize(index, document.querySelector(`#font_size_value_${index}`), e.target.value);
-        };
-
-        slider.oninput = sliderChangeHandler;
-        slider.onchange = sliderChangeHandler;
-        slider.disabled = true; // disabled at start
-    });
-
-    // event listeners when activate subtitles
-    document.addEventListener('sub-activated', e => {
-        let slider = document.querySelector(`.font-size-slider[data-subtitle-index="${e.detail}"]`);
-        slider.disabled = false;
-
-        // update span and slider
-        chrome.tabs.sendMessage(activeTabId, {
-            action: "getSubFontSize",
-            index: e.detail
-        }, response => {
-            if (response !== null && response.newRatio) {
-                document.querySelector(`#font_size_value_${e.detail}`).innerText = response.newRatio;
-                slider.value = response.newRatio;
-            }
-        });
-    });
-
-    // event listeners when deactivate subtitles
-    document.addEventListener('sub-deactivated', e => {
-        document.querySelector(`.font-size-slider[data-subtitle-index="${e.detail}"]`).disabled = true;
-    });
-});
-
-// style: bottom padding
-getActiveTabId().then(activeTabId => {
-    // event listeners
-    document.querySelectorAll(".padding-down-slider").forEach(slider => {
-        slider.oninput = setSubPadding;
-        slider.onchange = setSubPadding;
-        slider.disabled = true; // disabled at start
-    });
-
-    // event listeners when activate subtitles
-    document.addEventListener('sub-activated', e => {
-        let slider = document.querySelector(`.padding-down-slider[data-subtitle-index="${e.detail}"]`);
-        slider.disabled = false;
-
-        // update span and slider
-        chrome.tabs.sendMessage(activeTabId, {
-            action: "getSubPadding",
-            index: e.detail
-        }, response => {
-            if (response !== null && response.newRatio) {
-                document.querySelector(`#down_padding_value_${e.detail}`).innerText = response.newRatio;
-                slider.value = response.newRatio;
-            }
-        });
-    });
-
-    // event listeners when deactivate subtitles
-    document.addEventListener('sub-deactivated', e => {
-        document.querySelector(`.padding-down-slider[data-subtitle-index="${e.detail}"]`).disabled = true;
-    });
-});
-
-// style: font color pickers
-getActiveTabId().then(activeTabId => {
-    // https://farbelous.github.io/bootstrap-colorpicker/
-
-    // functions
-    let toHexString = color => {
-        if (tinycolor(color).isValid())
-            return tinycolor(color).toHexString();
-        else
-            throw new Error("invalid color");
-    };
-
-    let setTabColor = (color, index) => {
-        const shadedColor = shadeColor(toHexString(color), .5);
-        $(`#subtitles_nav_tabs > a[aria-controls="subtitle_${index}"]`).css("background-color", shadedColor);
-        $(`div#subtitle_${index} .card`).css("background-color", shadedColor);
-        $(`div#subtitle_${index} .unload_curr_subtitle`).css("background-color", color);
-    };
-
-    let getSubColor = (index) => {
-        return new Promise(resolve => {
-            chrome.tabs.sendMessage(activeTabId, { action: "getSubColor", index: index }, response => {
-                if (response && response.color)
-                    resolve(response.color);
-            });
-        });
-    };
-
-    let setSubColor = (color, index) => {
-        setTabColor(color, index);
-        chrome.tabs.sendMessage(activeTabId, {
-            action: "setSubColor",
-            color: color,
-            index: index
-        })
-    };
-
-    for (let index = 1; index <= 3; index++) {
-        const cp = $(`#font_color_picker_${index}`);
-        // set initial colors
-        getSubColor(index).then(color => {
-            setTabColor(color, index);
-            cp.colorpicker({
-                color: color,
-                container: true,
-                inline: true
-            });
-        });
-
-        // on change color
-        cp.on('changeColor', () => { // jQuery addEventListener
-            setSubColor(cp.data('colorpicker').color.toHex(), index)
-        });
-
-        // disable until a sub is activated
-        cp.css('visibility', 'hidden');
-    }
-
-    // event listeners
-    document.addEventListener('sub-activated', e => {
-        const index = e.detail;
-        getSubColor(index).then(color => {
-            const cp = $(`#font_color_picker_${index}`);
-            cp.data('colorpicker').color.setColor(color);
-            cp.css('visibility', 'visible');
-        });
-    });
-
-    document.addEventListener('sub-deactivated', e => {
-        $(`#font_color_picker_${e.detail}`).css('visibility', 'hidden');
-    });
-});
-
 // global-style: enable/disable manual size/position change
 getActiveTabId().then(activeTabId => {
     chrome.tabs.sendMessage(activeTabId, {
@@ -214,37 +72,37 @@ getActiveTabId().then(activeTabId => {
 });
 
 // global-style: font-size
-getActiveTabId().then(activeTabId => {
-    const slider = document.getElementById("global_font_size_slider");
+// getActiveTabId().then(activeTabId => {
+//     const slider = document.getElementById("global_font_size_slider");
 
-    let sliderChangeHandler = (e) => {
-        const newRatio = e.target.value;
-        document.getElementById("global_font_size_value").innerText = newRatio;
+    // let sliderChangeHandler = (e) => {
+    //     const newRatio = e.target.value;
+    //     document.getElementById("global_font_size_value").innerText = newRatio;
 
-        for (let index = 1; index <= 3; index++) {
-            setSubFontSize(index, document.querySelector(`#font_size_value_${index}`), newRatio);
+        // for (let index = 1; index <= 3; index++) {
+            // setSubFontSize(index, document.querySelector(`#font_size_value_${index}`), newRatio);
 
             // update individual sliders
-            document.querySelector(`#font_size_slider_${index}`).value = newRatio;
-            document.querySelector(`#font_size_value_${index}`).innerText = newRatio;
-        }
+            // document.querySelector(`#font_size_slider_${index}`).value = newRatio;
+            // document.querySelector(`#font_size_value_${index}`).innerText = newRatio;
+        // }
 
-    };
+    // };
 
-    slider.onchange = sliderChangeHandler;
-    slider.oninput = sliderChangeHandler;
-    slider.disabled = false;
+    // slider.onchange = sliderChangeHandler;
+    // slider.oninput = sliderChangeHandler;
+    // slider.disabled = false;
 
     // if all subtitles has the same size -> set global slider value
-    chrome.tabs.sendMessage(activeTabId, {
-        action: "isAllSubSameFontSize",
-    }, response => {
-        if (response && response.isAllSubSameFontSize == true) {
-            slider.value = response.fontSize;
-            $(slider).trigger("change"); // to trigger sliderChangeHandler
-        }
-    });
-});
+    // chrome.tabs.sendMessage(activeTabId, {
+    //     action: "isAllSubSameFontSize",
+    // }, response => {
+    //     if (response && response.isAllSubSameFontSize == true) {
+    //         slider.value = response.fontSize;
+    //         $(slider).trigger("change"); // to trigger sliderChangeHandler
+    //     }
+    // });
+// });
 
 // set active tab id and search for video when the popup is opened
 chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
@@ -413,10 +271,10 @@ function readFile() {
 }
 
 function setDetectedEncoding(detectRes, index) {
-    if (detectRes === "hide") 
+    if (detectRes === "hide")
         detectRes = null;
     log(`setting subtitle ${index} file encoding info`);
-    document.dispatchEvent(new CustomEvent('set-detected-encoding-info', {detail: detectRes}))
+    document.dispatchEvent(new CustomEvent('set-detected-encoding-info', { detail: detectRes }))
 
     // document.getElementById(containerId).style.visibility = "visible";
 
@@ -525,31 +383,6 @@ function unloadSubtitle(index) {
     chrome.tabs.sendMessage(activeTabId, { action: "unloadSubtitle", index: index });
 }
 
-function setSubFontSize(index, span, newRatio) {
-    // update span
-    span.innerText = newRatio;
-
-    chrome.tabs.sendMessage(activeTabId, {
-        action: "changeSubFontSizeRatio",
-        newRatio: newRatio,
-        index: index
-    });
-}
-
-function setSubPadding() {
-    let index = this.dataset.subtitleIndex;
-    let newRatio = this.value;
-
-    // update span
-    document.querySelector(`#down_padding_value_${index}`).innerText = newRatio;
-
-    chrome.tabs.sendMessage(activeTabId, {
-        action: "setSubPadding",
-        newRatio: newRatio,
-        index: index
-    });
-}
-
 function getVideoKey(index) {
     if (videoKey != null)
         if (index)
@@ -560,6 +393,7 @@ function getVideoKey(index) {
         throw new Error("called getVideoKey although no videoKey is set!");
 }
 
+// TODO these function must be modified 
 export function loadSubtitle(index, filename, decodedSubtitle) {
     unloadSubtitle(index);
     setCurrSubFileName(filename, index);
