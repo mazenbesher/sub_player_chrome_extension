@@ -71,6 +71,7 @@
   "homepage": "https://mazenbesher.github.io/sub_player_chrome_extension/",
   "dependencies": {
     "bootstrap": "^4.0.0-beta",
+    "bootstrap-colorpicker": "^2.5.1",
     "charset-detector": "0.0.2",
     "jquery": "^3.2.1",
     "opensubtitles-api": "^4.0.0",

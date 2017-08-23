@@ -8,24 +8,23 @@
  * the (de)activated subtitle index can be found as the event detail
  */
 
-// requires
-const $ = require('jquery'); window.jQuery = $; // because it is required by bootstrap
-const Popper = require('popper.js'); window.Popper = Popper; // because it is required by bootstrap
-require('bootstrap');
-require('lib/external/bootstrap-colorpicker.min.js');
-const tinycolor = require('lib/external/tinycolor.min.js');
-const detect = require('charset-detector'); // for detecting encoding
-
 // imports
 import { config } from 'lib/config';
-import { getActiveTabId, parseSRT, shadeColor } from 'lib/utils';
-
-// react
+import { getActiveTabId, parseSRT } from 'lib/utils';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { SubtitlesNavTabs } from './components/SubtitlesNavTabs';
 import { SubtitlePaneContainer } from './components/SubtitlePaneContainer';
 import { GeneralSection } from './components/GeneralSection';
+const detect = require('charset-detector'); // for detecting encoding
+import $ from 'jquery'
+import Popper from 'popper.js'
+
+// bootstrap requirements
+window.jQuery = $
+window.Popper = Popper
+require('bootstrap')
+require('bootstrap-colorpicker')
 
 // Globals
 let activeTabId;
